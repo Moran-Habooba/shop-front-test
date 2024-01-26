@@ -151,12 +151,12 @@ const CardsCreate = () => {
                       type="file"
                       className="form-control"
                       id="image_file"
-                      onChange={(event) =>
+                      onChange={(event) => {
                         form.setFieldValue(
                           "image_file",
                           event.currentTarget.files[0]
-                        )
-                      }
+                        );
+                      }}
                     />
                   </div>
 

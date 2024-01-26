@@ -31,13 +31,13 @@ const CardsEdit = () => {
       price: "",
       quantity: 5,
       category: "",
-      image_file: "",
-      likes: [""],
+      image_file: null,
+      // likes: [""],
       bizNumber: "",
       user_id: "",
     },
     validate: validateFormikUsingJoi({
-      likes: Joi.array().items(Joi.string()).optional(),
+      // likes: Joi.array().items(Joi.string()).optional(),
       bizNumber: Joi.number().optional(),
       user_id: Joi.string().optional(),
 
@@ -74,7 +74,7 @@ const CardsEdit = () => {
       formData.append("description", values.description);
       formData.append("quantity", values.quantity);
       formData.append("category", values.category);
-      formData.append("likes", values.likes);
+      // formData.append("likes", values.likes);
       formData.append("bizNumber", values.bizNumber);
       formData.append("user_id", values.user_id);
 
@@ -82,9 +82,9 @@ const CardsEdit = () => {
         formData.append("image_file", values.image_file);
       }
 
-      // formData.forEach((value, key) => {
-      //   console.log(`${key}: ${value}`);
-      // });
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
 
       try {
         await cardsService.updateCard(card._id, formData);
@@ -169,8 +169,8 @@ const CardsEdit = () => {
         price: card.price || "",
         quantity: card.quantity || 0,
         category: card.category || "",
-        image_file: card.image_file || "",
-        likes: card.likes || [""],
+        image_file: card.image_file || null,
+        // likes: card.likes || [""],
         bizNumber: card.bizNumber || "",
         user_id: card.user_id || "",
       });
@@ -205,13 +205,13 @@ const CardsEdit = () => {
                   <div className="alert alert-danger">{serverError}</div>
                 )}
                 <div className="row">
-                  <Input
+                  {/* <Input
                     {...getProps("likes")}
                     type="hidden"
                     onChange={(e) =>
                       form.setFieldValue("likes", e.target.value)
                     }
-                  />
+                  /> */}
 
                   <Input
                     {...getProps("bizNumber")}
