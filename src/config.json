@@ -1,0 +1,21 @@
+{
+  "apiUrlUsersLogin": "http://localhost:3000/api/login",
+  "apiUrlUsersRegister": "http://localhost:3000/api/users",
+  "apiUrlUserById": "http://localhost:3000/api/users/",
+  "apiUrlAllUser": "http://localhost:3000/api/users",
+  "apiUrlUpdateUser": "http://localhost:3000/api/users/edit/",
+  "apiUrlDeleteUser": "http://localhost:3000/api/users/",
+  "apiUrlUserBusiness": "http://localhost:3000/api/users/",
+
+  "apiUrlAllCards": "http://localhost:3000/api/cards",
+  "apiUrlCardById": "http://localhost:3000/api/cards/",
+  "apiUrlAllMyCards": "http://localhost:3000/api/cards/my-cards",
+  "apiUrlCreateCard": "http://localhost:3000/api/cards",
+  "apiUrlUpdateCard": "http://localhost:3000/api/cards/edit/",
+  "apiUrlLikeCard": "http://localhost:3000/api/cards/",
+  "apiUrlCardsBizNumber": "http://localhost:3000/api/cards/biz-number/",
+  "apiUrlPatchCardsBizNumber": "http://localhost:3000/api/cards/editBiz/",
+  "apiUrlDeleteCategory": "http://localhost:3000/api/categories/",
+
+  "apiUrlDeleteCard": "http://localhost:3000/api/cards/"
+}

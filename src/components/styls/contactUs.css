@@ -1,0 +1,11 @@
+.form-border {
+  border: 3px solid #0a4275;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #e5b55c;
+}
+
+.form-label {
+  color: #0a0a0a;
+  font-weight: bold;
+}

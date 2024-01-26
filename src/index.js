@@ -1,13 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/js/bootstrap.bundle.js";
+import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./context/auth.context";
+import { DarkModeProvider } from "../src/context/darkMode.context";
+import { SearchProvider } from "./context/searchContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <AuthProvider>
+        <SearchProvider>
+          <DarkModeProvider>
+            <App />
+          </DarkModeProvider>
+        </SearchProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

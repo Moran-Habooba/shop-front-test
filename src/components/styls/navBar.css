@@ -1,0 +1,134 @@
+.navbar {
+  background-color: #3b5d50;
+  font-size: larger;
+}
+
+.nav-link {
+  position: relative;
+  color: white !important;
+}
+
+.with-underline::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 4px;
+  background-color: #e5b55c;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+.with-underline:hover::after {
+  width: 100%; /* הגדלת הקו כאשר הרוזן מועבר מעל הלינק */
+}
+
+.nav-link,
+.navbar-brand {
+  color: white !important;
+}
+.nav-link:hover {
+  color: #e5b55c;
+}
+
+.nav-link:focus {
+  color: #e5b55c;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.nav-link:active {
+  color: #e5b55c;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+  color: #e5b55c !important;
+}
+
+.dropdown-item:hover {
+  text-decoration: underline;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  color: #e5b55c;
+  background-color: transparent;
+  font-weight: 600;
+}
+.dropdown-menu .dropdown-item:focus {
+  color: #e5b55c;
+}
+.dropdown-item {
+  text-align: right !important;
+}
+.btn-search {
+  /* background-color: #f9bf29 !important; */
+  border-color: #f9bf29 !important;
+  border-width: 2px !important;
+}
+.btn-search:hover {
+  background-color: #e5b55c !important;
+  color: white !important;
+  border: none;
+}
+
+.navbar-toggler {
+  background-color: #e5b55c !important;
+}
+
+.dark-mode {
+  background-color: #333 !important;
+  color: white;
+}
+
+.dark-mode-icon {
+  color: #e5b55c;
+}
+
+.light-mode-icon {
+  color: white;
+}
+
+.bi-hand-index-fill {
+  color: #e5b55c;
+}
+
+@keyframes wave-animation {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+.wave-once {
+  display: inline-block;
+  animation: wave-animation 1s ease-in-out 1;
+}
+
+@media (max-width: 1042px) {
+  .navbar-nav {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .navbar-brand,
+  .nav-link,
+  .form-control {
+    min-width: 0;
+    width: auto;
+  }
+
+  .form-control {
+    flex: 1;
+  }
+}

@@ -1,0 +1,32 @@
+.LoadMoreBtn:hover {
+  transform: scale(1.07);
+  transition: transform 0.3s ease;
+}
+
+.image-text-container {
+  margin-top: 520px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: #fff7f4; */
+}
+
+.image-text-container {
+  margin-right: 155px;
+}
+
+.minibaner {
+  color: #3b5d50;
+  font-weight: 700;
+}
+
+.btnbanner {
+  border-color: #3b5d50 !important;
+  background-color: #3b5d50 !important;
+}
+.btnbanner:hover {
+  background-color: #f9bf29 !important;
+  color: white !important;
+  border-color: #f9bf29 !important;
+}

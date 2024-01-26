@@ -1,0 +1,96 @@
+@local=https://monkfish-app-z9uza.ondigitalocean.app/bcard2
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTUwODRiMWRlZTIyZjYyOTYwYTYxMDMiLCJpc0J1c2luZXNzIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjk5ODAyNzg1fQ.TxIKQRw-325kKQvoZW5TWg3W11VaeWoCJ0xe4J_UM0w
+
+
+### Register
+POST {{local}}/users
+Content-Type: application/json
+
+
+   {
+  "name": {
+    "first": "מורן ",
+    "middle": "M.",
+    "last": "חבובה"
+  },
+  "email": "john.doae@example.com",
+  "phone": "0507942609",
+  "password": "Ww123123123@!",
+  "address": {
+    "state": "Some State",
+    "city": "Some City",
+    "street": "Some Street",
+    "country": "Some Country",
+    "houseNumber": 123,
+    "zip": "123456"
+  },
+  "image": {
+    "url": "http://example.com/image.jpg",
+    "alt": "An image description"
+  },
+  "isBusiness": true
+}
+
+
+
+### Authentication (login)
+POST {{local}}/users/login
+Content-Type: application/json
+
+{
+    "email": "john.doae@example.com", 
+    "password": "Ww123123123@!"
+}
+
+### Athurization
+GET {{local}}/api/users/65424ae9a8d1eae12d31e360
+x-auth-token: {{token}}
+Content-Type: application/json
+
+
+
+### Create Card
+POST {{local}}/cards
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+    "title": "מומו",
+    "subtitle": "lemon lemon", 
+    "description": "lemon lemon", 
+    "phone": " 0507777777", 
+  "email": "momo@example.com", 
+   "image": {
+    "url": "http://example.com/image.jpg",
+    "alt": "An image description"
+  },   
+  "address": {
+    "state": "Some State",
+    "city": "Some City",
+    "street": "Some Street",
+    "country": "Some Country",
+    "houseNumber": 123,
+    "zip": "123456"
+  }
+}
+###
+
+DELETE  {{local}}/cards/6551091ac799523938fe1f4a
+x-auth-token: {{token}}
+Content-Type: application/json
+{
+"bizNumber": 1785676
+}
+
+
+
+###
+
+GET {{local}}/cards
+x-auth-token: {{token}}
+Content-Type: application/json
+
+
+
+
+

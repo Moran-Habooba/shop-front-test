@@ -1,0 +1,51 @@
+.heart-icon {
+  color: red;
+  border: none;
+}
+
+.heart-icon-filled {
+  color: red;
+  background-color: red;
+  border: none;
+}
+
+.card-link {
+  background: none;
+  border: none;
+}
+
+.card {
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  width: 18rem;
+  height: auto;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 7px 7px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+  color: #e5b55c !important;
+}
+.card-subtitle {
+  color: #0a4275 !important;
+}
+
+.card-body {
+  overflow: auto;
+}
+
+.card-img-top {
+  max-width: 100%;
+  height: auto;
+}
+
+.card-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

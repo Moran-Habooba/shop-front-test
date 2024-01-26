@@ -1,0 +1,13 @@
+#myCarousel,
+.carousel-item {
+  height: 500px !important;
+  margin-top: 47px;
+}
+
+.carousel-item {
+  height: 100%;
+}
+
+.carousel {
+  width: 100%;
+}
