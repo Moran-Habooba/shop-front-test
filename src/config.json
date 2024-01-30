@@ -16,6 +16,17 @@
   "apiUrlCardsBizNumber": "http://localhost:3000/api/cards/biz-number/",
   "apiUrlPatchCardsBizNumber": "http://localhost:3000/api/cards/editBiz/",
   "apiUrlDeleteCategory": "http://localhost:3000/api/categories/",
+  "apiUrlDeleteCard": "http://localhost:3000/api/cards/",
 
-  "apiUrlDeleteCard": "http://localhost:3000/api/cards/"
+  "apiUrlAddCategory": "http://localhost:3000/api/categories",
+  "apiUrlGetAllCategories": "http://localhost:3000/api/categories",
+  "apiUrlRemoveCategory": "http://localhost:3000/api/categories/",
+  "apiUrlGetProductsCountInCategory": "http://localhost:3000/api/categories/{categoryName}/productsCount",
+  "apiUrlGetProductsByCategory": "http://localhost:3000/api/categories/{categoryName}products",
+
+  "apiUrlAddToCart": "http://localhost:3000/api/cart",
+  "apiUrlUpdateCart": "http://localhost:3000/api/cart/update",
+  "apiUrlCancelCart": "http://localhost:3000/api/cart/cancel",
+  "apiUrlCompleteCart": "http://localhost:3000/api/cart/complete",
+  "apiUrlGetAllCartItems": "http://localhost:3000/api/cart"
 }

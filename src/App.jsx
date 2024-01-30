@@ -1,26 +1,34 @@
 import "./App.css";
-import Footer from "./components/footer";
-import Navbar from "./components/navBar";
-import HomePage from "./components/homePage";
-import About from "./components/about";
-import { Route, Routes } from "react-router-dom";
-import SignUp from "./components/signUp";
-import SignIn from "./components/signIn";
-import NotFound from "./common/NotFound";
-import SignOut from "./components/signout";
-import { useAuth } from "./context/auth.context";
-import BusinessNavBar from "./components/businessNavBar";
 import { useCallback } from "react";
-import AdminNavBar from "./components/adminNavBar";
-import MyCards from "./components/myCards";
+import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./common/ProtectedRoute";
-import SandBox from "./components/SandBox";
-import MyFavorites from "./components/myFavorites";
-import CardsCreate from "./components/CardsCreate";
-import CardsDelete from "./components/cardDelete";
-import CardsEdit from "./components/cardsEdit";
-import UserEdit from "./components/userEdit";
-import ContactUs from "./components/contactUs";
+import NotFound from "./common/NotFound";
+import { useAuth } from "./context/auth.context";
+import {
+  Footer,
+  Navbar,
+  HomePage,
+  About,
+  SignUp,
+  SignIn,
+  SignOut,
+  BusinessNavBar,
+  AdminNavBar,
+  MyCards,
+  SandBox,
+  MyFavorites,
+  CardsCreate,
+  CardsDelete,
+  CardsEdit,
+  UserEdit,
+  ContactUs,
+  KippahsCategoryPage,
+  ShabbatCategoryPage,
+  MezuzahCategoryPage,
+  HagimCategoryPage,
+  SidurimCategoryPage,
+  ShoppingCart,
+} from "./components";
 
 function App() {
   const { user } = useAuth();
@@ -104,6 +112,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/categories/כיפות" element={<KippahsCategoryPage />} />
+          <Route path="/categories/שבת" element={<ShabbatCategoryPage />} />
+          <Route path="/categories/מזוזות" element={<MezuzahCategoryPage />} />
+          <Route path="/categories/חגים" element={<HagimCategoryPage />} />
+          <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
+          <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

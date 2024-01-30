@@ -4,7 +4,6 @@ import {
   deleteCard,
   getCardBizNumber,
   updateCardBizNumber,
-  deleteCategory,
 } from "../services/cardsService";
 
 const CardManagement = () => {
@@ -108,7 +107,7 @@ const CardManagement = () => {
             <th>מזהה ID</th>
             <th>כותרת</th>
             <th> קטגוריה</th>
-            <th> כמות במלאי</th>
+            <th> כמות במלאי החנות</th>
             <th>מספר עסק</th>
             <th>עריכת מספר עסק / מחיקת מוצר</th>
           </tr>

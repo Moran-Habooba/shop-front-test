@@ -7,7 +7,6 @@ import { getUserById } from "../services/usersService";
 import { useDarkMode } from "../context/darkMode.context";
 import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
-
 const Navbar = () => {
   const { user } = useAuth();
   const searchInput = useSearchBarRef();
@@ -43,17 +42,20 @@ const Navbar = () => {
     }
   }, [user]);
   return (
-    <nav className="navbar navbar-expand-sm  navbar-light  ">
-      <div className="container-fluid mt-5" style={{ height: "100px" }}>
+    <nav
+      className="navbar navbar-expand-sm  navbar-light"
+      style={{ height: "160px" }}
+    >
+      <div className="container-fluid mt-5">
         <div className="logo mb-5 ">
-          <a className="navbar-brand" href="/home">
+          <Link to={"/home"} className="navbar-brand">
             <div className="logo ">
               <img src="/logo.png" alt="Logo" height="300" />
             </div>
-          </a>
+          </Link>
         </div>
 
-        {/* <button
+        <button
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -63,7 +65,7 @@ const Navbar = () => {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
-        </button> */}
+        </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -103,7 +105,7 @@ const Navbar = () => {
               {user ? (
                 <NavLink to="/sign-out" className="nav-link dropdown-item">
                   <i className="bi bi-box-arrow-left me-2"></i>
-                  Log Out
+                  התנתק
                 </NavLink>
               ) : (
                 <>
@@ -163,6 +165,11 @@ const Navbar = () => {
               <li></li>
             )}
           </ul>
+          <i
+            className="bi bi-cart  fs-3 me-5"
+            style={{ cursor: "pointer", color: "#e5b55c" }}
+          ></i>
+
           <form
             className="d-flex"
             onSubmit={(e) => {
@@ -170,6 +177,10 @@ const Navbar = () => {
               handleInputChange();
             }}
           >
+            <div className="cart-icon">
+              <i className="bi bi-cart cart"></i>
+            </div>
+
             <button
               className="btn btn-outline-light me-4 btn-search"
               type="submit"
@@ -180,14 +191,13 @@ const Navbar = () => {
               ref={searchInput}
               className="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="חיפוש"
               onInput={(e) => {
                 if (!e.target.value) setSearchTerm("");
               }}
               aria-label="Search"
               name="search"
             />
-
             <span>
               <NavLink onClick={toggleDarkMode}>
                 <i

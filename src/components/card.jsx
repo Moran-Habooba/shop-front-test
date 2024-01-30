@@ -3,6 +3,8 @@ import "../components/styls/card.css";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
+import { useState } from "react";
+import { addToCart } from "../services/cartService";
 
 const Card = ({
   card: {
@@ -15,6 +17,7 @@ const Card = ({
     quantity,
     image_file,
     price,
+    likes,
   },
   onLiked,
   liked,
@@ -22,6 +25,8 @@ const Card = ({
 }) => {
   const location = useLocation();
   const { user } = useAuth();
+  const [count, setCount] = useState(0);
+  const likeCount = likes.length;
   const handleClick = () => {
     if (location.pathname === "/") {
       const popupMessage = `
@@ -35,7 +40,7 @@ const Card = ({
 
       Swal.fire({
         title: `
-        <div style="border: 2px solid #0a4275; padding: 10px; background-color: #0a4275; color: white;">
+        <div style=" padding: 10px;  color: white;">
           <img src="${
             image_file?.path
               ? `http://localhost:3000/${image_file.path}`
@@ -45,49 +50,81 @@ const Card = ({
         `,
         html: popupMessage,
         showCancelButton: false,
-        confirmButtonText: "Close",
-        confirmButtonColor: "#0a4275",
+        confirmButtonText: "סגור",
+        confirmButtonColor: "#e5b55c",
       });
+    }
+  };
+  const increaseCount = () => {
+    if (count < quantity) {
+      setCount((prevCount) => prevCount + 1);
+    }
+  };
+
+  const decreaseCount = () => {
+    if (count > 0) {
+      setCount((prevCount) => prevCount - 1);
     }
   };
 
   const toggleLike = () => {
     onLiked();
   };
+  const handleAddToCart = () => {
+    const card_id = _id;
+    const quantity = count;
+
+    addToCart(card_id, quantity)
+      .then((response) => {
+        console.log("Product added to cart:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to cart:", error);
+      });
+  };
 
   return (
-    <div className="card me-4 mb-4 p-2" style={{ width: "18rem" }}>
+    <div className="card me-4 mb-4 p-2" style={{ width: "16rem" }}>
       <img
-        {...(location.pathname === "/"
-          ? {
-              onClick: handleClick,
-              style: { cursor: "pointer", width: "300px", height: "200px" },
-            }
-          : {})}
         src={
           image_file?.path
             ? `http://localhost:3000/${image_file.path}`
             : "DefaultImg.svg.png"
         }
         className="card-img-top"
+        style={{ height: "15rem" }}
         alt={image_file?.originalname || "Card image"}
       />
 
+      <div
+        className="search-icon d-flex align-items-center"
+        onClick={handleClick}
+        style={{ cursor: "pointer" }}
+      >
+        <i className="bi bi-search"></i>
+        <p className="ms-2 mb-0 me-2">צפיה מהירה</p>
+      </div>
       <div className="card-body">
         <h4 className="card-title">{title}</h4>
         <h5 className="card-subtitle">{subtitle}</h5>
         <p className="card-text">{description}</p>
       </div>
       <ul className="list-group list-group-flush">
-        <li className="list-group-item">
-          <strong>מחיר:</strong> {price}
+        <li className="list-group-item ms-5" style={{ marginRight: "-45px" }}>
+          <strong>מחיר:</strong> ₪{price}
         </li>
-        <li className="list-group-item">
-          <strong>כמות במלאי:</strong> {quantity}
+        <li className="list-group-item" style={{ marginRight: "-45px" }}>
+          <strong>כמות במלאי:</strong>
+          {quantity > 0 ? (
+            quantity
+          ) : (
+            <span style={{ color: "red" }}> המלאי אזל </span>
+          )}
           <br />
         </li>
-        {user && user.isAdmin && (
-          <li className="list-group-item">
+
+        {user && (
+          <li className="list-group-item" style={{ marginRight: "-45px" }}>
             <strong>קטגוריה:</strong> {category}
           </li>
         )}
@@ -108,18 +145,50 @@ const Card = ({
               </>
             )}
         </div>
-
-        <div>
-          {user && (
-            <button onClick={() => toggleLike()} className="card-link ms-auto">
-              <i
-                className={`bi ${
-                  liked ? "bi-heart-fill heart-icon" : "bi-heart heart-icon"
-                }`}
-              ></i>
+        {user && !user.isAdmin && (
+          <>
+            <div className="quantity-selector mr-auto ms-3">
+              <button onClick={decreaseCount} className="ms-2 quantity">
+                -
+              </button>
+              <span>{count}</span>
+              <button onClick={increaseCount} className="me-2 quantity">
+                +
+              </button>
+            </div>
+            <button
+              className="add-to-cart-btn quantity ms-4"
+              disabled={quantity <= 0}
+              onClick={handleAddToCart}
+            >
+              הוסף לסל
             </button>
-          )}
-        </div>
+          </>
+        )}
+      </div>
+
+      <div>
+        {user && (
+          <button
+            onClick={() => toggleLike()}
+            className="d-flex align-items-center card-link ms-auto"
+          >
+            <i
+              className={`bi ${
+                liked ? "bi-heart-fill heart-icon" : "bi-heart heart-icon"
+              }`}
+            ></i>
+            {user.isAdmin ? (
+              <span className="fs-6 me-2">{likeCount}</span>
+            ) : (
+              <span className="fs-6 me-2">
+                {location.pathname.includes("/my-favorites")
+                  ? "הסר ממועדפים"
+                  : "הוסף למועדפים"}
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -18,6 +18,18 @@ axios.defaults.baseUrlLikeCard = config.apiUrlLikeCard;
 axios.defaults.baseUrlCardsBizNumber = config.apiUrlCardsBizNumber;
 axios.defaults.baseUrlDeleteCard = config.apiUrlDeleteCard;
 
+axios.defaults.baseUrlAddCategory = config.apiUrlAddCategory;
+axios.defaults.baseUrlGetAllCategories = config.apiUrlGetAllCategories;
+axios.defaults.baseUrlRemoveCategory = config.apiUrlRemoveCategory;
+axios.defaults.baseUrlGetProductsCountInCategory =
+  config.apiUrlGetProductsCountInCategory;
+
+axios.defaults.baseUrlAddToCart = config.apiUrlAddToCart;
+axios.defaults.baseUrlUpdateCart = config.apiUrlUpdateCart;
+axios.defaults.baseUrlCancelCart = config.apiUrlCancelCart;
+axios.defaults.baseUrlCompleteCart = config.apiUrlCompleteCart;
+axios.defaults.baseUrlAllCartItems = config.apiUrlGetAllCartItems;
+
 export function setCommonHeader(headerName, headerValue) {
   axios.defaults.headers.common[headerName] = headerValue;
 }

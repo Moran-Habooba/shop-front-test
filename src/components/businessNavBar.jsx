@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useDarkMode } from "../context/darkMode.context";
 import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
-
+import { getAllCategories } from "../services/categoryService";
 import { getUserById } from "../services/usersService";
 import "./styls/search.css";
 
@@ -15,6 +15,8 @@ const BusinessNavBar = () => {
   const { darkMode, setDarkMode } = useDarkMode();
   const { setSearchTerm } = useSearch();
   const searchInput = useSearchBarRef();
+
+  const [categories, setCategories] = useState([]);
 
   const [userName, setUserName] = useState("");
 
@@ -36,17 +38,30 @@ const BusinessNavBar = () => {
   useEffect(() => {
     if (user && user._id) {
       getUserById(user._id).then((userData) => {
-        setUserName(`${userData.data.name.first}`);
+        setUserName(`${userData.data.first_name}`);
       });
     }
   }, [user]);
 
+  useEffect(() => {
+    getAllCategories().then(({ data }) => {
+      setCategories(data);
+    });
+  }, []);
+
   return (
-    <nav className="navbar navbar-expand-md  navbar-light  ">
-      <div className="container-fluid">
-        <span className="text-white fs-3 me-4">
-          Click<i className="bi bi-hand-index-fill fs-4 ms-1 me-1"></i>event
-        </span>
+    <nav
+      className="navbar navbar-expand-md  navbar-light"
+      style={{ height: "160px" }}
+    >
+      <div className="container-fluid mt-5">
+        <div className="logo mb-5 ">
+          <Link to={"/home"} className="navbar-brand">
+            <div className="logo ">
+              <img src="/logo.png" alt="Logo" height="300" />
+            </div>
+          </Link>
+        </div>
         <button
           className="navbar-toggler"
           type="button"
@@ -60,25 +75,57 @@ const BusinessNavBar = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink to="/" className="nav-link" aria-current="page">
-                Home
+                דף הבית
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/about" className="nav-link">
-                About
+                אודות
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/contact-Us" className="nav-link">
-                Contact us
+                צור קשר
               </NavLink>
+            </li>
+            <li className="nav-item dropdown">
+              <NavLink
+                to="/categories"
+                className="nav-link dropdown-toggle"
+                id="navbarDropdownCategories"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                קטגוריות
+              </NavLink>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownCategories"
+              >
+                {categories.map((category) => (
+                  <li key={category._id}>
+                    <NavLink
+                      to={`/categories/${category.name}`}
+                      className="dropdown-item"
+                    >
+                      {category.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
             </li>
             <li className="nav-item">
               <NavLink to="/my-favorites" className="nav-link">
-                My favorites
+                המועדפים שלי
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/ShoppingCart" className="nav-link">
+                עגלת קניות{" "}
               </NavLink>
             </li>
 
@@ -86,7 +133,7 @@ const BusinessNavBar = () => {
               {user ? (
                 <NavLink to="/sign-out" className="nav-link dropdown-item">
                   <i className="bi bi-box-arrow-left me-2"></i>
-                  Log Out
+                  התנתק
                 </NavLink>
               ) : (
                 <>
@@ -102,7 +149,7 @@ const BusinessNavBar = () => {
                     <span>
                       <i className="bi bi-box-arrow-in-right me-2"></i>
                     </span>
-                    Login / Sign Up
+                    הרשמה/התחברות
                   </span>
                   <ul
                     className="dropdown-menu"
@@ -111,12 +158,12 @@ const BusinessNavBar = () => {
                     <>
                       <li>
                         <NavLink to="/sign-up" className="dropdown-item">
-                          Sign Up
+                          הירשם
                         </NavLink>
                       </li>
                       <li>
                         <NavLink to="/sign-in" className="dropdown-item">
-                          Login
+                          התחבר
                         </NavLink>
                       </li>
                       <li></li>
@@ -140,7 +187,7 @@ const BusinessNavBar = () => {
                   className="navbar-text ms-3 fw-bold  "
                   style={{ color: "#e5b55c" }}
                 >
-                  Hello, {userName}
+                  שלום, {userName}
                 </span>
               </li>
             ) : (
@@ -148,7 +195,11 @@ const BusinessNavBar = () => {
             )}
           </ul>
           {/* עגלת קניות------------ */}
-          <i class="bi bi-cart text-danger fs-3 me-5"></i>
+          <i
+            className="bi bi-cart  fs-3 me-5"
+            onClick={() => (window.location.href = "/ShoppingCart")}
+            style={{ cursor: "pointer", color: "#e5b55c" }}
+          ></i>
 
           <form
             className="d-flex"
@@ -157,23 +208,23 @@ const BusinessNavBar = () => {
               handleInputChange();
             }}
           >
+            <button
+              className="btn btn-outline-light me-4 btn-search"
+              type="submit"
+            >
+              חיפוש
+            </button>
             <input
               ref={searchInput}
               className="form-control me-2 search"
               type="search"
-              placeholder="Search"
+              placeholder="חיפוש"
               aria-label="Search"
               name="search"
               onInput={(e) => {
                 if (!e.target.value) setSearchTerm("");
               }}
             />
-            <button
-              className="btn btn-outline-light me-4 btn-search"
-              type="submit"
-            >
-              Search
-            </button>
             <span>
               <NavLink onClick={toggleDarkMode}>
                 <i

@@ -93,6 +93,11 @@
   color: #e5b55c;
 }
 
+/* //////// */
+.navbar-light {
+  z-index: 9999;
+}
+
 @keyframes wave-animation {
   0%,
   100% {

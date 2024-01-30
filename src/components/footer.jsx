@@ -46,6 +46,27 @@ const Footer = () => {
           </li>
         )}
       </ul>
+      <div
+        style={{
+          fontSize: "20px",
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
+          height: "50px",
+        }}
+      >
+        אתר שומר שבת
+        <img
+          src="candles.png"
+          alt="candles"
+          style={{
+            marginLeft: "10px",
+            marginTop: "2px",
+            height: "25px",
+            marginRight: "7px",
+          }}
+        />
+      </div>
       <p className="text-center">
         © {new Date().getFullYear()} Moran Habooba, Inc
       </p>

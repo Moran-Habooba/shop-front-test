@@ -49,3 +49,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.quantity {
+  background-color: #e5b55c;
+  border-color: #e5b55c;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.quantity:hover {
+  background-color: #cc9a4e;
+  border-color: #cc9a4e;
+}
+.out-of-stock {
+  color: red;
+}

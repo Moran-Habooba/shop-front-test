@@ -87,7 +87,7 @@ const HomePage = () => {
 
     if (user) {
       Swal.fire({
-        title: "You are already Business! 😊",
+        title: "אתה כבר משתמש רשום 😊",
         icon: "info",
         timer: 1300,
         timerProgressBar: true,
@@ -149,7 +149,6 @@ const HomePage = () => {
             <div className="container">
               <div className="carousel-caption text-end">
                 <p>
-                  {" "}
                   <Link
                     to="/sign-up"
                     onClick={handleSignUpClick}
@@ -157,13 +156,6 @@ const HomePage = () => {
                   >
                     הירשם עכשיו
                   </Link>
-                  {/* <a
-                    className="btn btn-sm btn-primary"
-                    href="#"
-                    style={{ width: "200px" }}
-                  >
-                    הירשם עכשיו
-                  </a> */}
                 </p>
               </div>
             </div>
@@ -243,6 +235,12 @@ const HomePage = () => {
         </h1>
       </div>
       <div>
+        <button className="btn btn-primary ms-1 mb-2 btn-sm">
+          <i className="bi bi-list ms-1"></i>
+        </button>
+        <button className="btn btn-primary  mb-2 btn-sm">
+          <i className="bi bi-grid ms-1 "></i>
+        </button>
         <div className="row">
           <CardList />
         </div>

@@ -7,6 +7,7 @@ import {
 
 import "../components/styls/sandBox.css";
 import CardManagement from "./CardManagement";
+import CategoriesManagement from "./categoriesManagement";
 import PageHeader from "../common/pageHeader";
 
 const SandBox = () => {
@@ -128,7 +129,7 @@ const SandBox = () => {
           {users.map((user) => (
             <tr key={user._id}>
               <td>{user._id}</td>
-              <td>{formatName(user.name)}</td>
+              <td>{formatName(user.first_name, user.last_name)}</td>
               <td>{getStatus(user)}</td>
               <td>
                 <>
@@ -192,6 +193,7 @@ const SandBox = () => {
         </tbody>
       </table>
       <CardManagement />
+      <CategoriesManagement />
     </div>
   );
 };

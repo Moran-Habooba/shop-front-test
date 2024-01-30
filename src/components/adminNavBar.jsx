@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { useEffect, useState } from "react";
 import { useDarkMode } from "../context/darkMode.context";
@@ -42,11 +42,11 @@ const AdminNavBar = () => {
     <nav className="navbar navbar-expand-sm  navbar-light  ">
       <div className="container-fluid mt-5" style={{ height: "100px" }}>
         <div className="logo mb-5 ">
-          <a className="navbar-brand" href="/home">
+          <Link to={"/home"} className="navbar-brand">
             <div className="logo ">
               <img src="/logo.png" alt="Logo" height="300" />
             </div>
-          </a>
+          </Link>
         </div>
         {/* <button
           className="navbar-toggler"

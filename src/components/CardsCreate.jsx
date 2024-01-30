@@ -7,6 +7,7 @@ import Joi from "joi";
 import { validateFormikUsingJoi } from "../utils/validateFormikUsingJoi";
 import { useState, useEffect } from "react";
 import cardsService from "../services/cardsService";
+import { getAllCategories } from "../services/categoryService";
 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
@@ -14,18 +15,32 @@ const CardsCreate = () => {
   const [serverError, setServerError] = useState("");
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     if (!user || !user.isAdmin) {
       navigate("/");
     }
   }, [user, navigate]);
+  useEffect(() => {
+    // Fetch categories using getAllCategories function
+    const fetchCategories = async () => {
+      try {
+        const { data } = await getAllCategories(); // Use your getAllCategories function here
+        setCategories(data); // Assuming that the response contains an array of categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        // Handle the error appropriately
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
       title: "",
-      subtitle: "",
+      // subtitle: "",
       description: "",
       price: "",
       quantity: "",
@@ -34,7 +49,7 @@ const CardsCreate = () => {
     },
     validate: validateFormikUsingJoi({
       title: Joi.string().min(2).max(256).required(),
-      subtitle: Joi.string().min(2).max(256).required(),
+      // subtitle: Joi.string().min(2).max(256).optional(),
       description: Joi.string().min(2).max(1024).required(),
       category: Joi.string().required().trim().lowercase(),
       quantity: Joi.number().min(0).optional(),
@@ -60,7 +75,7 @@ const CardsCreate = () => {
       const formData = new FormData();
       formData.append("price", values.price);
       formData.append("title", values.title);
-      formData.append("subtitle", values.subtitle);
+      // formData.append("subtitle", values.subtitle);
       formData.append("description", values.description);
       formData.append("quantity", values.quantity);
       formData.append("category", values.category);
@@ -118,12 +133,12 @@ const CardsCreate = () => {
                     type="text"
                     required
                   />
-                  <Input
+                  {/* <Input
                     {...getProps("subtitle")}
                     label="כותרת משנית"
                     type="text"
                     required
-                  />
+                  /> */}
                   <Input
                     {...getProps("description")}
                     label="תאור המוצר"
@@ -160,12 +175,26 @@ const CardsCreate = () => {
                     />
                   </div>
 
-                  <Input
-                    {...getProps("category")}
-                    label="קטגוריה"
-                    type="text"
-                    required
-                  />
+                  <div className="mb-3">
+                    <label htmlFor="category" className="form-label">
+                      בחר קטגוריה
+                    </label>
+                    <select
+                      className="form-select"
+                      id="category"
+                      {...getProps("category")}
+                      required
+                    >
+                      <option value="" disabled>
+                        בחר קטגוריה
+                      </option>
+                      {categories.map((category) => (
+                        <option key={category._id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <button

@@ -11,22 +11,37 @@ import { useCardById } from "../hook/useCardById";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCancelNavigate } from "../hook/useCancelNavigate'";
 import { useAuth } from "../context/auth.context";
+import { getAllCategories } from "../services/categoryService";
 
 const CardsEdit = () => {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [categories, setCategories] = useState([]);
 
   const { id } = useParams();
   const card = useCardById(id);
 
   const handleCancel = useCancelNavigate("/my-cards");
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await getAllCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
       title: "",
-      subtitle: "",
+      // subtitle: "",
       description: "",
       price: "",
       quantity: 5,
@@ -42,7 +57,7 @@ const CardsEdit = () => {
       user_id: Joi.string().optional(),
 
       title: Joi.string().min(2).max(256).required(),
-      subtitle: Joi.string().min(2).max(256).required(),
+      // subtitle: Joi.string().min(2).max(256).optional(),
       description: Joi.string().min(2).max(1024).required(),
       category: Joi.string().required().trim().lowercase(),
       quantity: Joi.number().min(0).optional(),
@@ -70,7 +85,7 @@ const CardsEdit = () => {
 
       formData.append("price", values.price);
       formData.append("title", values.title);
-      formData.append("subtitle", values.subtitle);
+      // formData.append("subtitle", values.subtitle);
       formData.append("description", values.description);
       formData.append("quantity", values.quantity);
       formData.append("category", values.category);
@@ -164,12 +179,12 @@ const CardsEdit = () => {
     if (card) {
       form.setValues({
         title: card.title || "",
-        subtitle: card.subtitle || "",
+        // subtitle: card.subtitle || "",
         description: card.description || "",
         price: card.price || "",
         quantity: card.quantity || 0,
         category: card.category || "",
-        image_file: card.image_file || null,
+        image_file: null,
         // likes: card.likes || [""],
         bizNumber: card.bizNumber || "",
         user_id: card.user_id || "",
@@ -200,7 +215,7 @@ const CardsEdit = () => {
                 </div>
               </div>
 
-              <form onSubmit={form.handleSubmit}>
+              <form onSubmit={form.handleSubmit} encType="multipart/form-data">
                 {serverError && (
                   <div className="alert alert-danger">{serverError}</div>
                 )}
@@ -267,16 +282,28 @@ const CardsEdit = () => {
                       form.setFieldValue("price", e.target.value)
                     }
                   />
-                  <Input
-                    {...getProps("category")}
-                    label="קטגוריה"
-                    type="text"
-                    required
-                    onChange={(e) =>
-                      form.setFieldValue("category", e.target.value)
-                    }
-                  />
-                  <Input
+                  <div className="mb-3">
+                    <label htmlFor="category" className="form-label">
+                      קטגוריה
+                    </label>
+                    <select
+                      className="form-select"
+                      id="category"
+                      {...getProps("category")}
+                      required
+                    >
+                      <option value="" disabled>
+                        בחר קטגוריה
+                      </option>
+                      {categories.map((category) => (
+                        <option key={category._id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* <Input
                     {...getProps("subtitle")}
                     label="תת קטגוריה"
                     type="text"
@@ -284,7 +311,7 @@ const CardsEdit = () => {
                     onChange={(e) =>
                       form.setFieldValue("subtitle", e.target.value)
                     }
-                  />
+                  /> */}
                 </div>
 
                 <div className="mb-3">
@@ -295,6 +322,7 @@ const CardsEdit = () => {
                     type="file"
                     className="form-control"
                     id="image_file"
+                    name="image_file"
                     onChange={(event) =>
                       form.setFieldValue(
                         "image_file",

@@ -1,0 +1,34 @@
+.close-button {
+  border: 1px solid #f9bf29; /* Black border */
+  border-radius: 5px;
+  background-color: #f9bf29; /* Yellow background */
+  font-weight: bold;
+  padding: 5px 10px; /* Padding around the text */
+  display: inline-block; /* Allows setting width and height */
+  cursor: pointer; /* Changes cursor to indicate it's clickable */
+  user-select: none; /* Prevents text selection */
+}
+
+.close-button:hover {
+  background-color: #f9bf29; /* Darker yellow on hover */
+}
+
+.close-button:active {
+  background-color: #f9bf29; /* Even darker yellow when pressed */
+}
+
+.btn-apply {
+  color: #3b5d50 !important;
+  background-color: #f9bf29 !important;
+  border-color: #f9bf29 !important;
+}
+
+.btn-apply:hover {
+  background-color: #3b5d50 !important;
+  color: white !important;
+  border-color: #3b5d50 !important;
+}
+.modal-title {
+  color: #3b5d50;
+  font-weight: 700;
+}
