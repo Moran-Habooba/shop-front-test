@@ -19,6 +19,28 @@
   background-color: #3b5d50;
 }
 
+.custom-button {
+  background-color: #e5b55c !important;
+  color: white !important;
+  border-color: #e5b55c !important;
+}
+.custom-text-color {
+  color: #e5b55c;
+}
+.custom-text-colorr {
+  color: #3b5d50;
+}
+
+.plus-sign,
+.minus-sign {
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 @media (min-width: 992px) {
   .card-registration-2 .bg-grey {
     border-top-right-radius: 16px;
@@ -31,15 +53,4 @@
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
   }
-}
-.custom-button {
-  background-color: #e5b55c !important; /* צבע הרקע */
-  color: white; /* צבע הטקסט בתוך הלחצן */
-  border-color: #e5b55c !important;
-}
-.custom-text-color {
-  color: #e5b55c; /* צבע הטקסט */
-}
-.custom-text-colorr {
-  color: #3b5d50; /* צבע הטקסט */
 }

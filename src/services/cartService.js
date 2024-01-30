@@ -17,9 +17,9 @@ export function getCartItems() {
 
 export function updateCart(itemsToUpdate) {
   refreshTokenHeader();
-
+  console.log("Updating cart with items:", itemsToUpdate);
   const data = { itemsToUpdate };
-  return httpService.put(config.updateCart, data);
+  return httpService.put(config.apiUrlUpdateCart, data);
 }
 
 export function cancelCart() {
@@ -32,4 +32,10 @@ export function completeOrder() {
   refreshTokenHeader();
 
   return httpService.post(config.apiUrlCompleteCart);
+}
+
+export function removeFromCart(cardId) {
+  refreshTokenHeader();
+
+  return httpService.delete(config.apiUrlRemoveFromCart + `/${cardId}`);
 }

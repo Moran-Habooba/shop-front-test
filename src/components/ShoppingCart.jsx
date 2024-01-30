@@ -1,5 +1,4 @@
 import {
-  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCardImage,
@@ -13,25 +12,31 @@ import {
 } from "mdb-react-ui-kit";
 import "./styls/ShoppingCart.css";
 import { Link } from "react-router-dom";
-import { getCartItems } from "../services/cartService";
-import React, { useState, useEffect } from "react";
+import {
+  getCartItems,
+  removeFromCart,
+  updateCart,
+} from "../services/cartService";
+import React, { useState, useEffect, useMemo } from "react";
+import { useAuth } from "../context/auth.context";
 
 const ShoppingCart = () => {
   const [cartTotal, setCartTotal] = useState(0);
-  const [shippingCost, setShippingCost] = useState(0);
+  const [shippingCost, setShippingCost] = useState(15);
   const [cartItems, setCartItems] = useState([]);
-  const selectedShipping = shippingCost;
+  const [couponCode, setCouponCode] = useState("");
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const { user } = useAuth();
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
+
     setShippingCost(selectedShipping);
 
-    // Calculate the subtotal
-    // const subtotal = cartItems.reduce(
-    //   (total, item) => total + item.price * item.quantity,
-    //   0
-    // );
-    const subtotal = 100;
+    const subtotal = cartItems.reduce(
+      (total, item) => total + item.card_id.price * item.quantity,
+      0
+    );
     const total = subtotal + selectedShipping;
     setCartTotal(total);
   };
@@ -45,21 +50,89 @@ const ShoppingCart = () => {
     const total = subtotal + shippingCost;
     setCartTotal(total);
   };
-  // useEffect(() => {
-  //   // קרא את רשימת המוצרים מהשרת בעזרת הפונקציה getCartItems כאשר הרכוב מוטען
-  //   const fetchCartItems = async () => {
-  //     try {
-  //       const response = await getCartItems();
-  //       // הגדר את רשימת המוצרים בסטייט
-  //       setCartItems(response.data.cart.items); // Update this line
-  //       console.log(response.data.cart.items);
-  //     } catch (error) {
-  //       console.error("שגיאה בקריאת רשימת המוצרים מהשרת:", error);
-  //     }
-  //   };
+  const handleCouponSubmit = () => {
+    if (user && couponCode.toLowerCase() === "israel") {
+      setIsCouponApplied(true);
+      calculateTotalWithDiscount();
+    } else {
+      setIsCouponApplied(false);
+    }
+  };
 
-  //   fetchCartItems();
-  // }, []);
+  const calculateTotalWithDiscount = () => {
+    const subtotal = cartItems.reduce(
+      (total, item) => total + item.card_id.price * item.quantity,
+      0
+    );
+    let total = subtotal + shippingCost;
+    if (isCouponApplied) {
+      total *= 0.9;
+    }
+    if (total < 0) {
+      total = 0;
+    }
+
+    setCartTotal(total);
+  };
+
+  const handleRemoveItem = async (itemToRemove) => {
+    try {
+      const productIdToRemove = itemToRemove.card_id._id;
+      console.log(productIdToRemove);
+
+      const response = await removeFromCart(productIdToRemove);
+
+      if (response.status === 200) {
+        const updatedCartItems = cartItems.filter(
+          (item) => item.card_id._id !== productIdToRemove
+        );
+
+        setCartItems(updatedCartItems);
+      } else {
+        console.error("Item not found in the cart");
+      }
+    } catch (error) {
+      console.error("Error removing the item from the cart:", error);
+    }
+  };
+
+  function changeQuantity(item, change) {
+    console.log(
+      `Changing quantity for item ${item.card_id._id}, change: ${change}`
+    );
+    let newQuantity = item.quantity + change;
+
+    if (newQuantity <= 0) {
+      setCartItems(
+        cartItems.filter(
+          (cartItem) => cartItem.card_id._id !== item.card_id._id
+        )
+      );
+      removeFromCart(item.card_id._id)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error removing the item:", error);
+        });
+    } else {
+      newQuantity = Math.max(newQuantity, 0);
+      const updatedItem = { ...item, quantity: newQuantity };
+      const updatedItems = cartItems.map((cartItem) =>
+        cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+      );
+
+      setCartItems(updatedItems);
+
+      updateCart([{ id: item.card_id._id, quantity: newQuantity }])
+        .then((response) => {
+          console.log("Cart updated:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error updating the cart:", error);
+        });
+    }
+  }
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -85,6 +158,21 @@ const ShoppingCart = () => {
     fetchCartItems();
   }, []);
 
+  const totalCartPrice = useMemo(() => {
+    return cartItems
+      .reduce((total, item) => total + item.card_id.price * item.quantity, 0)
+      .toFixed(2);
+  }, [cartItems]);
+
+  const totalPriceWithShipping = useMemo(() => {
+    let price = +totalCartPrice + shippingCost;
+    if (isCouponApplied) {
+      price /= 1.1;
+    }
+
+    return price.toFixed(2);
+  }, [totalCartPrice, shippingCost, isCouponApplied]);
+
   return (
     <section className="h-100 h-custom " style={{ backgroundColor: "#eee" }}>
       <MDBContainer fluid className="py-5 h-100">
@@ -106,7 +194,7 @@ const ShoppingCart = () => {
                           עגלת קניות
                         </MDBTypography>
                         <MDBTypography className="mb-0 text-muted">
-                          3 מוצרים
+                          {cartItems.length} מוצרים
                         </MDBTypography>
                       </div>
 
@@ -139,25 +227,42 @@ const ShoppingCart = () => {
                               xl="3"
                               className="d-flex align-items-center"
                             >
-                              <MDBBtn color="link" className="px-2">
-                                <MDBIcon fas icon="minus" />
-                              </MDBBtn>
+                              {/* <MDBBtn color="link" className="px-2"> */}
+                              {/* <MDBIcon fas icon="minus" /> */}
+                              <span
+                                className="fs-2 minus-sign ms-1"
+                                onClick={() => changeQuantity(item, -1)}
+                              >
+                                -
+                              </span>
+                              {/* </MDBBtn> */}
 
                               <MDBInput
                                 type="number"
                                 min="0"
-                                defaultValue={item.quantity}
+                                value={item.quantity}
                                 size="sm"
                               />
 
-                              <MDBBtn color="link" className="px-2">
-                                <MDBIcon fas icon="plus" />
-                              </MDBBtn>
+                              <span
+                                className="fs-2 plus-sign ms-1"
+                                onClick={() => changeQuantity(item, 1)}
+                              >
+                                +
+                              </span>
                             </MDBCol>
                             <MDBCol md="3" lg="2" xl="2" className="text-end">
                               <MDBTypography tag="h6" className="mb-0">
                                 {item.card_id.price} ₪
                               </MDBTypography>
+                            </MDBCol>
+                            <MDBCol md="2" lg="2" xl="2" className="text-end">
+                              <span
+                                onClick={() => handleRemoveItem(item)}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <i className="bi bi-trash3"></i>
+                              </span>
                             </MDBCol>
                             <MDBCol md="1" lg="1" xl="1" className="text-end">
                               <Link to={"/"} className="text-muted">
@@ -170,117 +275,11 @@ const ShoppingCart = () => {
                         </div>
                       ))}
 
-                      {/* <hr className="my-4" />
-
-                      <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
-                        <MDBCol md="2" lg="2" xl="2">
-                          <MDBCardImage
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img6.webp"
-                            fluid
-                            className="rounded-3"
-                            alt="Cotton T-shirt"
-                          />
-                        </MDBCol>
-                        <MDBCol md="3" lg="3" xl="3">
-                          <MDBTypography tag="h6" className="text-muted">
-                            כיפה
-                          </MDBTypography>
-                          <MDBTypography tag="h6" className="text-black mb-0">
-                            כיפה עור -ילדים{" "}
-                          </MDBTypography>
-                        </MDBCol>
-                        <MDBCol
-                          md="3"
-                          lg="3"
-                          xl="3"
-                          className="d-flex align-items-center"
-                        >
-                          <MDBBtn color="link" className="px-2">
-                            <MDBIcon fas icon="minus" />
-                          </MDBBtn>
-
-                          <MDBInput
-                            type="number"
-                            min="0"
-                            defaultValue={1}
-                            size="sm"
-                          />
-
-                          <MDBBtn color="link" className="px-2">
-                            <MDBIcon fas icon="plus" />
-                          </MDBBtn>
-                        </MDBCol>
-                        <MDBCol md="3" lg="2" xl="2" className="text-end">
-                          <MDBTypography tag="h6" className="mb-0">
-                            44.00 ₪
-                          </MDBTypography>
-                        </MDBCol>
-                        <MDBCol md="1" lg="1" xl="1" className="text-end">
-                          <a href="#!" className="text-muted">
-                            <MDBIcon fas icon="times" />
-                          </a>
-                        </MDBCol>
-                      </MDBRow>
-
-                      <hr className="my-4" />
-
-                      <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
-                        <MDBCol md="2" lg="2" xl="2">
-                          <MDBCardImage
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp"
-                            fluid
-                            className="rounded-3"
-                            alt="Cotton T-shirt"
-                          />
-                        </MDBCol>
-                        <MDBCol md="3" lg="3" xl="3">
-                          <MDBTypography tag="h6" className="text-muted">
-                            נטלה
-                          </MDBTypography>
-                          <MDBTypography tag="h6" className="text-black mb-0">
-                            נטלה עבודת יד{" "}
-                          </MDBTypography>
-                        </MDBCol>
-                        <MDBCol
-                          md="3"
-                          lg="3"
-                          xl="3"
-                          className="d-flex align-items-center"
-                        >
-                          <MDBBtn color="link" className="px-2">
-                            <MDBIcon fas icon="minus" />
-                          </MDBBtn>
-
-                          <MDBInput
-                            type="number"
-                            min="0"
-                            defaultValue={1}
-                            size="sm"
-                          />
-
-                          <MDBBtn color="link" className="px-2">
-                            <MDBIcon fas icon="plus" />
-                          </MDBBtn>
-                        </MDBCol>
-                        <MDBCol md="3" lg="2" xl="2" className="text-end">
-                          <MDBTypography tag="h6" className="mb-0">
-                            44.00 ₪
-                          </MDBTypography>
-                        </MDBCol>
-                        <MDBCol md="1" lg="1" xl="1" className="text-end">
-                          <a href="#!" className="text-muted">
-                            <MDBIcon fas icon="times" />
-                          </a>
-                        </MDBCol>
-                      </MDBRow> */}
-
-                      <hr className="my-4" />
-
                       <div className="pt-5">
                         <MDBTypography tag="h6" className="mb-0">
                           <MDBCardText className="text-body">
                             <Link to="/" className="text-body">
-                              <MDBIcon fas icon="long-arrow-alt-left me-2" />{" "}
+                              <MDBIcon fas icon="long-arrow-alt-left me-2" />
                               חזרה לחנות
                             </Link>
                           </MDBCardText>
@@ -301,9 +300,11 @@ const ShoppingCart = () => {
 
                       <div className="d-flex justify-content-between mb-4 custom-text-color">
                         <MDBTypography tag="h5" className="text-uppercase ">
-                          3 מוצרים
+                          {cartItems.length} מוצרים
                         </MDBTypography>
-                        <MDBTypography tag="h5">100 ₪</MDBTypography>
+                        <MDBTypography tag="h5">
+                          {totalCartPrice}₪
+                        </MDBTypography>
                       </div>
 
                       <MDBTypography
@@ -333,7 +334,20 @@ const ShoppingCart = () => {
                       </MDBTypography>
 
                       <div className="mb-5  ">
-                        <MDBInput className="" size="lg" label="הכנס את הקוד" />
+                        <MDBInput
+                          className=""
+                          size="lg"
+                          label="הכנס את הקוד"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value)}
+                        />
+                        <button
+                          className="custom-button btn "
+                          size="lg"
+                          onClick={handleCouponSubmit}
+                        >
+                          החל קופון
+                        </button>
                       </div>
 
                       <hr className="my-4" />
@@ -347,13 +361,13 @@ const ShoppingCart = () => {
                           סה"כ לתשלום
                         </MDBTypography>
                         <MDBTypography className="custom-text-color" tag="h5">
-                          {cartTotal.toFixed(2)} ₪
+                          {totalPriceWithShipping} ₪
                         </MDBTypography>
                       </div>
 
-                      <MDBBtn className="custom-button" block size="lg">
+                      <button className=" btn custom-button fs-4" size="lg">
                         שלח הזמנה
-                      </MDBBtn>
+                      </button>
                     </div>
                   </MDBCol>
                 </MDBRow>

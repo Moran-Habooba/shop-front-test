@@ -9,7 +9,6 @@ import { useSearchBarRef } from "../context/useSearchBarRef";
 import { getAllCategories } from "../services/categoryService";
 import { getUserById } from "../services/usersService";
 import "./styls/search.css";
-
 const BusinessNavBar = () => {
   const { user } = useAuth();
   const { darkMode, setDarkMode } = useDarkMode();
@@ -56,7 +55,7 @@ const BusinessNavBar = () => {
     >
       <div className="container-fluid mt-5">
         <div className="logo mb-5 ">
-          <Link to={"/home"} className="navbar-brand">
+          <Link to={"/"} className="navbar-brand">
             <div className="logo ">
               <img src="/logo.png" alt="Logo" height="300" />
             </div>
@@ -125,7 +124,7 @@ const BusinessNavBar = () => {
             </li>
             <li className="nav-item">
               <NavLink to="/ShoppingCart" className="nav-link">
-                עגלת קניות{" "}
+                עגלת קניות
               </NavLink>
             </li>
 

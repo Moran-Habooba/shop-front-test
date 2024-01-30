@@ -48,7 +48,7 @@ const Navbar = () => {
     >
       <div className="container-fluid mt-5">
         <div className="logo mb-5 ">
-          <Link to={"/home"} className="navbar-brand">
+          <Link to={"/"} className="navbar-brand">
             <div className="logo ">
               <img src="/logo.png" alt="Logo" height="300" />
             </div>
