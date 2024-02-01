@@ -16,6 +16,7 @@ export { default as CardsEdit } from "./cardsEdit";
 export { default as UserEdit } from "./userEdit";
 export { default as ContactUs } from "./contactUs";
 export { default as ShoppingCart } from "./ShoppingCart";
+export { default as MyOrders } from "./myOrders";
 
 export { default as KippahsCategoryPage } from "./CategorayPages/KippahsCategoryPage ";
 export { default as ShabbatCategoryPage } from "./CategorayPages/shabbatCategorayPage";

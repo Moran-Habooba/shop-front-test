@@ -28,11 +28,11 @@ import {
   HagimCategoryPage,
   SidurimCategoryPage,
   ShoppingCart,
+  MyOrders,
 } from "./components";
 
 function App() {
   const { user } = useAuth();
-
   const ConditionedNavBar = useCallback(() => {
     if (user) {
       if (user.isAdmin) return <AdminNavBar />;
@@ -55,6 +55,7 @@ function App() {
           <Route path="/sign-up" element={<SignUp redirect="/sign-in" />} />
           <Route path="/sign-in" element={<SignIn redirect="/" />} />
           <Route path="/sign-out" element={<SignOut redirect="/" />} />
+
           <Route
             path="/user-edit"
             element={
@@ -118,6 +119,7 @@ function App() {
           <Route path="/categories/חגים" element={<HagimCategoryPage />} />
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
           <Route path="/ShoppingCart" element={<ShoppingCart />} />
+          <Route path="/my-orders" element={<MyOrders />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -27,6 +27,7 @@ const Card = ({
   const { user } = useAuth();
   const [count, setCount] = useState(0);
   const likeCount = likes.length;
+
   const handleClick = () => {
     if (location.pathname === "/") {
       const popupMessage = `
@@ -74,13 +75,35 @@ const Card = ({
     const card_id = _id;
     const quantity = count;
 
-    addToCart(card_id, quantity)
-      .then((response) => {
-        console.log("Product added to cart:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error adding product to cart:", error);
+    if (quantity > 0) {
+      addToCart(card_id, quantity)
+        .then((response) => {
+          if (response.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "המוצר נוסף לסל בהצלחה!",
+              showConfirmButton: false,
+              timer: 1000,
+              customClass: {
+                popup: "small-popup",
+              },
+            });
+          }
+          console.log("Product added to cart:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error adding product to cart:", error);
+        });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "שגיאה",
+        text: "יש לבחור כמות מוצרים להוספה",
+        customClass: {
+          popup: "small-popup",
+        },
       });
+    }
   };
 
   return (
@@ -158,7 +181,6 @@ const Card = ({
             </div>
             <button
               className="add-to-cart-btn quantity ms-4"
-              disabled={quantity <= 0}
               onClick={handleAddToCart}
             >
               הוסף לסל

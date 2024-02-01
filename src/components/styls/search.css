@@ -1,3 +1,32 @@
 .search {
   width: 100px !important;
 }
+
+.cart-item-count {
+  background-color: #e5b55c;
+  color: #fff;
+  border-radius: 50%;
+  width: 25px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 15px;
+  position: relative;
+}
+
+@keyframes countDown {
+  from {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+.decreasing {
+  animation: countDown 1s ease-in-out forwards;
+}

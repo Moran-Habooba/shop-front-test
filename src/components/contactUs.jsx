@@ -10,6 +10,7 @@ import Input from "../common/input";
 import { useForm } from "@formspree/react";
 
 const ContactUs = ({ redirect }) => {
+  // eslint-disable-next-line no-unused-vars
   const [formspreeState, formspreeSubmit] = useForm("mnqkyvew");
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
@@ -56,16 +57,20 @@ const ContactUs = ({ redirect }) => {
       <PageHeader
         title={
           <>
-            Contact Us <i className="bi bi-telephone-fill"></i>
+            צרו קשר <i className="bi bi-telephone-fill"></i>
           </>
         }
-        description=" We'd love to hear from you! Whether you have a question about our services, 
-        need assistance or just want to talk, we are all ears. Fill out the form below, 
-        and our team will get back to you within 24 hours."
+        description={
+          <>
+            לכל שאלה, התייעצות או פנייה אנחנו כאן...
+            <br />
+            השאירו פרטים ונחזור אליכם בהקדם
+          </>
+        }
       />
-      <div className="container mb-5">
-        <div className="row justify-content-center">
-          <div className="col-lg-6">
+      <div className="container mb-5 container-shadow ">
+        <div className="row justify-content-center ">
+          <div className="col-lg-6 ">
             <form onSubmit={form.handleSubmit} className="mt-5 form-border">
               {serverError && (
                 <div className="alert alert-danger">{serverError}</div>
@@ -73,7 +78,7 @@ const ContactUs = ({ redirect }) => {
               <Input
                 {...form.getFieldProps("name")}
                 type="text"
-                label="Name"
+                label="שם פרטי"
                 required
                 error={form.touched.name && form.errors.name}
                 className="form-control"
@@ -81,14 +86,14 @@ const ContactUs = ({ redirect }) => {
               <Input
                 {...form.getFieldProps("email")}
                 type="email"
-                label="Email"
+                label="אימייל"
                 required
                 error={form.touched.email && form.errors.email}
                 className="form-control"
               />
               <div className="mb-3">
                 <label htmlFor="message" className="form-label">
-                  Message:
+                  פרטי ההודעה:
                 </label>
                 <textarea
                   className={`form-control ${
@@ -111,8 +116,12 @@ const ContactUs = ({ redirect }) => {
                   className="btn btn-primary"
                   type="submit"
                 >
-                  Send
+                  שלח
                 </button>
+                <p className="mb-2 mt-2 fs-3 fw-bold">תורתך שעשועי</p>
+                <p className="mb-2 mb-1 fw-bold"> יודאיקה וקדושה</p>
+                <i className="bi bi-facebook fa-2x me-2 fs-4"></i>
+                <i className="bi bi-instagram fa-2x me-2 fs-4"></i>
               </div>
             </form>
           </div>

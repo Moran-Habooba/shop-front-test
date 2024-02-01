@@ -29,5 +29,7 @@
   "apiUrlCancelCart": "http://localhost:3000/api/cart/cancel",
   "apiUrlCompleteCart": "http://localhost:3000/api/cart/complete",
   "apiUrlGetAllCartItems": "http://localhost:3000/api/cart",
-  "apiUrlRemoveFromCart": "http://localhost:3000/api/cart/remove"
+  "apiUrlRemoveFromCart": "http://localhost:3000/api/cart/remove",
+  "apiUrlCreateOrder": "http://localhost:3000/api/cart/create",
+  "apiUrlGetMyOrders": "http://localhost:3000/api/cart/my-orders"
 }

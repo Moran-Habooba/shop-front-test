@@ -194,11 +194,13 @@ const BusinessNavBar = () => {
             )}
           </ul>
           {/* עגלת קניות------------ */}
-          <i
-            className="bi bi-cart  fs-3 me-5"
-            onClick={() => (window.location.href = "/ShoppingCart")}
-            style={{ cursor: "pointer", color: "#e5b55c" }}
-          ></i>
+          <Link to="/ShoppingCart" style={{ textDecoration: "none" }}>
+            <i
+              className="bi bi-cart  fs-3 me-5"
+              style={{ cursor: "pointer", color: "#e5b55c" }}
+            ></i>
+          </Link>
+          <span className="cart-item-count me-2">1</span>
 
           <form
             className="d-flex"

@@ -39,3 +39,9 @@ export function removeFromCart(cardId) {
 
   return httpService.delete(config.apiUrlRemoveFromCart + `/${cardId}`);
 }
+
+export function getMyOrders() {
+  refreshTokenHeader();
+
+  return httpService.get(config.apiUrlGetMyOrders);
+}

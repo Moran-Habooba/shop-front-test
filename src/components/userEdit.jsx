@@ -16,6 +16,7 @@ const UserEdit = ({ redirect }) => {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const handleCancel = useCancelNavigate("/");
+  // eslint-disable-next-line no-unused-vars
   const [isBusiness, setIsBusiness] = useState(false);
   const { id } = useParams();
   const [user, setUser] = useState(null);
@@ -29,10 +30,10 @@ const UserEdit = ({ redirect }) => {
     logout();
     navigate("/sign-in");
   };
-  const handleCheckboxChange = () => {
-    setIsBusiness(!isBusiness);
-    setHasBusinessStatusChanged(true);
-  };
+  // const handleCheckboxChange = () => {
+  //   setIsBusiness(!isBusiness);
+  //   setHasBusinessStatusChanged(true);
+  // };
 
   useEffect(() => {
     const loggedInUser = usersService.getUser();
@@ -193,7 +194,6 @@ const UserEdit = ({ redirect }) => {
       // image: { alt, url },
       image_file,
     } = user;
-
     form.setValues({
       first_name: first_name || "",
       last_name: last_name || "",
@@ -219,13 +219,12 @@ const UserEdit = ({ redirect }) => {
   return (
     <>
       <PageHeader
-        title="Edit details"
+        title="עריכת פרטים"
         description={
           <>
-            Here, you can update your personal details, change your address, and
-            more.
+            כאן תוכל לעדכן את הפרטים האישיים שלך.
             <br />
-            All changes will be automatically saved once you click 'Save'.
+            כל השינויים יישמרו אוטומטית ברגע שתלחץ על 'שמור'.
           </>
         }
       />
@@ -236,9 +235,9 @@ const UserEdit = ({ redirect }) => {
               <div className="form-top">
                 <div className="form-top-left">
                   <h3>
-                    Edit your details <i className="bi bi-pencil"></i>
+                    ערוך את הפרטים שלך <i className="bi bi-pencil"></i>
                   </h3>
-                  <p>Fill in the new details:</p>
+                  <p>מלא את הפרטים החדשים:</p>
                 </div>
               </div>
 
@@ -249,46 +248,46 @@ const UserEdit = ({ redirect }) => {
                 <div className="row">
                   <Input
                     {...getProps("first_name")}
-                    label="first name"
+                    label="שם פרטי"
                     type="text"
                     required
                   />
 
                   <Input
                     {...getProps("last_name")}
-                    label="last name"
+                    label="שם משפחה"
                     type="text"
                     required
                   />
 
                   <Input
                     {...getProps("phone")}
-                    label="phone"
+                    label="טלפון"
                     type="text"
                     required
                   />
                   {/* <Input {...getProps("state")} label="state" type="text" /> */}
                   <Input
                     {...getProps("city")}
-                    label="city"
+                    label="עיר"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("street")}
-                    label="street"
+                    label="רחוב"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("country")}
-                    label="country"
+                    label="ארץ"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("houseNumber")}
-                    label="house number"
+                    label="מספר בית"
                     type="number"
                     required
                   />
@@ -296,7 +295,7 @@ const UserEdit = ({ redirect }) => {
                   {/* <Input {...getProps("alt")} label="image alt" type="text" /> */}
                   <div className="mb-3">
                     <label htmlFor="image_file" className="form-label">
-                      Profile Image
+                      תמונת פרופיל
                     </label>
                     <input
                       type="file"
@@ -312,7 +311,7 @@ const UserEdit = ({ redirect }) => {
                   </div>
                   <Input
                     {...getProps("zip")}
-                    label="zip"
+                    label="מיקוד"
                     type="number"
                     required
                   />
@@ -322,11 +321,11 @@ const UserEdit = ({ redirect }) => {
                   onClick={handleCancel}
                   className="btn btn-danger me-2 ms-2"
                 >
-                  Cancel
+                  ביטול
                 </button>
 
                 <button type="submit" className="btn btn-primary me-2 ">
-                  Save
+                  שמור
                 </button>
               </form>
               {/* <input

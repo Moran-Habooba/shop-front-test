@@ -30,6 +30,8 @@ axios.defaults.baseUrlCancelCart = config.apiUrlCancelCart;
 axios.defaults.baseUrlCompleteCart = config.apiUrlCompleteCart;
 axios.defaults.baseUrlAllCartItems = config.apiUrlGetAllCartItems;
 axios.defaults.baseUrlRemoveFromCart = config.apiUrlRemoveFromCart;
+axios.defaults.baseUrlCreateOrder = config.apiUrlCreateOrder;
+axios.defaults.baseUrlGetMyOrders = config.apiUrlGetMyOrders;
 
 export function setCommonHeader(headerName, headerValue) {
   axios.defaults.headers.common[headerName] = headerValue;

@@ -16,17 +16,23 @@ import {
   getCartItems,
   removeFromCart,
   updateCart,
+  completeOrder,
 } from "../services/cartService";
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = () => {
+  // eslint-disable-next-line no-unused-vars
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(15);
   const [cartItems, setCartItems] = useState([]);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const { user } = useAuth();
+  const [totalItemsInCart, setTotalItemsInCart] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -138,7 +144,13 @@ const ShoppingCart = () => {
     const fetchCartItems = async () => {
       try {
         const response = await getCartItems();
-        const cartItemsData = response.data.cart.items;
+        const cartData = response.data.cart;
+
+        if (!cartData) {
+          return;
+        }
+
+        const cartItemsData = cartData.items;
 
         const updatedCartItems = cartItemsData.map((item) => {
           const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
@@ -172,7 +184,27 @@ const ShoppingCart = () => {
 
     return price.toFixed(2);
   }, [totalCartPrice, shippingCost, isCouponApplied]);
+  useEffect(() => {
+    const totalItems = cartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    setTotalItemsInCart(totalItems);
+  }, [cartItems]);
+  const handleCompleteOrder = async () => {
+    try {
+      const response = await completeOrder();
+      if (response.status === 200) {
+        setCartItems([]);
 
+        navigate("/my-orders");
+      } else {
+        console.error("ההזמנה לא הושלמה");
+      }
+    } catch (error) {
+      console.error("Error completing the order:", error);
+    }
+  };
   return (
     <section className="h-100 h-custom " style={{ backgroundColor: "#eee" }}>
       <MDBContainer fluid className="py-5 h-100">
@@ -194,7 +226,7 @@ const ShoppingCart = () => {
                           עגלת קניות
                         </MDBTypography>
                         <MDBTypography className="mb-0 text-muted">
-                          {cartItems.length} מוצרים
+                          {totalItemsInCart} מוצרים
                         </MDBTypography>
                       </div>
 
@@ -300,7 +332,7 @@ const ShoppingCart = () => {
 
                       <div className="d-flex justify-content-between mb-4 custom-text-color">
                         <MDBTypography tag="h5" className="text-uppercase ">
-                          {cartItems.length} מוצרים
+                          {totalItemsInCart} מוצרים
                         </MDBTypography>
                         <MDBTypography tag="h5">
                           {totalCartPrice}₪
@@ -365,7 +397,11 @@ const ShoppingCart = () => {
                         </MDBTypography>
                       </div>
 
-                      <button className=" btn custom-button fs-4" size="lg">
+                      <button
+                        className=" btn custom-button fs-4"
+                        size="lg"
+                        onClick={handleCompleteOrder}
+                      >
                         שלח הזמנה
                       </button>
                     </div>

@@ -201,7 +201,7 @@ const CardsEdit = () => {
 
   return (
     <>
-      <PageHeader title="Edit card" description="Edit card" />
+      <PageHeader title="עריכת מוצר" description="עריכת מוצר" />
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">

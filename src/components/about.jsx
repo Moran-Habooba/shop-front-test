@@ -28,7 +28,7 @@ const About = () => {
       description={
         <>
           <p>
-            Welcome to
+            ברוכים הבאים לאתר
             <span
               className="ms-1 me-1 wave-once"
               style={{
@@ -37,61 +37,54 @@ const About = () => {
                 fontWeight: "600",
               }}
             >
-              ClickEvent
+              תורתך שעשועי
             </span>
-            , your destination for unforgettable event experiences and smooth
-            event planning. We believe that every event, big or small, is an
-            opportunity to create lasting memories and connect people.
+            מקום בו תוכלו למצוא מגוון מוצרי תשמישי קדושה גבוהה ואיכותית. אנחנו
+            מחויבים לספק לכם את המוצרים הטובים ביותר לצורכי קדושה ולרגלי חגים.
           </p>
           <p>
-            <strong>Who We Are?</strong>
+            <strong>מי אנחנו?</strong>
             <br />
-            From concerts and conferences to weddings and special occasions, our
-            platform provides you with the tools to create, manage, and share
-            events effortlessly. We enable you to focus on creating an amazing
-            experience for your guests while we take care of the technical
-            details.
+            אנחנו צוות של מאמינים שמבינים את החשיבות שבמוצרי תשמישי קדושה טובים
+            ואיכותיים. אנו עושים את מיטב המאמץ כדי לאתר ולספק את המוצרים
+            המתאימים ביותר לצרכיכם.
           </p>
           <p>
-            <strong>Our Journey</strong>
+            <strong>מה אנו מציעים?</strong>
             <br />
-            Our platform was born out of a passion for meaningful events and
-            experiences. With years of experience in the event industry, our
-            team comprises experts including event planners, tech developers,
-            and marketing specialists, all committed to bringing you the best
-            experience.
+            אתרנו מציע מגוון רחב של מוצרי תשמישי קדושה, כוללים ספרים, כפרי
+            סידור, תפילין, מזוזות, ועוד. אנו גאים באיכות המוצרים שאנו מציעים
+            ובשירות המעולה שאנו מעניקים ללקוחותינו.
           </p>
           <p>
-            <strong>What We Offer</strong>
+            <strong>למה לבחור בנו?</strong>
             <br />
-            We are proud to offer a range of services that include:
+            • איכות מוצרים מעולה: אנו רואים חשיבות גדולה באיכות המוצרים שאנו
+            מציעים ונשמח להעניק לכם את הטוב ביותר.
             <br />
-            - Easy Event Creation: Build stunning event pages quickly.
+            • צוות מקצועי: הצוות שלנו מיומן ונכון לעזור לכם בכל שאלה או בקשה שיש
+            לכם.
             <br />
-            - Ticket Management: Sell tickets, track sales, and manage
-            attendees.
-            <br />
-            - Dynamic Promotion: Reach a broader audience with our marketing
-            tools.
-            <br />
-            - Seamless Registration: Attendees can sign up quickly and securely.
-            <br />
-            - Event Analytics: Gain insights into your event's performance.
-            <br />
-            - Collaborative Planning: Work together with your team in real-time.
-            <br />- Attendee Engagement: Keep your guests informed and engaged.
+            • משלוח מהיר: אנו מתחייבים למשלוח מהיר ובזמן.
+            <br />• שירות לקוחות מעולה: אנו זמינים לשאלות, הערות ובקשות בכל עת.
           </p>
+          <strong>צרו קשר</strong>
+
           <p>
-            Join us in our mission to transform the way events are planned and
-            experienced. We are more than just a platform; we are a community of
-            event enthusiasts committed to making your next event a resounding
-            success. Get started today!{" "}
+            נשמח לשמוע מכם ולעזור בכל שאלה או בקשה שיש לכם. אנו זמינים בכל עת
+            לצורך ייעוץ או למענה על שאלותיכם. תודה רבה שבחרתם בחנות "תורתך
+            שעשועי" - המקום המוביל למוצרי תשמישי קדושה ברמה הגבוהה ביותר.
+            <br />
+            <br />
+            <strong>
+              חברי מועדון VIP מקבלים קופון 10% הנחה לכל הזמנה הצטרפו עכשיו:{" "}
+            </strong>
             <Link
               to="/sign-up"
               onClick={handleSignUpClick}
               className="ms-2 text-decoration-none fw-bold"
             >
-              Sign-Up
+              להרשמה חינם לחץ כאן 😊
             </Link>
           </p>
         </>
