@@ -21,18 +21,17 @@ import {
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/cart.context";
 
 const ShoppingCart = () => {
   // eslint-disable-next-line no-unused-vars
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(15);
-  const [cartItems, setCartItems] = useState([]);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const { user } = useAuth();
-  const [totalItemsInCart, setTotalItemsInCart] = useState(0);
-
   const navigate = useNavigate();
+  const { cartItems, setCartItems, totalItemsInCart } = useCart();
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -78,7 +77,7 @@ const ShoppingCart = () => {
       total = 0;
     }
 
-    setCartTotal(total);
+    setCartItems(total);
   };
 
   const handleRemoveItem = async (itemToRemove) => {
@@ -184,13 +183,13 @@ const ShoppingCart = () => {
 
     return price.toFixed(2);
   }, [totalCartPrice, shippingCost, isCouponApplied]);
-  useEffect(() => {
-    const totalItems = cartItems.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-    setTotalItemsInCart(totalItems);
-  }, [cartItems]);
+  // useEffect(() => {
+  //   const totalItems = cartItems.reduce(
+  //     (total, item) => total + item.quantity,
+  //     0
+  //   );
+  //   updateTotalItemsInCart();
+  // }, [cartItems]);
   const handleCompleteOrder = async () => {
     try {
       const response = await completeOrder();
@@ -236,10 +235,17 @@ const ShoppingCart = () => {
                           <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
                             <MDBCol md="2" lg="2" xl="2">
                               <MDBCardImage
-                                src={item.dynamicImageUrl}
+                                key={index}
+                                src={
+                                  item.image_file?.path
+                                    ? `http://localhost:3000/${item.image_file.path}`
+                                    : "DefaultImg.svg.png"
+                                }
                                 fluid
                                 className="rounded-3"
-                                alt={item.card_id.image_file.originalname}
+                                alt={
+                                  item.image_file?.originalname || "Card image"
+                                }
                               />
                             </MDBCol>
                             <MDBCol md="3" lg="3" xl="3">

@@ -2,11 +2,28 @@ import httpService from "./httpService";
 import config from "../config.json";
 import { refreshTokenHeader } from "./usersService";
 
-export function addToCart(card_id, quantity) {
-  refreshTokenHeader();
+// export function addToCart(card_id, quantity) {
+//   refreshTokenHeader();
 
+//   const data = { card_id, quantity };
+//   return httpService.post(config.apiUrlAddToCart, data);
+// }
+
+export async function addToCart(card_id, quantity) {
+  refreshTokenHeader();
   const data = { card_id, quantity };
-  return httpService.post(config.apiUrlAddToCart, data);
+
+  try {
+    const response = await httpService.post(config.apiUrlAddToCart, data);
+    if (response.status === 200) {
+      return response.data; // חזרת הנתונים מהשרת
+    } else {
+      throw new Error("Response status is not 200");
+    }
+  } catch (error) {
+    console.error("Error adding item to cart:", error);
+    throw error; // זריקת שגיאה אם יש בעיה
+  }
 }
 
 export function getCartItems() {

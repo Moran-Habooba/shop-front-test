@@ -55,6 +55,8 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import usersService from "../services/usersService";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const fn_error_context_must_be_used = () => {
   throw new Error("must use authContext provider ");
@@ -70,14 +72,14 @@ authContext.displayName = "auth";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(usersService.getUser());
-  const [logoutTimer, setLogoutTimer] = useState(null); // Initialize the timer variable
+  const [logoutTimer, setLogoutTimer] = useState(null);
 
   const refreshUser = () => setUser(usersService.getUser());
+  const navigate = useNavigate();
 
   const login = async (credentials) => {
     const response = await usersService.login(credentials);
 
-    // Reset the timer on user activity
     resetLogoutTimer();
 
     refreshUser();
@@ -85,9 +87,24 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  // const logout = () => {
+  //   usersService.logout();
+  //   refreshUser();
+  // };
   const logout = () => {
     usersService.logout();
-    refreshUser();
+    setUser(null);
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
+    localStorage.removeItem("token");
+    Swal.fire({
+      title: "עקב אי פעילות עליך להתחבר מחדש",
+      icon: "info",
+      showConfirmButton: true,
+    }).then(() => {
+      navigate("/login");
+    });
   };
 
   const updateUser = async (id, userDetails) => {
@@ -95,31 +112,26 @@ export function AuthProvider({ children }) {
     refreshUser();
   };
 
-  // Function to reset the logout timer
   const resetLogoutTimer = () => {
     if (logoutTimer) {
-      clearTimeout(logoutTimer); // Clear the existing timer
+      clearTimeout(logoutTimer);
     }
 
-    // Set a new timer for 4 hours (4 * 60 * 60 * 1000 milliseconds)
     const newTimer = setTimeout(() => {
-      logout(); // Call logout function after 4 hours of inactivity
+      logout();
     }, 4 * 60 * 60 * 1000);
 
-    setLogoutTimer(newTimer); // Update the timer variable
+    setLogoutTimer(newTimer);
   };
 
-  // Set up event listeners to reset the timer on user activity
   useEffect(() => {
     const resetTimerOnActivity = () => {
-      resetLogoutTimer(); // Reset the timer on user activity
+      resetLogoutTimer();
     };
 
-    // Attach event listeners for user activity (you can add more events as needed)
     window.addEventListener("mousemove", resetTimerOnActivity);
     window.addEventListener("keydown", resetTimerOnActivity);
 
-    // Clean up the event listeners when the component unmounts
     return () => {
       window.removeEventListener("mousemove", resetTimerOnActivity);
       window.removeEventListener("keydown", resetTimerOnActivity);

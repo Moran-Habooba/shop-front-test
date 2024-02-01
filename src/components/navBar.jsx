@@ -165,10 +165,10 @@ const Navbar = () => {
               <li></li>
             )}
           </ul>
-          <i
+          {/* <i
             className="bi bi-cart  fs-3 me-5"
             style={{ cursor: "pointer", color: "#e5b55c" }}
-          ></i>
+          ></i> */}
 
           <form
             className="d-flex"
@@ -177,10 +177,6 @@ const Navbar = () => {
               handleInputChange();
             }}
           >
-            {/* <div className="cart-icon">
-              <i className="bi bi-cart cart"></i>
-            </div> */}
-
             <button
               className="btn btn-outline-light me-4 btn-search"
               type="submit"

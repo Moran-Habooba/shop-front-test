@@ -9,6 +9,8 @@ import { useSearchBarRef } from "../context/useSearchBarRef";
 import { getAllCategories } from "../services/categoryService";
 import { getUserById } from "../services/usersService";
 import "./styls/search.css";
+import { useCart } from "../context/cart.context";
+
 const BusinessNavBar = () => {
   const { user } = useAuth();
   const { darkMode, setDarkMode } = useDarkMode();
@@ -16,6 +18,7 @@ const BusinessNavBar = () => {
   const searchInput = useSearchBarRef();
 
   const [categories, setCategories] = useState([]);
+  const { totalItemsInCart = 0 } = useCart();
 
   const [userName, setUserName] = useState("");
   const [userProfileImage, setUserProfileImage] = useState("");
@@ -42,7 +45,7 @@ const BusinessNavBar = () => {
         setUserProfileImage(userData.data.image_file.path || "");
       });
     }
-  }, [user]);
+  }, [user, userProfileImage]);
 
   useEffect(() => {
     getAllCategories().then(({ data }) => {
@@ -206,7 +209,7 @@ const BusinessNavBar = () => {
               style={{ cursor: "pointer", color: "#e5b55c" }}
             ></i>
           </Link>
-          <span className="cart-item-count me-2">1</span>
+          <span className="cart-item-count me-2">{totalItemsInCart}</span>
 
           <form
             className="d-flex"

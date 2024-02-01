@@ -182,7 +182,7 @@ const SignUp = ({ redirect }) => {
               <div className="form-top">
                 <div className="form-top-left">
                   <h3>
-                    Sign up now <i className="bi bi-pencil"></i>
+                    הירשם עכשיו <i className="bi bi-pencil"></i>
                   </h3>
                   <p>Fill in the form below to get instant access:</p>
                 </div>
@@ -195,7 +195,7 @@ const SignUp = ({ redirect }) => {
                 <div className="row">
                   <Input
                     {...getProps("first_name")}
-                    label="first name"
+                    label="שם פרטי"
                     type="text"
                     required
                   />
@@ -206,51 +206,51 @@ const SignUp = ({ redirect }) => {
                   /> */}
                   <Input
                     {...getProps("last_name")}
-                    label="last name"
+                    label="שם משפחה"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("email")}
-                    label="email"
+                    label="אימייל"
                     type="email"
                     required
                   />
                   <Input
                     {...getProps("phone")}
-                    label="phone"
+                    label="טלפון"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("password")}
-                    label="password"
+                    label="סיסמא"
                     type="password"
                     required
                   />
                   {/* <Input {...getProps("state")} label="state" type="text" /> */}
                   <Input
                     {...getProps("city")}
-                    label="city"
+                    label="עיר"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("street")}
-                    label="street"
+                    label="רחוב"
                     type="text"
                     required
                   />
                   <Input
                     {...getProps("country")}
-                    label="country"
+                    label="ארץ"
                     type="text"
                     required
                   />
 
                   <Input
                     {...getProps("house_number")}
-                    label="house_number"
+                    label="מספר בית"
                     type="number"
                     required
                   />
@@ -267,7 +267,7 @@ const SignUp = ({ redirect }) => {
                   /> */}
                   <Input
                     {...getProps("zip")}
-                    label="zip"
+                    label="מיקוד"
                     type="number"
                     required
                   />
@@ -275,7 +275,7 @@ const SignUp = ({ redirect }) => {
                 {/* /////////////// */}
                 <div className="mb-3">
                   <label htmlFor="image_file" className="form-label">
-                    Profile Image
+                    תמונת פרופיל
                   </label>
                   <input
                     type="file"
@@ -306,7 +306,7 @@ const SignUp = ({ redirect }) => {
                   onClick={handleCancel}
                   className="btn btn-danger me-2"
                 >
-                  Cancel
+                  ביטול
                 </button>
 
                 <button
@@ -314,7 +314,7 @@ const SignUp = ({ redirect }) => {
                   className="btn btn-primary"
                   // disabled={!form.isValid}
                 >
-                  Submit
+                  שליחה
                 </button>
               </form>
             </div>

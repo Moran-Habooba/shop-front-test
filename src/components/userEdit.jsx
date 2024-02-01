@@ -66,33 +66,21 @@ const UserEdit = ({ redirect }) => {
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
-      // first: "",
-
-      // last: "",
       first_name: "",
       last_name: "",
       phone: "",
       image_file: null,
-
-      email: "",
-      password: "",
 
       city: "",
       street: "",
       country: "",
       houseNumber: "",
       zip: "",
-
-      url: "",
-      alt: "",
-
-      isBusiness: false,
     },
     validate: validateFormikUsingJoi({
-      // first: Joi.string().min(2).max(256).required(),
-      // last: Joi.string().min(2).max(256).required(),
       first_name: Joi.string().min(2).max(1000).required(),
       last_name: Joi.string().min(2).max(1000).required(),
+
       phone: Joi.string()
         .min(9)
         .max(11)
@@ -103,45 +91,35 @@ const UserEdit = ({ redirect }) => {
       country: Joi.string().min(2).max(256).required(),
       houseNumber: Joi.number().min(2).max(256).required(),
       zip: Joi.number().min(2).max(256).required(),
-      // url: Joi.string()
-      //   .min(14)
-      //   .regex(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/)
-      //   .messages({ "string.pattern.base": "Invalid URL string." })
-      //   .allow(""),
-      // alt: Joi.string().min(2).max(256).allow(""),
-      image_file: Joi.any().label("Image File").allow(""),
+
+      image_file: Joi.any().optional(),
     }),
 
     async onSubmit(values) {
-      const serverUserBody = {
-        // name: {
-        //   first: values.first,
-        //   last: values.last,
-        // },
-        first: values.first,
-        last: values.last,
-        phone: values.phone,
-        // address: {
-        //   city: values.city,
-        //   street: values.street,
-        //   country: values.country,
-        //   houseNumber: values.houseNumber,
-        //   zip: values.zip,
-        // },
-        city: values.city,
-        street: values.street,
-        country: values.country,
-        houseNumber: values.houseNumber,
-        zip: values.zip,
-        // image: {
-        //   url: values.url,
-        //   alt: values.alt,
-        // },
-      };
+      console.log("Attempting to submit form", values);
+
+      const formData = new FormData();
+
+      formData.append("first_name", values.first_name);
+      formData.append("last_name", values.last_name);
+      formData.append("phone", values.phone);
+      formData.append("city", values.city);
+      formData.append("street", values.street);
+      formData.append("country", values.country);
+      formData.append("houseNumber", values.houseNumber);
+      formData.append("zip", values.zip);
+
+      if (values.image_file) {
+        formData.append("image_file", values.image_file);
+      }
+
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
       try {
         const { state, ...body } = values;
-        await usersService.updateUsers(user._id, serverUserBody);
-        await updateUser(user._id, serverUserBody);
+        await usersService.updateUsers(user._id, formData);
+        await updateUser(user._id, formData);
 
         if (state) {
           body.state = state;
@@ -241,7 +219,7 @@ const UserEdit = ({ redirect }) => {
                 </div>
               </div>
 
-              <form onSubmit={form.handleSubmit}>
+              <form onSubmit={form.handleSubmit} encType="multipart/form-data">
                 {serverError && (
                   <div className="alert alert-danger">{serverError}</div>
                 )}

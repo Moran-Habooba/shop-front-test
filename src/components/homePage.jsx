@@ -9,6 +9,7 @@ import { useSearch } from "../context/searchContext";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/auth.context";
 import CardsTable from "./TableCardList";
+
 const HomePage = () => {
   const [cards, setCards] = useState([]);
   const [visible, setVisible] = useState(8);
@@ -23,7 +24,7 @@ const HomePage = () => {
     getAll().then((fetchedCards) => {
       setCards(fetchedCards.data);
     });
-  }, []);
+  }, [viewMode]);
 
   const showMoreCards = () => {
     setVisible((prevVisible) => prevVisible + 4);

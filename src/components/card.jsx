@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { useState } from "react";
 import { addToCart } from "../services/cartService";
+import { useCart } from "../context/cart.context";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({
   card: {
@@ -27,7 +29,9 @@ const Card = ({
   const { user } = useAuth();
   const [count, setCount] = useState(0);
   const likeCount = likes.length;
-
+  const { cartItems, setCartItems, totalItemsInCart, setTotalItemsInCart } =
+    useCart();
+  const navigate = useNavigate();
   const handleClick = () => {
     if (location.pathname === "/") {
       const popupMessage = `
@@ -71,25 +75,32 @@ const Card = ({
   const toggleLike = () => {
     onLiked();
   };
+
   const handleAddToCart = () => {
     const card_id = _id;
     const quantity = count;
 
     if (quantity > 0) {
       addToCart(card_id, quantity)
-        .then((response) => {
-          if (response.status === 200) {
-            Swal.fire({
-              icon: "success",
-              title: "המוצר נוסף לסל בהצלחה!",
-              showConfirmButton: false,
-              timer: 1000,
-              customClass: {
-                popup: "small-popup",
-              },
-            });
-          }
-          console.log("Product added to cart:", response.data);
+        .then((data) => {
+          Swal.fire({
+            icon: "success",
+            title: "המוצר נוסף לסל בהצלחה!",
+            showConfirmButton: false,
+            timer: 1000,
+            customClass: {
+              popup: "small-popup",
+            },
+          }).then(() => {
+            navigate("/ShoppingCart");
+          });
+
+          console.log("Product added to cart:", data);
+          const updatedCartItems = [...cartItems, { card_id, quantity }];
+          setCartItems(updatedCartItems);
+
+          const newTotalItemsCount = totalItemsInCart + quantity;
+          setTotalItemsInCart(newTotalItemsCount);
         })
         .catch((error) => {
           console.error("Error adding product to cart:", error);

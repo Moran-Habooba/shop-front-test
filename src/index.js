@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/auth.context";
 import { DarkModeProvider } from "../src/context/darkMode.context";
+import { CartProvider } from "./context/cart.context";
 import { SearchProvider } from "./context/searchContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -17,9 +18,11 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <SearchProvider>
-          <DarkModeProvider>
-            <App />
-          </DarkModeProvider>
+          <CartProvider>
+            <DarkModeProvider>
+              <App />
+            </DarkModeProvider>
+          </CartProvider>
         </SearchProvider>
       </AuthProvider>
     </BrowserRouter>
