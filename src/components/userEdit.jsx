@@ -291,8 +291,7 @@ const UserEdit = ({ redirect }) => {
                     type="number"
                     required
                   />
-                  {/* <Input {...getProps("url")} label="image url" type="text" /> */}
-                  {/* <Input {...getProps("alt")} label="image alt" type="text" /> */}
+
                   <div className="mb-3">
                     <label htmlFor="image_file" className="form-label">
                       תמונת פרופיל

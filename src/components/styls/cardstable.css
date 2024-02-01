@@ -1,0 +1,76 @@
+.table {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.table th,
+.table td {
+  width: 20%;
+}
+
+.table th:first-child,
+.table td:first-child {
+  width: 10%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 10%;
+}
+
+.custom-table .table {
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2) !important;
+  border-collapse: separate !important;
+}
+
+.custom-table .table th,
+.custom-table .table td {
+  padding: 0.5rem !important;
+  border: 1px solid #3b5d50 !important;
+}
+
+.custom-table .table th {
+  background-color: #3b5d50 !important;
+  color: white !important;
+  border-color: #3b5d50 !important;
+}
+
+.custom-table .table tr:nth-child(odd) {
+  background-color: #f2f2f2 !important;
+}
+
+.custom-table .table tr:nth-child(even) {
+  background-color: #ddd !important;
+}
+
+.button-no-style {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.card-title {
+  color: #e5b55c !important;
+}
+.quantity {
+  background-color: #e5b55c;
+  border-color: #e5b55c;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.quantity:hover {
+  background-color: #cc9a4e;
+  border-color: #cc9a4e;
+}
+
+.price {
+  color: #3b5d50;
+  font-size: 20px;
+  font-weight: 700;
+}
+.category {
+  font-weight: 600;
+}

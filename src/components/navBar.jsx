@@ -177,9 +177,9 @@ const Navbar = () => {
               handleInputChange();
             }}
           >
-            <div className="cart-icon">
+            {/* <div className="cart-icon">
               <i className="bi bi-cart cart"></i>
-            </div>
+            </div> */}
 
             <button
               className="btn btn-outline-light me-4 btn-search"

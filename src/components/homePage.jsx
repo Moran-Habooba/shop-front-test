@@ -8,7 +8,7 @@ import { getUser } from "../services/usersService";
 import { useSearch } from "../context/searchContext";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/auth.context";
-
+import CardsTable from "./TableCardList";
 const HomePage = () => {
   const [cards, setCards] = useState([]);
   const [visible, setVisible] = useState(8);
@@ -16,7 +16,9 @@ const HomePage = () => {
 
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  const [viewMode, setViewMode] = useState("grid");
+  // eslint-disable-next-line no-unused-vars
+  const [likedCards, setLikedCards] = useState([]);
   useEffect(() => {
     getAll().then((fetchedCards) => {
       setCards(fetchedCards.data);
@@ -25,6 +27,19 @@ const HomePage = () => {
 
   const showMoreCards = () => {
     setVisible((prevVisible) => prevVisible + 4);
+  };
+
+  const toggleViewMode = async (mode) => {
+    setViewMode(mode);
+
+    if (mode === "table") {
+      const response = await getAll();
+      setLikedCards(
+        response.data.filter((updatedCard) =>
+          updatedCard.likes.includes(user?._id)
+        )
+      );
+    }
   };
 
   const onLiked = async (card) => {
@@ -235,15 +250,22 @@ const HomePage = () => {
         </h1>
       </div>
       <div>
-        <button className="btn btn-primary ms-1 mb-2 btn-sm">
+        <button
+          className="btn btn-primary ms-1 mb-2 btn-sm"
+          onClick={() => toggleViewMode("table")}
+        >
           <i className="bi bi-list ms-1"></i>
         </button>
-        <button className="btn btn-primary  mb-2 btn-sm">
+        <button
+          className="btn btn-primary  mb-2 btn-sm"
+          onClick={() => toggleViewMode("grid")}
+        >
           <i className="bi bi-grid ms-1 "></i>
         </button>
         <div className="row">
-          <CardList />
+          {viewMode === "grid" ? <CardList /> : <CardsTable />}
         </div>
+        <div>{/* <CardsTable /> */}</div>
         <div className="d-flex justify-content-center my-3">
           <button
             className="btn btn-info mb-4 fw-bold LoadMoreBtn"

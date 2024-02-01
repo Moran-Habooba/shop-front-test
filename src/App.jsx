@@ -59,7 +59,7 @@ function App() {
           <Route
             path="/user-edit"
             element={
-              <ProtectedRoute onlyRegularAndBusiness>
+              <ProtectedRoute>
                 <UserEdit redirect="/" />
               </ProtectedRoute>
             }
@@ -76,7 +76,7 @@ function App() {
           <Route
             path="/create-card"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyAdmin>
                 <CardsCreate />
               </ProtectedRoute>
             }
@@ -84,7 +84,7 @@ function App() {
           <Route
             path="/my-cards/edit/:id"
             element={
-              <ProtectedRoute onlyAdmin>
+              <ProtectedRoute onlyBiz>
                 <CardsEdit />
               </ProtectedRoute>
             }

@@ -14,6 +14,7 @@ const AdminNavBar = () => {
   const { setSearchTerm } = useSearch();
   const searchInput = useSearchBarRef();
   const [userName, setUserName] = useState("");
+  const [userProfileImage, setUserProfileImage] = useState("");
 
   const handleInputChange = () => {
     setSearchTerm(searchInput.current.value);
@@ -34,6 +35,7 @@ const AdminNavBar = () => {
     if (user && user._id) {
       getUserById(user._id).then((userData) => {
         setUserName(`${userData.data.first_name}`);
+        setUserProfileImage(userData.data.image_file.path || "");
       });
     }
   }, [user]);
@@ -150,12 +152,17 @@ const AdminNavBar = () => {
               <li>
                 <div>
                   <img
-                    className="ms-2 mt-1"
-                    src="/DefaultImg.svg.png"
-                    alt="Default profile"
+                    src={
+                      userProfileImage
+                        ? `http://localhost:3000/${userProfileImage}`
+                        : "/DefaultImg.svg.png"
+                    }
+                    className="ms-2 mt-1  rounded-circle"
+                    alt="Profile "
                     width="30"
                     height="30"
                   />
+
                   <span
                     className="navbar-text ms-3  fw-bold"
                     style={{ color: "#e5b55c" }}
