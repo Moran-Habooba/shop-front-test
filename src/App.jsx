@@ -84,7 +84,7 @@ function App() {
           <Route
             path="/my-cards/edit/:id"
             element={
-              <ProtectedRoute onlyBiz>
+              <ProtectedRoute onlyAdmin>
                 <CardsEdit />
               </ProtectedRoute>
             }
@@ -120,6 +120,10 @@ function App() {
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
           <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route path="/my-orders" element={<MyOrders />} />
+          {/* <Route
+            path="/InventoryManagement"
+            element={<InventoryManagement />}
+          /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

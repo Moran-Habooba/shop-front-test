@@ -22,7 +22,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart.context";
-
+import { adjustInventoryQuantity } from "../services/inventoryService";
+import inventoryService from "../services/inventoryService";
 const ShoppingCart = () => {
   // eslint-disable-next-line no-unused-vars
   const [cartTotal, setCartTotal] = useState(0);
@@ -32,6 +33,7 @@ const ShoppingCart = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { cartItems, setCartItems, totalItemsInCart } = useCart();
+  const [error, setError] = useState("");
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -101,41 +103,102 @@ const ShoppingCart = () => {
     }
   };
 
-  function changeQuantity(item, change) {
+  // function changeQuantity(item, change) {
+  //   console.log(
+  //     `Changing quantity for item ${item.card_id._id}, change: ${change}`
+  //   );
+  //   let newQuantity = item.quantity + change;
+
+  //   if (newQuantity <= 0) {
+  //     setCartItems(
+  //       cartItems.filter(
+  //         (cartItem) => cartItem.card_id._id !== item.card_id._id
+  //       )
+  //     );
+  //     removeFromCart(item.card_id._id)
+  //       .then((response) => {
+  //         console.log(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error removing the item:", error);
+  //       });
+  //   } else {
+  //     newQuantity = Math.max(newQuantity, 0);
+  //     const updatedItem = { ...item, quantity: newQuantity };
+  //     const updatedItems = cartItems.map((cartItem) =>
+  //       cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+  //     );
+
+  //     setCartItems(updatedItems);
+
+  //     updateCart([{ id: item.card_id._id, quantity: newQuantity }])
+  //       .then((response) => {
+  //         console.log("Cart updated:", response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error updating the cart:", error);
+  //       });
+  //   }
+  // }
+
+  async function changeQuantity(item, change) {
     console.log(
-      `Changing quantity for item ${item.card_id._id}, change: ${change}`
+      `Checking inventory for item ${item.card_id._id} before changing quantity, change: ${change}`
     );
-    let newQuantity = item.quantity + change;
 
-    if (newQuantity <= 0) {
-      setCartItems(
-        cartItems.filter(
-          (cartItem) => cartItem.card_id._id !== item.card_id._id
-        )
+    try {
+      const inventoryResponse = await inventoryService.getInventoryByCardId(
+        item.card_id._id
       );
-      removeFromCart(item.card_id._id)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error removing the item:", error);
-        });
-    } else {
-      newQuantity = Math.max(newQuantity, 0);
-      const updatedItem = { ...item, quantity: newQuantity };
-      const updatedItems = cartItems.map((cartItem) =>
-        cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-      );
+      const inventoryData = inventoryResponse.data;
 
-      setCartItems(updatedItems);
+      const availableInventory = inventoryData.quantity;
 
-      updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-        .then((response) => {
-          console.log("Cart updated:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error updating the cart:", error);
-        });
+      let newQuantity = item.quantity + change;
+
+      if (newQuantity > availableInventory) {
+        setError("המלאי אזל");
+        return;
+      } else {
+        setError("");
+      }
+      if (newQuantity > availableInventory) {
+        console.error("Cannot exceed available inventory.");
+        return;
+      }
+
+      if (newQuantity <= 0) {
+        setCartItems(
+          cartItems.filter(
+            (cartItem) => cartItem.card_id._id !== item.card_id._id
+          )
+        );
+        removeFromCart(item.card_id._id)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error("Error removing the item:", error);
+          });
+      } else {
+        newQuantity = Math.max(newQuantity, 0);
+        const updatedItem = { ...item, quantity: newQuantity };
+        const updatedItems = cartItems.map((cartItem) =>
+          cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+        );
+
+        setCartItems(updatedItems);
+
+        updateCart([{ id: item.card_id._id, quantity: newQuantity }])
+          .then((response) => {
+            console.log("Cart updated:", response.data);
+          })
+          .catch((error) => {
+            console.error("Error updating the cart:", error);
+          });
+      }
+    } catch (error) {
+      console.error("Error fetching inventory for the item:", error);
     }
   }
 
@@ -183,19 +246,41 @@ const ShoppingCart = () => {
 
     return price.toFixed(2);
   }, [totalCartPrice, shippingCost, isCouponApplied]);
-  // useEffect(() => {
-  //   const totalItems = cartItems.reduce(
-  //     (total, item) => total + item.quantity,
-  //     0
-  //   );
-  //   updateTotalItemsInCart();
-  // }, [cartItems]);
+
+  // const handleCompleteOrder = async () => {
+  //   try {
+  //     const response = await completeOrder();
+  //     if (response.status === 200) {
+  //       setCartItems([]);
+
+  //       navigate("/my-orders");
+  //     } else {
+  //       console.error("ההזמנה לא הושלמה");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error completing the order:", error);
+  //   }
+  // };
   const handleCompleteOrder = async () => {
     try {
+      // Complete the order
       const response = await completeOrder();
+
       if (response.status === 200) {
+        // Order completed successfully
+        // Clear the cart items
         setCartItems([]);
 
+        // Update inventory for each item in the cart
+        cartItems.forEach(async (item) => {
+          const cardId = item.card_id._id;
+          const quantity = -item.quantity; // Subtract the ordered quantity from inventory.
+
+          // Update the inventory quantity for the product.
+          await adjustInventoryQuantity(cardId, quantity);
+        });
+
+        // Navigate to "/my-orders"
         navigate("/my-orders");
       } else {
         console.error("ההזמנה לא הושלמה");
@@ -204,6 +289,7 @@ const ShoppingCart = () => {
       console.error("Error completing the order:", error);
     }
   };
+
   return (
     <section className="h-100 h-custom " style={{ backgroundColor: "#eee" }}>
       <MDBContainer fluid className="py-5 h-100">
@@ -288,6 +374,14 @@ const ShoppingCart = () => {
                               >
                                 +
                               </span>
+                              {error && (
+                                <div
+                                  className="alert alert-danger alert-custom  "
+                                  role="alert"
+                                >
+                                  {error}
+                                </div>
+                              )}
                             </MDBCol>
                             <MDBCol md="3" lg="2" xl="2" className="text-end">
                               <MDBTypography tag="h6" className="mb-0">

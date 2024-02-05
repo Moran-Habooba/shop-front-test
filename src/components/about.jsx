@@ -24,7 +24,7 @@ const About = () => {
   };
   return (
     <PageHeader
-      title={<>About Us</>}
+      title={<>קצת עלינו...</>}
       description={
         <>
           <p>

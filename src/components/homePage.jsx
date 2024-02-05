@@ -9,17 +9,67 @@ import { useSearch } from "../context/searchContext";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/auth.context";
 import CardsTable from "./TableCardList";
+import { getAllCategories } from "../services/categoryService";
 
 const HomePage = () => {
   const [cards, setCards] = useState([]);
   const [visible, setVisible] = useState(8);
   const { searchTerm } = useSearch();
 
+  const [sortOrder, setSortOrder] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [originalCards, setOriginalCards] = useState([]);
+
   const { user } = useAuth();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState("grid");
   // eslint-disable-next-line no-unused-vars
   const [likedCards, setLikedCards] = useState([]);
+  /////////
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: fetchedCards } = await getAll();
+        setOriginalCards(fetchedCards);
+        setCards(fetchedCards);
+        const { data } = await getAllCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // סינון ומיון הכרטיסים בהתאם לבחירות
+  useEffect(() => {
+    let filteredCards = [...originalCards];
+
+    if (searchTerm) {
+      filteredCards = filteredCards.filter((card) =>
+        card.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedCategory) {
+      filteredCards = filteredCards.filter(
+        (card) => card.category === selectedCategory
+      );
+    }
+
+    if (sortOrder) {
+      filteredCards.sort((a, b) =>
+        sortOrder === "priceAsc" ? a.price - b.price : b.price - a.price
+      );
+    }
+
+    setCards(filteredCards.slice(0, visible));
+  }, [originalCards, searchTerm, selectedCategory, sortOrder, visible]);
+
+  ////////
+
   useEffect(() => {
     getAll().then((fetchedCards) => {
       setCards(fetchedCards.data);
@@ -250,6 +300,37 @@ const HomePage = () => {
           הנבחרים שלנו
         </h1>
       </div>
+      {viewMode === "grid" && (
+        <div className="filter-container">
+          {/* סינון לפי קטגוריה */}
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="form-select mb-3"
+            style={{ width: "200px" }}
+          >
+            <option value="">בחר קטגוריה</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
+          {/* מיון לפי מחיר */}
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="form-select mb-3"
+            style={{ width: "200px" }}
+          >
+            <option value="">מיין לפי מחיר</option>
+            <option value="priceAsc">מחיר מנמוך לגבוה</option>
+            <option value="priceDesc">מחיר מגבוה לנמוך</option>
+          </select>
+        </div>
+      )}
+
       <div>
         <button
           className="btn btn-primary ms-1 mb-2 btn-sm"

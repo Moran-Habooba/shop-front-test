@@ -41,6 +41,14 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.alert-custom {
+  padding: 5px !important; /* קטן יותר מהרווח הדיפולטיבי */
+  font-size: 0.8rem; /* גודל טקסט קטן יותר */
+  margin-bottom: 0.2rem !important; /* רווח מתחת להודעה */
+  width: 65px;
+}
+
 @media (min-width: 992px) {
   .card-registration-2 .bg-grey {
     border-top-right-radius: 16px;

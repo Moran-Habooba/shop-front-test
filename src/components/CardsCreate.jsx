@@ -22,14 +22,12 @@ const CardsCreate = () => {
     }
   }, [user, navigate]);
   useEffect(() => {
-    // Fetch categories using getAllCategories function
     const fetchCategories = async () => {
       try {
-        const { data } = await getAllCategories(); // Use your getAllCategories function here
-        setCategories(data); // Assuming that the response contains an array of categories
+        const { data } = await getAllCategories();
+        setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        // Handle the error appropriately
       }
     };
 

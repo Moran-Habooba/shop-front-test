@@ -33,7 +33,7 @@ const Card = ({
     useCart();
   const navigate = useNavigate();
   const handleClick = () => {
-    if (location.pathname === "/") {
+    if (location.pathname === "/" || location.pathname === "/my-cards") {
       const popupMessage = `
     <div style="text-align: right;">
       <h4><strong>שם המוצר:</strong> ${title}</h4>
@@ -203,8 +203,9 @@ const Card = ({
       <div>
         {user && (
           <button
-            onClick={() => toggleLike()}
+            onClick={user.isAdmin ? null : () => toggleLike()}
             className="d-flex align-items-center card-link ms-auto"
+            style={{ cursor: user.isAdmin ? "default" : "pointer" }}
           >
             <i
               className={`bi ${

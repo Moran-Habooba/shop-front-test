@@ -79,16 +79,17 @@ const CategoriesManagement = () => {
 
   return (
     <div>
-      <h1>ניהול קטגוריות</h1>
+      <h1 className="text-center">ניהול קטגוריות</h1>
       <div>
-        <button
-          onClick={handleShowAddModal}
-          className="btn btn-primary mb-4 mt-3"
-        >
-          הוסף קטגוריה
-        </button>
+        <div className="d-flex justify-content-center">
+          <button
+            onClick={handleShowAddModal}
+            className="btn btn-primary mb-4 mt-3"
+          >
+            הוסף קטגוריה
+          </button>
+        </div>
 
-        {/* Modal for adding a category */}
         <div
           className={`modal ${showAddModal ? "show" : ""}`}
           style={{ display: showAddModal ? "block" : "none" }}
@@ -138,7 +139,7 @@ const CategoriesManagement = () => {
         {/* Backdrop for modal */}
         {showAddModal && <div className="modal-backdrop show"></div>}
       </div>
-      <table class="table table-bordered">
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th>מזהה ID</th>

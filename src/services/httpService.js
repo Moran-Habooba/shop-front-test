@@ -33,6 +33,15 @@ axios.defaults.baseUrlRemoveFromCart = config.apiUrlRemoveFromCart;
 axios.defaults.baseUrlCreateOrder = config.apiUrlCreateOrder;
 axios.defaults.baseUrlGetMyOrders = config.apiUrlGetMyOrders;
 
+axios.defaults.baseUrlGetInventoryiByCardId =
+  config.apiUrlGetInventoryiByCardId;
+axios.defaults.baseUrlAdjustInventoryQuantity =
+  config.apiUrlAdjustInventoryQuantity;
+axios.defaults.baseGetInventoryiWithDetails =
+  config.apiUrlGetInventoryiWithDetails;
+
+axios.defaults.baseUrlGetAllClosedOrders = config.apiUrlGetAllClosedOrders;
+
 export function setCommonHeader(headerName, headerValue) {
   axios.defaults.headers.common[headerName] = headerValue;
 }

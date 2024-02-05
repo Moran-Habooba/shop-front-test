@@ -26,3 +26,59 @@ th {
     margin-bottom: 10px;
   }
 }
+
+/* ////////////////////////// */
+
+#gear1,
+#gear2,
+#gear3 {
+  color: #3b5d50;
+  display: block;
+  float: left;
+  position: absolute;
+  font-size: 150px !important;
+}
+
+#gear1 {
+  left: 65px;
+}
+
+#gear2 {
+  right: 60px;
+}
+
+.spin {
+  -webkit-animation: spin 9s linear infinite;
+  -moz-animation: spin 9s linear infinite;
+  animation: spin 9s linear infinite;
+}
+
+.spin-back {
+  -webkit-animation: spin-back 9s linear infinite;
+  -moz-animation: spin-back 9s linear infinite;
+  animation: spin-back 9s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spin-back {
+  100% {
+    -moz-transform: rotate(-360deg);
+  }
+}
+@-webkit-keyframes spin-back {
+  100% {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+@keyframes spin-back {
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}

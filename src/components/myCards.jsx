@@ -2,15 +2,32 @@ import PageHeader from "../common/pageHeader";
 import { Link } from "react-router-dom";
 import Card from "./card";
 import { useMyCards } from "../hook/useMyCards";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import cardsService from "../services/cardsService";
 import { useSearch } from "../context/searchContext";
+import categoryService from "../services/categoryService";
 
 const MyCards = () => {
   const { cards, loadCards } = useMyCards();
   const { searchTerm } = useSearch();
 
   const [serverError, setServerError] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    categoryService
+      .getAllCategories()
+      .then(({ data }) => {
+        setCategories(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
 
   const onLiked = async (card) => {
     try {
@@ -27,33 +44,26 @@ const MyCards = () => {
     }
   };
 
-
   const filteredCards = useMemo(() => {
-    if (!searchTerm) return cards;
+    if (!searchTerm && !selectedCategory) return cards;
     return cards.filter((card) =>
       card.title.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
-  }, [cards, searchTerm]);
+  }, [cards, searchTerm, selectedCategory]);
 
   return (
     <>
       <PageHeader
-        title="My Cards"
+        title="המוצרים בחנות "
         description={
           <>
-            Welcome to your personal card creation hub! On this page, you can
-            effortlessly craft and manage a variety of cards designed to
-            showcase your services or products to potential customers.
+            בעמוד זה תוכלו ליצור ולנהל ללא מאמץ מוצרים חדשים לאתר שנועדו להציג
+            את
             <br />
-            Each card you create here acts as a unique window, offering a
-            glimpse into what you have to offer. Navigate through your
-            collection, edit details, or delete cards that are no longer needed.
+            המוצרים שלכם ללקוחות פוטנציאליים.
             <br />
-            This is your creative space to attract and engage with your
-            audience. Start creating and let your offerings shine!
-            <div className="text-center mt-3 ">
-              <i className="bi bi-arrow-down-circle  text-info fs-1 "></i>
-            </div>
+            ערוך פרטים או מחק מוצרים שאינם רלוונטים עוד.
+            <div className="text-center mt-3 "></div>
           </>
         }
       />
@@ -63,10 +73,29 @@ const MyCards = () => {
         <Link
           to="/create-card"
           className="mb-5 btn fw-bold fs-3"
-          style={{ backgroundColor: "#0a4275", color: "#e5b55c" }}
+          style={{ backgroundColor: "#3b5d50", color: "#e5b55c" }}
         >
-          Click Here To Create a New Card
+          לחץ כאן להוספת מוצר חדש לחנות
+          <i className="bi bi-plus-circle-fill me-2"></i>
         </Link>
+      </div>
+      <div className="row">
+        <div className="col-12 col-md-4 mb-3">
+          <h5 className="fs-6">מיין לפי קטגוריה:</h5>
+          <select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            className="form-select"
+            style={{ width: "auto" }}
+          >
+            <option value="">הצג את כל הקטגוריות</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="row">
         {!filteredCards.length ? (

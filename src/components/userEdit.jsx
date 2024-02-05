@@ -76,6 +76,7 @@ const UserEdit = ({ redirect }) => {
       country: "",
       houseNumber: "",
       zip: "",
+      // password: "",
     },
     validate: validateFormikUsingJoi({
       first_name: Joi.string().min(2).max(1000).required(),
@@ -91,8 +92,15 @@ const UserEdit = ({ redirect }) => {
       country: Joi.string().min(2).max(256).required(),
       houseNumber: Joi.number().min(2).max(256).required(),
       zip: Joi.number().min(2).max(256).required(),
-
       image_file: Joi.any().optional(),
+      // password: Joi.string()
+      //   .min(9)
+      //   .max(1024)
+      //   .required()
+      //   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*'-]).+$/)
+      //   .message(
+      //     "password must be at least 9 characters long and contain an uppercase letter, a lowercase letter, a number and one of the following characters !@#$%^&*-'"
+      //   ),
     }),
 
     async onSubmit(values) {
@@ -108,6 +116,7 @@ const UserEdit = ({ redirect }) => {
       formData.append("country", values.country);
       formData.append("houseNumber", values.houseNumber);
       formData.append("zip", values.zip);
+      // formData.append("password", values.password);
 
       if (values.image_file) {
         formData.append("image_file", values.image_file);
@@ -159,24 +168,20 @@ const UserEdit = ({ redirect }) => {
     }
 
     const {
-      // name: { first, last },
       first_name,
       last_name,
       phone,
-      // address: { street, houseNumber, city, zip, country },
       street,
       houseNumber,
       city,
       zip,
       country,
-      // image: { alt, url },
+      // password: "",
       image_file,
     } = user;
     form.setValues({
       first_name: first_name || "",
       last_name: last_name || "",
-      // url: url || "",
-      // alt: alt || "",
       image_file: image_file || "",
       phone: phone || "",
       city: city || "",
@@ -244,6 +249,12 @@ const UserEdit = ({ redirect }) => {
                     type="text"
                     required
                   />
+                  {/* <Input
+                    {...getProps("password")}
+                    label="סיסמא חדשה"
+                    type="text"
+                    required
+                  /> */}
                   {/* <Input {...getProps("state")} label="state" type="text" /> */}
                   <Input
                     {...getProps("city")}

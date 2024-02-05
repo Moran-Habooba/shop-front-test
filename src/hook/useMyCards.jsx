@@ -14,7 +14,7 @@ export const useMyCards = () => {
   // };
   const loadCards = async () => {
     try {
-      const { data } = await cardsService.getAllMyCards();
+      const { data } = await cardsService.getAll();
       setCards(data);
     } catch (error) {
       if (error.response?.status === 404) {

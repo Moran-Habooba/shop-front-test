@@ -5,6 +5,7 @@ import {
   getCardBizNumber,
   updateCardBizNumber,
 } from "../services/cardsService";
+import "./styls/CardManagement.css";
 
 const CardManagement = () => {
   const [cards, setCards] = useState([]);
@@ -100,7 +101,7 @@ const CardManagement = () => {
 
   return (
     <div>
-      <h1>ניהול מוצרים</h1>
+      <h1 className="text-center">ניהול מוצרים</h1>
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -108,8 +109,8 @@ const CardManagement = () => {
             <th>כותרת</th>
             <th> קטגוריה</th>
             <th> כמות במלאי החנות</th>
-            <th>מספר עסק</th>
-            <th>עריכת מספר עסק / מחיקת מוצר</th>
+            <th>מספר מזהה של מוצר</th>
+            <th>עריכת מספר מזהה / מחיקת מוצר</th>
           </tr>
         </thead>
         <tbody>
@@ -118,7 +119,7 @@ const CardManagement = () => {
               <td>{card._id}</td>
               <td>{card.title}</td>
               <td>{card.category}</td>
-              <td></td>
+              <td>{card.quantity}</td>
               <td>
                 {editBizNumber === card._id ? (
                   <>
@@ -155,31 +156,20 @@ const CardManagement = () => {
                   </>
                 ) : (
                   <>
-                    <button
-                      className="btn btn-info me-3"
-                      onClick={() => handleEditBizNumber(card._id)}
-                    >
-                      עריכת מספר עסק
-                    </button>
-                    <button
-                      className="btn btn-danger me-2"
-                      onClick={() => handleDeleteCard(card._id)}
-                    >
-                      מחיקה
-                    </button>
-                    {/* <button
-                      className="btn btn-success me-2"
-                      onClick={() => handleEditCategory(card._id)}
-                    >
-                      עריכת קטגוריה
-                    </button> */}
-
-                    {/* <button
-                      className="btn btn-warning"
-                      onClick={() => handleDeleteCategory(card.category)}
-                    >
-                      מחיקת קטגוריה
-                    </button> */}
+                    <div className="button-container">
+                      <button
+                        className="btn btn-info  ms-2 btn-a"
+                        onClick={() => handleEditBizNumber(card._id)}
+                      >
+                        עריכת מספר מזהה
+                      </button>
+                      <button
+                        className="btn btn-danger me-2 btn-a"
+                        onClick={() => handleDeleteCard(card._id)}
+                      >
+                        מחיקה
+                      </button>
+                    </div>
                   </>
                 )}
               </td>

@@ -31,5 +31,11 @@
   "apiUrlGetAllCartItems": "http://localhost:3000/api/cart",
   "apiUrlRemoveFromCart": "http://localhost:3000/api/cart/remove",
   "apiUrlCreateOrder": "http://localhost:3000/api/cart/create",
-  "apiUrlGetMyOrders": "http://localhost:3000/api/cart/my-orders"
+  "apiUrlGetMyOrders": "http://localhost:3000/api/cart/my-orders",
+
+  "apiUrlGetInventoryiByCardId": "http://localhost:3000/api/inventoryItem/",
+  "apiUrlAdjustInventoryQuantity": "http://localhost:3000/api/inventoryItem/{cardId}/adjust-quantity",
+  "apiUrlGetInventoryiWithDetails": "http://localhost:3000/api/inventoryItem",
+
+  "apiUrlGetAllClosedOrders": "http://localhost:3000/api/cart/orders/closed"
 }

@@ -23,3 +23,5 @@ export { default as ShabbatCategoryPage } from "./CategorayPages/shabbatCategora
 export { default as MezuzahCategoryPage } from "./CategorayPages/mezuzahCategoryPage";
 export { default as HagimCategoryPage } from "./CategorayPages/hagimCategoryPage";
 export { default as SidurimCategoryPage } from "./CategorayPages/sidurimCategoryPage";
+
+export { default as InventoryManagement } from "./InventoryManagement";

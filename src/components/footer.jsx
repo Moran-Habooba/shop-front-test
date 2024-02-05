@@ -23,10 +23,17 @@ const Footer = () => {
             צור קשר
           </NavLink>
         </li>
-        {user && (
+        {user && !user.isAdmin && (
           <li className="nav-item">
             <NavLink to="/my-favorites" className="nav-link px-2">
               המועדפים שלי
+            </NavLink>
+          </li>
+        )}
+        {user && user.isAdmin && (
+          <li className="nav-item">
+            <NavLink to="/my-cards" className="nav-link px-2">
+              הוספת מוצר
             </NavLink>
           </li>
         )}
@@ -41,7 +48,7 @@ const Footer = () => {
         {user && user.isAdmin && (
           <li className="nav-item">
             <NavLink to="/sand-box" className="nav-link px-2">
-              ניהול מוצרים/משתמשים
+              ניהול החנות{" "}
             </NavLink>
           </li>
         )}

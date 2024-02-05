@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { getCartItems } from "../services/cartService";
+import { refreshTokenHeader, getJWT } from "../services/usersService";
 
 const CartContext = createContext();
 
@@ -11,11 +12,16 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchCartItems = async () => {
+      const token = getJWT();
+      if (!token) {
+        return;
+      }
+      refreshTokenHeader();
       try {
         const response = await getCartItems();
-        setCartItems(response.data.cart.items || []);
+        setCartItems(response.data.cart?.items || []);
       } catch (error) {
-        console.error("Error fetching cart items:", error);
+        console.error("שגיאה בטעינת פריטים מהעגלה:", error);
       }
     };
 

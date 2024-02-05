@@ -12,6 +12,11 @@ export function getAll() {
   return httpService.get(config.apiUrlAllCards);
 }
 
+export async function getCardsCountInStore() {
+  const cards = await getAll();
+  return cards.length;
+}
+
 export function getAllMyCards(id) {
   refreshTokenHeader();
 

@@ -9,7 +9,8 @@ import "../components/styls/sandBox.css";
 import CardManagement from "./CardManagement";
 import CategoriesManagement from "./categoriesManagement";
 import PageHeader from "../common/pageHeader";
-
+import InventoryManagement from "./InventoryManagement";
+import SummaryStats from "./SummaryStats ";
 const SandBox = () => {
   const [users, setUsers] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState({});
@@ -99,23 +100,22 @@ const SandBox = () => {
 
   return (
     <div>
+      <i id="gear1" className="bi bi-gear-fill spin fs-1"></i>
+      <i id="gear2" className="bi bi-gear-fill spin-back fs-1 "></i>
       <PageHeader
         title={"ניהול"}
         description={
-          "Welcome to our User and Card Management page. This page is designed to " +
-          "provide control and oversight over user and card data within the system. This interface " +
-          "enables you to change users status , and remove them  as necessary " +
-          " See the cards created and edit their Business number. " +
-          "This page is designed to streamline " +
-          "your administrative tasks, ensuring efficient and effective management " +
-          "of user accounts and cards."
+          "ברוכים הבאים לדף ניהול החנות. דף זה נועד לספק שליטה ופיקוח על נתוני  " +
+          "המשתמשים/מוצרים/הזמנות /קטגוריות בתוך המערכת. ממשק זה מאפשר לך " +
+          "לשנות את סטטוס המשתמשים ולהסיר אותם לפי הצורך ,להוסיף/להסיר קטגוריות  " +
+          " ועוד. דף זה נועד לייעל את המשימות הניהוליות שלך, להבטיח ניהול יעיל ואפקטיבי של החנות שלך . "
         }
       />
-      <h1>ניהול משתמשים</h1>
-      {/* <h4 className="text-danger mb-5 mt-1">
-        <i className="bi bi-exclamation-triangle-fill me-2"></i>
-        Note Only non-admin users can be changed or deleted
-      </h4> */}
+      <SummaryStats />
+      <InventoryManagement />
+
+      <h1 className="text-center">ניהול משתמשים</h1>
+
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -192,6 +192,7 @@ const SandBox = () => {
           ))}
         </tbody>
       </table>
+
       <CardManagement />
       <CategoriesManagement />
     </div>

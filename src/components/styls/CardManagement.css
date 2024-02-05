@@ -1,0 +1,15 @@
+.button-container button {
+  display: inline-block;
+  margin-right: 10px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.btn-a {
+  padding: 0.5em 1em;
+  min-width: 100px;
+  text-align: center;
+  height: 80px;
+}

@@ -83,11 +83,11 @@ const AdminNavBar = () => {
                 צור קשר
               </NavLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink to="/my-favorites" className="nav-link with-underline">
                 המועדפים שלי
               </NavLink>
-            </li>
+            </li> */}
             <li className="nav-item">
               <NavLink to="/create-card" className="nav-link with-underline">
                 הוספת מוצר
@@ -101,7 +101,7 @@ const AdminNavBar = () => {
 
             <li className="nav-item">
               <NavLink to="/sand-box" className="nav-link with-underline">
-                ניהול מוצרים/משתמשים
+                ניהול החנות{" "}
               </NavLink>
             </li>
 
