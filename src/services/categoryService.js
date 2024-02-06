@@ -8,7 +8,7 @@ export function addCategory(category) {
 }
 
 export function getAllCategories() {
-  refreshTokenHeader();
+  // refreshTokenHeader();
   return httpService.get(config.apiUrlGetAllCategories);
 }
 
@@ -18,7 +18,7 @@ export function removeCategory(categoryId) {
 }
 
 export function getProductsCountInCategory(categoryName) {
-  refreshTokenHeader();
+  // refreshTokenHeader();
   const url = config.apiUrlGetProductsCountInCategory.replace(
     "{categoryName}",
     encodeURIComponent(categoryName)

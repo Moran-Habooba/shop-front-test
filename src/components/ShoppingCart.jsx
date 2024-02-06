@@ -230,7 +230,7 @@ const ShoppingCart = () => {
     };
 
     fetchCartItems();
-  }, []);
+  }, [setCartItems]);
 
   const totalCartPrice = useMemo(() => {
     return cartItems

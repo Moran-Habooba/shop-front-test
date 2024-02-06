@@ -103,7 +103,7 @@ export function AuthProvider({ children }) {
       icon: "info",
       showConfirmButton: true,
     }).then(() => {
-      navigate("/login");
+      navigate("/sign-in");
     });
   };
 
