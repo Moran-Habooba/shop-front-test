@@ -7,9 +7,12 @@ import { getUserById } from "../services/usersService";
 import { useDarkMode } from "../context/darkMode.context";
 import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
+import { getAllCategories } from "../services/categoryService";
+
 const Navbar = () => {
   const { user } = useAuth();
   const searchInput = useSearchBarRef();
+  const [categories, setCategories] = useState([]);
 
   const isRegularUser = user && !user.isBusiness && !user.isAdmin;
 
@@ -41,6 +44,12 @@ const Navbar = () => {
       });
     }
   }, [user]);
+  useEffect(() => {
+    getAllCategories().then(({ data }) => {
+      setCategories(data);
+    });
+  }, []);
+
   return (
     <nav
       className="navbar navbar-expand-sm  navbar-light"
@@ -87,6 +96,33 @@ const Navbar = () => {
               <NavLink to="/contact-Us" className="nav-link with-underline">
                 צור קשר
               </NavLink>
+            </li>
+            <li className="nav-item dropdown">
+              <NavLink
+                to="/categories"
+                className="nav-link dropdown-toggle"
+                id="navbarDropdownCategories"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                קטגוריות
+              </NavLink>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownCategories"
+              >
+                {categories.map((category) => (
+                  <li key={category._id}>
+                    <NavLink
+                      to={`/categories/${category.name}`}
+                      className="dropdown-item"
+                    >
+                      {category.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
             </li>
             {isRegularUser && (
               <>

@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #0a4275;
+  background-color: #3b5d50;
 }
 
 .nav-link,
@@ -13,7 +13,18 @@
 .footer {
   background-color: #3b5d50;
   color: #e5b55c !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 .nav {
   color: white;
+}
+.custom {
+  position: absolute;
+
+  right: 0;
+  transform: translateY(-35%);
+  height: auto;
+  display: flex;
+  align-items: center;
 }

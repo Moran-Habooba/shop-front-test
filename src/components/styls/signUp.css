@@ -1,5 +1,22 @@
 .border {
   color: white;
-  background-color: #44608b;
+  background-color: #3b5d50;
   border-radius: 15px;
+}
+
+.custom-body {
+  background-image: url("../../../public/formimg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.custom-text-contact {
+  color: #f9bf29;
+}
+.custom-btn {
+  background-color: #f9bf29 !important;
+  border-color: #f9bf29 !important;
+}
+.custom-container {
+  margin-left: 70% !important;
 }

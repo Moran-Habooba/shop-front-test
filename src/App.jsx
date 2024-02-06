@@ -118,8 +118,22 @@ function App() {
           <Route path="/categories/מזוזות" element={<MezuzahCategoryPage />} />
           <Route path="/categories/חגים" element={<HagimCategoryPage />} />
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
-          <Route path="/ShoppingCart" element={<ShoppingCart />} />
-          <Route path="/my-orders" element={<MyOrders />} />
+          <Route
+            path="/ShoppingCart"
+            element={
+              <ProtectedRoute onlyBiz>
+                <ShoppingCart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute onlyBiz>
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
           {/* <Route
             path="/InventoryManagement"
             element={<InventoryManagement />}

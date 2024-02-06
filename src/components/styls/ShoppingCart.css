@@ -43,9 +43,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .alert-custom {
-  padding: 5px !important; /* קטן יותר מהרווח הדיפולטיבי */
-  font-size: 0.8rem; /* גודל טקסט קטן יותר */
-  margin-bottom: 0.2rem !important; /* רווח מתחת להודעה */
+  padding: 5px !important;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem !important;
   width: 65px;
 }
 

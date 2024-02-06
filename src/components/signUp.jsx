@@ -33,26 +33,18 @@ const SignUp = ({ redirect }) => {
     initialValues: {
       first_name: "",
       last_name: "",
-
       email: "",
       phone: "",
       password: "",
-
       city: "",
       street: "",
       country: "",
       house_number: "",
       zip: "",
-
-      // image_url: "",
-      // image_alt: "",
       image_file: null,
-
       isBusiness: false,
     },
     validate: validateFormikUsingJoi({
-      // first_name: Joi.string().min(2).max(256).required(),
-      // last_name: Joi.string().min(2).max(256).required(),
       first_name: Joi.string().min(2).max(1000).required(),
       last_name: Joi.string().min(2).max(1000).required(),
       email: Joi.string()
@@ -83,13 +75,6 @@ const SignUp = ({ redirect }) => {
       country: Joi.string().min(2).max(256).required(),
       house_number: Joi.number().min(2).max(256).required(),
       zip: Joi.number().min(2).max(256).required(),
-      // image_url: Joi.string()
-      //   .min(14)
-      //   .regex(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/)
-      //   .messages({ "string.pattern.base": "Invalid URL string." })
-      //   .allow(""),
-
-      // image_alt: Joi.string().min(2).max(256).allow(""),
       image_file: Joi.any().label("Image File").allow(""),
       isBusiness: Joi.boolean().required(),
     }),
@@ -163,28 +148,29 @@ const SignUp = ({ redirect }) => {
   return (
     <>
       <PageHeader
-        title="Sign-UP"
+        title="מועדון ה- VIP של תורתך שעשועי"
         description={
           <>
-            Dive into a world of exclusive benefits by signing up today. Tailor
-            your own experience, engage with our community, and stay ahead with
-            early access to the latest features.
+            הצטרפו למועדון הלקוחות שלנו ותוכלו להנות ממגוון הטבות ייחודיות
+            עבורך! 10% הנחה בכל רכישה, הטבת יום הולדת ועוד...
             <br />
-            Quick and simple, registration is your gateway to a new adventure.
-            <strong>Join us now and be part of something special!</strong>
+            {/* Quick and simple, registration is your gateway to a new adventure. */}
+            <strong>הצטרפו עכשיו!</strong>
           </>
         }
       />
-      <div className="container">
+      <div className="container custom-body ">
         <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="border p-3 m-5">
-              <div className="form-top">
+          <div className="col-lg-6 col-md-8 col-sm-10 custom-container">
+            <div className="border p-3 m-5 ">
+              <div className="form-top ">
                 <div className="form-top-left">
-                  <h3>
+                  <h3 className="custom-text-contact">
                     הירשם עכשיו <i className="bi bi-pencil"></i>
                   </h3>
-                  <p>Fill in the form below to get instant access:</p>
+                  <p className="custom-text-contact ">
+                    מלא את הטופס למטה כדי לקבל גישה מיידית:
+                  </p>
                 </div>
               </div>
 
@@ -304,14 +290,14 @@ const SignUp = ({ redirect }) => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="btn btn-danger me-2"
+                  className="btn btn-danger me-2 custom-btn ms-2"
                 >
                   ביטול
                 </button>
 
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-primary  custom-btn custom-btn"
                   // disabled={!form.isValid}
                 >
                   שליחה

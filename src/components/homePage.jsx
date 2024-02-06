@@ -270,7 +270,6 @@ const HomePage = () => {
           ></span>
         </button>
       </div>
-
       {/* ----------- */}
       <div className="image-text-container mt-5 ">
         <div className="image-text-container">
@@ -330,38 +329,40 @@ const HomePage = () => {
           </select>
         </div>
       )}
-
-      <div>
+      <div className="view-mode-container">
+        <span className="btn-view-mode-text">תצוגה:</span>
         <button
-          className="btn btn-primary ms-1 mb-2 btn-sm"
+          className="btn btn-view-mode"
           onClick={() => toggleViewMode("table")}
         >
-          <i className="bi bi-list ms-1"></i>
+          <i className="bi bi-list"></i>
         </button>
         <button
-          className="btn btn-primary  mb-2 btn-sm"
+          className="btn btn-view-mode"
           onClick={() => toggleViewMode("grid")}
         >
-          <i className="bi bi-grid ms-1 "></i>
+          <i className="bi bi-grid"></i>
         </button>
-        <div className="row">
-          {viewMode === "grid" ? <CardList /> : <CardsTable />}
-        </div>
-        <div>{/* <CardsTable /> */}</div>
-        <div className="d-flex justify-content-center my-3">
-          <button
-            className="btn btn-info mb-4 fw-bold LoadMoreBtn"
-            onClick={showMoreCards}
-            style={{
-              backgroundColor: "#3b5d50",
-              color: "#e5b55c",
-              border: "none",
-            }}
-          >
-            טען עוד מוצרים
-          </button>
-        </div>
       </div>
+
+      <div className="row">
+        {viewMode === "grid" ? <CardList /> : <CardsTable />}
+      </div>
+
+      <div className="d-flex justify-content-center my-3">
+        <button
+          className="btn btn-info mb-4 fw-bold LoadMoreBtn"
+          onClick={showMoreCards}
+          style={{
+            backgroundColor: "#3b5d50",
+            color: "#e5b55c",
+            border: "none",
+          }}
+        >
+          טען עוד מוצרים
+        </button>
+      </div>
+      {/* </div> */}
     </>
   );
 };

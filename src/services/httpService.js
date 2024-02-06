@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../config.json";
+import Swal from "sweetalert2";
 
 axios.defaults.baseURLUsersLogin = config.apiUrlUsersLogin;
 axios.defaults.baseUrlUsersRegister = config.apiUrlUsersRegister;
@@ -41,6 +42,31 @@ axios.defaults.baseGetInventoryiWithDetails =
   config.apiUrlGetInventoryiWithDetails;
 
 axios.defaults.baseUrlGetAllClosedOrders = config.apiUrlGetAllClosedOrders;
+
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//
+//     if (error.response && error.response.status === 429) {
+//       const retryAfter = error.response.headers["retry-after"];
+//       const waitTime = retryAfter
+//         ? ` Please try again in ${retryAfter} seconds.`
+//         : "";
+//       return new Promise((resolve, reject) => {
+//         Swal.fire({
+//           title: "Too Many Requests",
+//           text: `You have reached the limit of requests.${waitTime}`,
+//           icon: "error",
+//           confirmButtonText: "OK",
+//         }).then(() => {
+//           resolve(Promise.reject(error));
+//         });
+//       });
+//     }
+//     // המשך לטפל בשגיאות אחרות או החזר את השגיאה
+//     return Promise.reject(error);
+//   }
+// );
 
 export function setCommonHeader(headerName, headerValue) {
   axios.defaults.headers.common[headerName] = headerValue;

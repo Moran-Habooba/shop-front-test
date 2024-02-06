@@ -81,17 +81,19 @@ const SignIn = ({ redirect }) => {
 
   return (
     <>
-      <PageHeader title="Sign-IN" description="Join the best club" />
-      <div className="container">
+      <PageHeader title="ברוכים השבים" description="" />
+      <div className="container custom-body ">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">
             <div className="border p-3 m-5">
               <div className="form-top">
                 <div className="form-top-left">
-                  <h3>
-                    Sign in now <i className="bi bi-pencil"></i>
+                  <h3 className="custom-text-contact">
+                    התחבר עכשיו <i className="bi bi-pencil"></i>
                   </h3>
-                  <p>Welcome back</p>
+                  <p className="custom-text-contact">
+                    להתחברות מלאו את הפרטים:
+                  </p>
                 </div>
               </div>
 
@@ -102,14 +104,14 @@ const SignIn = ({ redirect }) => {
                 <div className="row">
                   <Input
                     {...getProps("email")}
-                    label="email"
+                    label="אימייל"
                     type="email"
                     required
                   />
 
                   <Input
                     {...getProps("password")}
-                    label="password"
+                    label="סיסמא"
                     type="password"
                     required
                   />
@@ -118,13 +120,16 @@ const SignIn = ({ redirect }) => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="btn btn-danger me-2"
+                  className="btn btn-danger me-2 custom-btn"
                 >
-                  Cancel
+                  ביטול
                 </button>
 
-                <button type="submit" className="btn btn-primary ">
-                  Login
+                <button
+                  type="submit"
+                  className="btn btn-primary custom-btn me-2 "
+                >
+                  התחבר
                 </button>
               </form>
             </div>
