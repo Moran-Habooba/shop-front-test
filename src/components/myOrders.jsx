@@ -28,6 +28,7 @@ const MyOrders = () => {
           <tr>
             <th>מספר ההזמנה</th>
             <th>תאריך הזמנה</th>
+            <th>כתובת למשלוח</th>
             <th>סטטוס</th>
           </tr>
         </thead>
@@ -36,6 +37,9 @@ const MyOrders = () => {
             <tr key={order._id}>
               <td>{order.orderNumber}</td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              <td>
+                {order.city}, {order.street},{order.houseNumber}
+              </td>
               <td>{order.status}</td>
             </tr>
           ))}

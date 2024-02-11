@@ -144,7 +144,7 @@ const CategoriesManagement = () => {
           <tr>
             <th>מזהה ID</th>
             <th>קטגוריה</th>
-            <th> כמות במלאי מאותה קטגוריה</th>
+            <th> כמות מוצרים מאותה קטגוריה</th>
             <th>מחיקת קטגוריה</th>
           </tr>
         </thead>

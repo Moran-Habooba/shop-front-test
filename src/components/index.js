@@ -17,11 +17,14 @@ export { default as UserEdit } from "./userEdit";
 export { default as ContactUs } from "./contactUs";
 export { default as ShoppingCart } from "./ShoppingCart";
 export { default as MyOrders } from "./myOrders";
+export { default as EmailVerification } from "./emailVerification";
+export { default as ResetPassword } from "./resetPassword";
 
 export { default as KippahsCategoryPage } from "./CategorayPages/KippahsCategoryPage ";
 export { default as ShabbatCategoryPage } from "./CategorayPages/shabbatCategorayPage";
 export { default as MezuzahCategoryPage } from "./CategorayPages/mezuzahCategoryPage";
 export { default as HagimCategoryPage } from "./CategorayPages/hagimCategoryPage";
 export { default as SidurimCategoryPage } from "./CategorayPages/sidurimCategoryPage";
+export { default as NatlaCategoryPage } from "./CategorayPages/natlaCategoryPage.jsx";
 
 export { default as InventoryManagement } from "./InventoryManagement";

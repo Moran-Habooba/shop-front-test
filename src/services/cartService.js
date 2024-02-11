@@ -48,7 +48,7 @@ export async function getCartItems() {
 
 export function updateCart(itemsToUpdate) {
   refreshTokenHeader();
-  console.log("Updating cart with items:", itemsToUpdate);
+  // console.log("Updating cart with items:", itemsToUpdate);
   const data = { itemsToUpdate };
   return httpService.put(config.apiUrlUpdateCart, data);
 }
@@ -59,10 +59,10 @@ export function cancelCart() {
   return httpService.post(config.apiUrlCancelCart);
 }
 
-export function completeOrder() {
+export function completeOrder(orderDetails) {
   refreshTokenHeader();
 
-  return httpService.post(config.apiUrlCompleteCart);
+  return httpService.post(config.apiUrlCompleteCart, orderDetails);
 }
 
 export function removeFromCart(cardId) {
@@ -84,6 +84,20 @@ export async function getClosedOrders() {
     return response.data;
   } catch (error) {
     console.error("Error fetching closed orders:", error);
+    throw error;
+  }
+}
+///////////פה הוספתי ליוזר לא מחובר
+
+export async function syncLocalCartWithServer(localCartItems) {
+  refreshTokenHeader();
+  try {
+    const response = await httpService.post(config.apiUrlSyncCart, {
+      items: localCartItems,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error syncing local cart with server:", error);
     throw error;
   }
 }

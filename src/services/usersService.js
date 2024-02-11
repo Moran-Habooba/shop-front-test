@@ -46,8 +46,23 @@ export async function login(credentials) {
   const response = await httpService.post(config.apiUrlUsersLogin, credentials);
   localStorage.setItem(TOKEN_KEY, response.data.token);
   refreshTokenHeader();
-
   return response;
+}
+// export async function login(credentials) {
+//   const response = await httpService.post(config.apiUrlUsersLogin, credentials);
+//   localStorage.setItem(TOKEN_KEY, response.data.token);
+//   refreshTokenHeader();
+//   handleUserLogin(response.data.user);
+//   return response;
+// }
+// export function resetPassword(email) {
+//   return httpService.post(config.apiUrlResetPassword, { email });
+// }
+export function resetPassword(email, newPassword) {
+  return httpService.post(config.apiUrlResetPassword, {
+    email,
+    newPassword,
+  });
 }
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
@@ -78,6 +93,7 @@ const usersService = {
   updateUsers,
   deleteUser,
   ReplaceUserStatus,
+  resetPassword,
 };
 
 export default usersService;

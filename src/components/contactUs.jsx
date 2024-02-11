@@ -68,10 +68,25 @@ const ContactUs = ({ redirect }) => {
           </>
         }
       />
-      <div className="container mb-5 container-shadow ">
-        <div className="row justify-content-center ">
-          <div className="col-lg-6 ">
-            <form onSubmit={form.handleSubmit} className="mt-5 form-border">
+      <div className="container mb-5 container-shadow custom-body-contact-us ">
+        <div className="row justify-content-center  ">
+          <div className="col-lg-6 custom-container-contact-us ">
+            {/* <PageHeader
+              title={
+                <>
+                  צרו קשר
+                  <i className="bi bi-telephone-fill"></i>
+                </>
+              }
+              description={
+                <>
+                  לכל שאלה, התייעצות או פנייה אנחנו כאן...
+                  <br />
+                  השאירו פרטים ונחזור אליכם בהקדם
+                </>
+              }
+            /> */}
+            <form onSubmit={form.handleSubmit} className="mt-5 form-border ">
               {serverError && (
                 <div className="alert alert-danger">{serverError}</div>
               )}
@@ -113,7 +128,7 @@ const ContactUs = ({ redirect }) => {
               <div className="text-center">
                 <button
                   disabled={!form.isValid}
-                  className="btn btn-primary"
+                  className="btn btn-primary custom-btn-contact-us"
                   type="submit"
                 >
                   שלח

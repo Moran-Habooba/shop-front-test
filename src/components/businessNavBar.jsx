@@ -40,17 +40,25 @@ const BusinessNavBar = () => {
 
   useEffect(() => {
     if (user && user._id) {
-      getUserById(user._id).then((userData) => {
-        setUserName(`${userData.data.first_name}`);
-        setUserProfileImage(userData.data.image_file.path || "");
-      });
+      try {
+        getUserById(user._id).then((userData) => {
+          setUserName(`${userData.data.first_name}`);
+          setUserProfileImage(userData.data.image_file.path || "");
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, [user, userProfileImage]);
 
   useEffect(() => {
-    getAllCategories().then(({ data }) => {
-      setCategories(data);
-    });
+    try {
+      getAllCategories().then(({ data }) => {
+        setCategories(data);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   return (

@@ -72,6 +72,8 @@ authContext.displayName = "auth";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(usersService.getUser());
+  const [userData, setUserData] = useState();
+
   const [logoutTimer, setLogoutTimer] = useState(null);
 
   const refreshUser = () => setUser(usersService.getUser());
@@ -87,24 +89,56 @@ export function AuthProvider({ children }) {
     return response;
   };
 
+  useEffect(() => {
+    if (user) {
+      const fetchUser = async () => {
+        try {
+          const { data } = await usersService.getUserById(user._id);
+          setUserData(data);
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      fetchUser();
+    }
+  }, [user]);
+
   // const logout = () => {
   //   usersService.logout();
-  //   refreshUser();
+  //   setUser(null);
+  //   if (logoutTimer) {
+  //     clearTimeout(logoutTimer);
+  //   }
+  //   localStorage.removeItem("token");
+  //   Swal.fire({
+  //     title: "עקב אי פעילות עליך להתחבר מחדש",
+  //     icon: "info",
+  //     showConfirmButton: true,
+  //   }).then(() => {
+  //     navigate("/sign-in");
+  //   });
   // };
+
   const logout = () => {
+    const wasUserLoggedIn = !!user;
     usersService.logout();
     setUser(null);
+
     if (logoutTimer) {
       clearTimeout(logoutTimer);
     }
+
     localStorage.removeItem("token");
-    Swal.fire({
-      title: "עקב אי פעילות עליך להתחבר מחדש",
-      icon: "info",
-      showConfirmButton: true,
-    }).then(() => {
-      navigate("/sign-in");
-    });
+
+    if (wasUserLoggedIn) {
+      Swal.fire({
+        title: "עקב אי פעילות עליך להתחבר מחדש",
+        icon: "info",
+        showConfirmButton: true,
+      }).then(() => {
+        navigate("/sign-in");
+      });
+    }
   };
 
   const updateUser = async (id, userDetails) => {
@@ -142,6 +176,7 @@ export function AuthProvider({ children }) {
     <authContext.Provider
       value={{
         user,
+        userData,
         login,
         logout,
         signUp: usersService.createUser,

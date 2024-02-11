@@ -36,10 +36,11 @@ const HomePage = () => {
         const { data } = await getAllCategories();
         setCategories(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (!error.response || error.response.status !== 429) {
+          console.error("Error fetching data:", error);
+        }
       }
     };
-
     fetchData();
   }, []);
 
@@ -70,10 +71,41 @@ const HomePage = () => {
 
   ////////
 
+  // useEffect(() => {
+  //   try {
+  //     getAll().then((fetchedCards) => {
+  //       setCards(fetchedCards.data);
+  //     });
+  //   } catch (error) {
+  //     if (!error.response || error.response.status !== 429) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }, [viewMode]);
+
+  // useEffect(() => {
+  //   getAll()
+  //     .then((fetchedCards) => {
+  //       setCards(fetchedCards.data);
+  //     })
+  //     .catch((error) => {
+  //       if (!error.response || error.response.status !== 429) {
+  //         console.error(error);
+  //       }
+  //     });
+  // }, [viewMode]);
   useEffect(() => {
-    getAll().then((fetchedCards) => {
-      setCards(fetchedCards.data);
-    });
+    const fetchData = async () => {
+      try {
+        const fetchedCards = await getAll();
+        setCards(fetchedCards.data);
+      } catch (error) {
+        if (!error.response || error.response.status !== 429) {
+          console.error(error);
+        }
+      }
+    };
+    fetchData();
   }, [viewMode]);
 
   const showMoreCards = () => {
@@ -114,9 +146,15 @@ const HomePage = () => {
     if (searchTerm) {
       fetchAndFilterCards();
     } else {
-      getAll().then((fetchedCards) => {
-        setCards(fetchedCards.data);
-      });
+      try {
+        getAll().then((fetchedCards) => {
+          setCards(fetchedCards.data);
+        });
+      } catch (error) {
+        if (!error.response || error.response.status !== 429) {
+          console.error(error);
+        }
+      }
     }
   }, [searchTerm]);
 

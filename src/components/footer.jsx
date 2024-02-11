@@ -9,9 +9,13 @@ const Footer = () => {
   const { user } = useAuth();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    getAllCategories().then(({ data }) => {
-      setCategories(data);
-    });
+    try {
+      getAllCategories().then(({ data }) => {
+        setCategories(data);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
   return (
     <footer className="footer py-3" style={{ position: "relative" }}>
@@ -106,7 +110,7 @@ const Footer = () => {
       >
         אתר שומר שבת
         <img
-          src="candles.png"
+          src="/candles.png"
           alt="candles"
           style={{
             marginLeft: "10px",

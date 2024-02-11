@@ -91,7 +91,9 @@ const UserEdit = ({ redirect }) => {
       street: Joi.string().min(2).max(256).required(),
       country: Joi.string().min(2).max(256).required(),
       houseNumber: Joi.number().min(2).max(256).required(),
-      zip: Joi.number().min(2).max(256).required(),
+      // zip: Joi.number().min(2).max(256).required(),
+      zip: Joi.number().min(1).max(99999999).integer().required(),
+
       image_file: Joi.any().optional(),
       // password: Joi.string()
       //   .min(9)
@@ -144,8 +146,8 @@ const UserEdit = ({ redirect }) => {
           navigate(redirect);
         }
         Swal.fire({
-          title: "Success!",
-          text: "Your details have been saved successfully.",
+          title: "נשמר בהצלחה !",
+          text: "הפרטים התעדכנו בהצלחה.",
           icon: "success",
           confirmButtonText: "OK",
           timer: 1000,
@@ -182,7 +184,7 @@ const UserEdit = ({ redirect }) => {
     form.setValues({
       first_name: first_name || "",
       last_name: last_name || "",
-      image_file: image_file || "",
+      // image_file: image_file || "",
       phone: phone || "",
       city: city || "",
       country: country || "",
@@ -190,6 +192,9 @@ const UserEdit = ({ redirect }) => {
       houseNumber: houseNumber || "",
       street: street || "",
     });
+    if (image_file) {
+      form.setFieldValue("image_file", image_file);
+    }
   }, [user]);
 
   const getProps = (name) => {

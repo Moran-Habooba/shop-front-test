@@ -7,6 +7,7 @@ import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
 import { getUserById } from "../services/usersService";
 import "./styls/search.css";
+import { getAllCategories } from "../services/categoryService";
 
 const AdminNavBar = () => {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ const AdminNavBar = () => {
   const searchInput = useSearchBarRef();
   const [userName, setUserName] = useState("");
   const [userProfileImage, setUserProfileImage] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const handleInputChange = () => {
     setSearchTerm(searchInput.current.value);
@@ -39,6 +41,12 @@ const AdminNavBar = () => {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    getAllCategories().then(({ data }) => {
+      setCategories(data);
+    });
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-sm  navbar-light  ">
@@ -88,6 +96,33 @@ const AdminNavBar = () => {
                 המועדפים שלי
               </NavLink>
             </li> */}
+            <li className="nav-item dropdown">
+              <NavLink
+                to="/categories"
+                className="nav-link dropdown-toggle"
+                id="navbarDropdownCategories"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                קטגוריות
+              </NavLink>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownCategories"
+              >
+                {categories.map((category) => (
+                  <li key={category._id}>
+                    <NavLink
+                      to={`/categories/${category.name}`}
+                      className="dropdown-item"
+                    >
+                      {category.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
             <li className="nav-item">
               <NavLink to="/create-card" className="nav-link with-underline">
                 הוספת מוצר

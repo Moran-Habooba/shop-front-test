@@ -29,6 +29,9 @@ import {
   SidurimCategoryPage,
   ShoppingCart,
   MyOrders,
+  NatlaCategoryPage,
+  EmailVerification,
+  ResetPassword,
 } from "./components";
 
 function App() {
@@ -59,7 +62,7 @@ function App() {
           <Route
             path="/user-edit"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyBiz>
                 <UserEdit redirect="/" />
               </ProtectedRoute>
             }
@@ -118,12 +121,15 @@ function App() {
           <Route path="/categories/מזוזות" element={<MezuzahCategoryPage />} />
           <Route path="/categories/חגים" element={<HagimCategoryPage />} />
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
+          <Route path="/categories/נטלות" element={<NatlaCategoryPage />} />
+          <Route path="/emailVerification" element={<EmailVerification />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           <Route
             path="/ShoppingCart"
             element={
-              <ProtectedRoute onlyBiz>
-                <ShoppingCart />
-              </ProtectedRoute>
+              // <ProtectedRoute onlyBiz>
+              <ShoppingCart />
+              // </ProtectedRoute>
             }
           />
           <Route

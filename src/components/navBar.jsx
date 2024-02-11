@@ -8,11 +8,13 @@ import { useDarkMode } from "../context/darkMode.context";
 import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
 import { getAllCategories } from "../services/categoryService";
+import { useCart } from "../context/cart.context";
 
 const Navbar = () => {
   const { user } = useAuth();
   const searchInput = useSearchBarRef();
   const [categories, setCategories] = useState([]);
+  const { totalItemsInCart = 0 } = useCart();
 
   const isRegularUser = user && !user.isBusiness && !user.isAdmin;
 
@@ -39,15 +41,25 @@ const Navbar = () => {
 
   useEffect(() => {
     if (user && user._id) {
-      getUserById(user._id).then((userData) => {
-        setUserName(`${userData.data.first_name}`);
-      });
+      try {
+        getUserById(user._id).then((userData) => {
+          setUserName(`${userData.data.first_name}`);
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, [user]);
   useEffect(() => {
-    getAllCategories().then(({ data }) => {
-      setCategories(data);
-    });
+    try {
+      getAllCategories().then(({ data }) => {
+        setCategories(data);
+      });
+    } catch (error) {
+      if (!error.response || error.response.status !== 429) {
+        console.error("Error fetching data:", error);
+      }
+    }
   }, []);
 
   return (
@@ -201,10 +213,13 @@ const Navbar = () => {
               <li></li>
             )}
           </ul>
-          {/* <i
-            className="bi bi-cart  fs-3 me-5"
-            style={{ cursor: "pointer", color: "#e5b55c" }}
-          ></i> */}
+          <Link to="/ShoppingCart" style={{ textDecoration: "none" }}>
+            <i
+              className="bi bi-cart  fs-3 me-5"
+              style={{ cursor: "pointer", color: "#e5b55c" }}
+            ></i>
+          </Link>
+          <span className="cart-item-count me-2">{totalItemsInCart}</span>
 
           <form
             className="d-flex"

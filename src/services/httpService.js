@@ -10,6 +10,8 @@ axios.defaults.baseUrlUpdateUser = config.apiUrlUpdateUser;
 axios.defaults.baseUrlDeleteUser = config.apiUrlDeleteUser;
 axios.defaults.baseUrlUserBusiness = config.apiUrlUserBusiness;
 
+axios.defaults.baseUrlResetPassword = config.apiUrlResetPassword;
+
 axios.defaults.baseUrlAllCards = config.apiUrlAllCards;
 axios.defaults.baseUrlCardById = config.apiUrlCardById;
 axios.defaults.baseUrlAllMyCards = config.apiUrlAllMyCards;
@@ -43,30 +45,44 @@ axios.defaults.baseGetInventoryiWithDetails =
 
 axios.defaults.baseUrlGetAllClosedOrders = config.apiUrlGetAllClosedOrders;
 
-// axios.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//
-//     if (error.response && error.response.status === 429) {
-//       const retryAfter = error.response.headers["retry-after"];
-//       const waitTime = retryAfter
-//         ? ` Please try again in ${retryAfter} seconds.`
-//         : "";
-//       return new Promise((resolve, reject) => {
-//         Swal.fire({
-//           title: "Too Many Requests",
-//           text: `You have reached the limit of requests.${waitTime}`,
-//           icon: "error",
-//           confirmButtonText: "OK",
-//         }).then(() => {
-//           resolve(Promise.reject(error));
-//         });
-//       });
-//     }
-//     // המשך לטפל בשגיאות אחרות או החזר את השגיאה
-//     return Promise.reject(error);
-//   }
-// );
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: " בקשות רבות מדי לשרת",
+          text: "אופס! עשית יותר מדי בקשות לשרת בזמן קצר מדי. אנא המתן ונסה שוב מחר.",
+          // timer: 60000,
+          // timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "שגיאה בבקשה",
+          text:
+            error.response.data.message ||
+            "שגיאה לא צפויה אירעה, אנא נסה שנית.",
+        });
+      }
+    } else if (error.request) {
+      Swal.fire({
+        icon: "error",
+        title: "שגיאת רשת",
+        text: "הבקשה לא קיבלה תגובה, בדוק את חיבור האינטרנט שלך.",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "שגיאה",
+        text: "משהו השתבש ביצירת הבקשה, אנא נסה שנית.",
+      });
+    }
+    return new Promise(() => {});
+  }
+);
 
 export function setCommonHeader(headerName, headerValue) {
   axios.defaults.headers.common[headerName] = headerValue;

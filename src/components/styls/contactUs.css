@@ -47,3 +47,17 @@
 .text:hover::before {
   transform: scaleX(1);
 }
+
+.custom-body-contact-us {
+  background-image: url("../../../public/phone.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.custom-container-contact-us {
+  margin-left: 40% !important;
+}
+
+.custom-btn-contact-us {
+  background-color: #3b5d50 !important;
+  border-color: #3b5d50 !important;
+}

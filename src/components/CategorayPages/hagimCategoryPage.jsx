@@ -25,11 +25,15 @@ const HagimCategoryPage = () => {
 
   return (
     <div>
-      <h1>חגים </h1>
-      <div className="products-container">
-        {products.map((product) => (
-          <Card key={product._id} card={product} />
-        ))}
+      <h1>חגים</h1>
+      <div className="container">
+        <div className="row">
+          {products.map((product) => (
+            <div className="col-sm-12 col-md-6 col-lg-4" key={product._id}>
+              <Card card={product} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

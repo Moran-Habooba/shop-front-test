@@ -48,6 +48,9 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-bottom: 0.2rem !important;
   width: 65px;
 }
+.input-small {
+  width: 220px !important;
+}
 
 @media (min-width: 992px) {
   .card-registration-2 .bg-grey {

@@ -25,10 +25,14 @@ const KippahsCategoryPage = () => {
   return (
     <div>
       <h1>כיפות</h1>
-      <div className="products-container">
-        {products.map((product) => (
-          <Card key={product._id} card={product} />
-        ))}
+      <div className="container">
+        <div className="row">
+          {products.map((product) => (
+            <div key={product._id} className="col-sm">
+              <Card card={product} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

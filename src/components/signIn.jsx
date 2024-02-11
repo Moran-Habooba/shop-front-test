@@ -5,7 +5,7 @@ import { validateFormikUsingJoi } from "../utils/validateFormikUsingJoi";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import Joi from "joi";
 import { useAuth } from "../context/auth.context";
 import { useCancelNavigate } from "../hook/useCancelNavigate'";
@@ -132,6 +132,7 @@ const SignIn = ({ redirect }) => {
                   התחבר
                 </button>
               </form>
+              <Link to={"/emailVerification"}>שכחת את הסיסמא?</Link>
             </div>
           </div>
         </div>

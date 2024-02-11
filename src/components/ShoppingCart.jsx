@@ -17,6 +17,7 @@ import {
   removeFromCart,
   updateCart,
   completeOrder,
+  syncLocalCartWithServer,
 } from "../services/cartService";
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/auth.context";
@@ -24,16 +25,30 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart.context";
 import { adjustInventoryQuantity } from "../services/inventoryService";
 import inventoryService from "../services/inventoryService";
+import Swal from "sweetalert2";
+
 const ShoppingCart = () => {
   // eslint-disable-next-line no-unused-vars
   const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(15);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
-  const { user } = useAuth();
+  const { user, userData } = useAuth();
   const navigate = useNavigate();
   const { cartItems, setCartItems, totalItemsInCart } = useCart();
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleUserLogin = async (user) => {
+    try {
+      const localCartItems =
+        JSON.parse(localStorage.getItem("cartItems")) || [];
+      await syncLocalCartWithServer(localCartItems);
+
+      localStorage.removeItem("cartItems");
+    } catch (error) {
+      console.error("Error syncing local cart with server:", error);
+    }
+  };
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -79,29 +94,29 @@ const ShoppingCart = () => {
       total = 0;
     }
 
-    setCartItems(total);
+    setCartTotal(total.toFixed(2));
   };
 
-  const handleRemoveItem = async (itemToRemove) => {
-    try {
-      const productIdToRemove = itemToRemove.card_id._id;
-      console.log(productIdToRemove);
+  // const handleRemoveItem = async (itemToRemove) => {
+  //     try {
+  //       const productIdToRemove = itemToRemove.card_id._id;
+  //       console.log(productIdToRemove);
 
-      const response = await removeFromCart(productIdToRemove);
+  //       const response = await removeFromCart(productIdToRemove);
 
-      if (response.status === 200) {
-        const updatedCartItems = cartItems.filter(
-          (item) => item.card_id._id !== productIdToRemove
-        );
+  //       if (response.status === 200) {
+  //         const updatedCartItems = cartItems.filter(
+  //           (item) => item.card_id._id !== productIdToRemove
+  //         );
 
-        setCartItems(updatedCartItems);
-      } else {
-        console.error("Item not found in the cart");
-      }
-    } catch (error) {
-      console.error("Error removing the item from the cart:", error);
-    }
-  };
+  //         setCartItems(updatedCartItems);
+  //       } else {
+  //         console.error("Item not found in the cart");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error removing the item from the cart:", error);
+  //     }
+  //   };
 
   // function changeQuantity(item, change) {
   //   console.log(
@@ -141,12 +156,201 @@ const ShoppingCart = () => {
   //   }
   // }
 
-  async function changeQuantity(item, change) {
-    console.log(
-      `Checking inventory for item ${item.card_id._id} before changing quantity, change: ${change}`
-    );
+  // async function changeQuantity(item, change) {
+  //   try {
+  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
+  //       item.card_id._id
+  //     );
+  //     const inventoryData = inventoryResponse.data;
+  //     // console.log("Inventory response:", inventoryData);
 
+  //     const availableInventory = inventoryData.quantity;
+  //     // console.log("availableInventory response:", availableInventory);
+  //     let newQuantity = item.quantity + change;
+
+  //     if (newQuantity > availableInventory) {
+  //       setError("המלאי אזל");
+  //       return;
+  //     } else {
+  //       setError("");
+  //     }
+
+  //     if (newQuantity <= 0) {
+  //       setCartItems(
+  //         cartItems.filter(
+  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
+  //         )
+  //       );
+  //       removeFromCart(item.card_id._id)
+  //         .then((response) => {
+  //           console.log(response.data);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error removing the item:", error);
+  //         });
+  //     } else {
+  //       newQuantity = Math.max(newQuantity, 0);
+  //       const updatedItem = { ...item, quantity: newQuantity };
+  //       const updatedItems = cartItems.map((cartItem) =>
+  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+  //       );
+
+  //       setCartItems(updatedItems);
+
+  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
+  //         .then((response) => {
+  //           console.log("Cart updated:", response.data);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error updating the cart:", error);
+  //         });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching inventory for the item:", error);
+  //   }
+  // }
+  // פה שנתי ליוזר לא מחובר
+  const handleRemoveItem = async (itemToRemove) => {
     try {
+      if (!user) {
+        // If the user is not logged in, update the local cart only
+        const updatedCartItems = cartItems.filter(
+          (item) => item.card_id !== itemToRemove.card_id
+        );
+        setCartItems(updatedCartItems); // Update local state
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems)); // Update local storage
+        return;
+      }
+
+      const productIdToRemove = itemToRemove.card_id._id;
+      console.log(productIdToRemove);
+
+      const response = await removeFromCart(productIdToRemove);
+
+      if (response.status === 200) {
+        // Remove the specific item from the cart
+        setCartItems((prevCartItems) =>
+          prevCartItems.filter((item) => item.card_id._id !== productIdToRemove)
+        );
+      } else {
+        console.error("Item not found in the cart");
+        return;
+      }
+    } catch (error) {
+      console.error("Error removing the item from the cart:", error);
+    }
+  };
+
+  // async function changeQuantity(item, change) {
+  //   try {
+  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
+  //       item.card_id._id
+  //     );
+  //     const inventoryData = inventoryResponse.data;
+
+  //     const availableInventory = inventoryData.quantity;
+
+  //     let newQuantity = item.quantity + change;
+
+  //     const newErrors = { ...errors };
+
+  //     if (newQuantity > availableInventory) {
+  //       newErrors[item.card_id._id] = "המלאי אזל";
+  //       setErrors(newErrors);
+  //       return;
+  //     } else {
+  //       delete newErrors[item.card_id._id];
+  //       setErrors(newErrors);
+  //     }
+
+  //     if (newQuantity <= 0) {
+  //       setCartItems(
+  //         cartItems.filter(
+  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
+  //         )
+  //       );
+  //       removeFromCart(item.card_id._id)
+  //         .then((response) => {
+  //           console.log(response.data);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error removing the item:", error);
+  //         });
+  //     } else {
+  //       newQuantity = Math.max(newQuantity, 0);
+  //       const updatedItem = { ...item, quantity: newQuantity };
+  //       const updatedItems = cartItems.map((cartItem) =>
+  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+  //       );
+
+  //       setCartItems(updatedItems);
+
+  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
+  //         .then((response) => {
+  //           console.log("Cart updated:", response.data);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error updating the cart:", error);
+  //         });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching inventory for the item:", error);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const fetchCartItems = async () => {
+  //     try {
+  //       const response = await getCartItems();
+  //       const cartData = response.data.cart;
+
+  //       if (!cartData) {
+  //         return;
+  //       }
+
+  //       const cartItemsData = cartData.items;
+
+  //       const updatedCartItems = cartItemsData.map((item) => {
+  //         const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
+
+  //         return {
+  //           ...item,
+  //           dynamicImageUrl,
+  //         };
+  //       });
+
+  //       setCartItems(updatedCartItems);
+  //     } catch (error) {
+  //       console.error("שגיאה בקריאת רשימת המוצרים מהשרת:", error);
+  //     }
+  //   };
+
+  //   fetchCartItems();
+  // }, [setCartItems]);
+
+  // פה שיניתי ליוזר לא מחובר
+  async function changeQuantity(item, change) {
+    try {
+      if (!user) {
+        // If the user is not logged in, update the local cart directly
+        let newQuantity = item.quantity + change;
+        if (newQuantity <= 0) {
+          const updatedCartItems = cartItems.filter(
+            (cartItem) => cartItem.card_id._id !== item.card_id._id
+          );
+          setCartItems(updatedCartItems);
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems)); // Update local storage
+        } else {
+          const updatedItem = { ...item, quantity: newQuantity };
+          const updatedItems = cartItems.map((cartItem) =>
+            cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
+          );
+          setCartItems(updatedItems);
+          localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Update local storage
+        }
+        return;
+      }
+
       const inventoryResponse = await inventoryService.getInventoryByCardId(
         item.card_id._id
       );
@@ -156,15 +360,15 @@ const ShoppingCart = () => {
 
       let newQuantity = item.quantity + change;
 
+      const newErrors = { ...errors };
+
       if (newQuantity > availableInventory) {
-        setError("המלאי אזל");
+        newErrors[item.card_id._id] = "המלאי אזל";
+        setErrors(newErrors);
         return;
       } else {
-        setError("");
-      }
-      if (newQuantity > availableInventory) {
-        console.error("Cannot exceed available inventory.");
-        return;
+        delete newErrors[item.card_id._id];
+        setErrors(newErrors);
       }
 
       if (newQuantity <= 0) {
@@ -203,40 +407,84 @@ const ShoppingCart = () => {
   }
 
   useEffect(() => {
+    const loadCartFromLocal = () => {
+      const localCartItems =
+        JSON.parse(localStorage.getItem("cartItems")) || [];
+      return localCartItems.map((item) => ({
+        ...item,
+
+        dynamicImageUrl: item.image
+          ? `http://localhost:3000/${item.image}`
+          : "DefaultImg.svg.png",
+      }));
+    };
+
     const fetchCartItems = async () => {
-      try {
-        const response = await getCartItems();
-        const cartData = response.data.cart;
+      if (user) {
+        try {
+          const response = await getCartItems();
+          const cartData = response.data.cart;
 
-        if (!cartData) {
-          return;
+          if (!cartData) {
+            return;
+          }
+
+          const cartItemsData = cartData.items;
+
+          const updatedCartItems = cartItemsData.map((item) => {
+            const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
+            return {
+              ...item,
+              dynamicImageUrl,
+            };
+          });
+
+          setCartItems(updatedCartItems);
+        } catch (error) {
+          console.error("שגיאה בקריאת רשימת המוצרים מהשרת:", error);
         }
+      } else {
+        const localCartItems =
+          JSON.parse(localStorage.getItem("cartItems")) || [];
 
-        const cartItemsData = cartData.items;
-
-        const updatedCartItems = cartItemsData.map((item) => {
-          const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
-
+        const updatedCartItems = localCartItems.map((item) => {
           return {
-            ...item,
-            dynamicImageUrl,
+            card_id: item.card_id,
+            title: item.title,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+            description: item.description,
           };
         });
-
         setCartItems(updatedCartItems);
-      } catch (error) {
-        console.error("שגיאה בקריאת רשימת המוצרים מהשרת:", error);
       }
     };
 
     fetchCartItems();
-  }, [setCartItems]);
+  }, [user, setCartItems]);
 
+  // const totalCartPrice = useMemo(() => {
+  //   if (!Array.isArray(cartItems) || cartItems.length === 0) {
+  //     return 0;
+  //   }
+  //   return cartItems
+  //     .reduce((total, item) => total + item.card_id.price * item.quantity, 0)
+  //     .toFixed(2);
+  // }, [cartItems]);
+  /////פה החלפתי כשיוזר לא מחובר
   const totalCartPrice = useMemo(() => {
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      return 0;
+    }
     return cartItems
-      .reduce((total, item) => total + item.card_id.price * item.quantity, 0)
+      .reduce(
+        (total, item) =>
+          total + (user ? item.card_id.price : item.price) * item.quantity,
+        0
+      )
       .toFixed(2);
-  }, [cartItems]);
+  }, [cartItems, user]);
 
   const totalPriceWithShipping = useMemo(() => {
     let price = +totalCartPrice + shippingCost;
@@ -261,26 +509,92 @@ const ShoppingCart = () => {
   //     console.error("Error completing the order:", error);
   //   }
   // };
+  // const handleCompleteOrder = async () => {
+  //   try {
+  //     const response = await completeOrder();
+
+  //     if (response.status === 200) {
+  //       setCartItems([]);
+
+  //       cartItems.forEach(async (item) => {
+  //         const cardId = item.card_id._id;
+  //         const quantity = -item.quantity;
+
+  //         await adjustInventoryQuantity(cardId, quantity);
+  //       });
+
+  //       navigate("/my-orders");
+  //     } else {
+  //       console.error("ההזמנה לא הושלמה");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error completing the order:", error);
+  //   }
+  // };
+  // const handleCompleteOrder = async () => {
+  //   try {
+  //     if (!user) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
+  //         showConfirmButton: false,
+  //         timer: 4000,
+  //       });
+  //       setTimeout(() => {
+  //         navigate("/sign-in");
+  //       }, 5000);
+  //       return;
+  //     }
+
+  //     const response = await completeOrder();
+
+  //     if (response.status === 200) {
+  //       setCartItems([]);
+
+  //       cartItems.forEach(async (item) => {
+  //         const cardId = item.card_id._id;
+  //         const quantity = -item.quantity;
+
+  //         await adjustInventoryQuantity(cardId, quantity);
+  //       });
+
+  //       navigate("/my-orders");
+  //     } else {
+  //       console.error("ההזמנה לא הושלמה");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error completing the order:", error);
+  //   }
+  // };
   const handleCompleteOrder = async () => {
+    if (!user) {
+      Swal.fire({
+        icon: "error",
+        title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+      setTimeout(() => {
+        navigate("/sign-in");
+      }, 5000);
+      return;
+    }
+
+    const orderDetails = {
+      items: cartItems.map((item) => ({
+        cardId: item.card_id._id,
+        quantity: item.quantity,
+      })),
+      city,
+      street,
+      houseNumber,
+    };
+    console.log("Sending order details to server:", orderDetails);
+
     try {
-      // Complete the order
-      const response = await completeOrder();
-
+      const response = await completeOrder(orderDetails);
       if (response.status === 200) {
-        // Order completed successfully
-        // Clear the cart items
         setCartItems([]);
-
-        // Update inventory for each item in the cart
-        cartItems.forEach(async (item) => {
-          const cardId = item.card_id._id;
-          const quantity = -item.quantity; // Subtract the ordered quantity from inventory.
-
-          // Update the inventory quantity for the product.
-          await adjustInventoryQuantity(cardId, quantity);
-        });
-
-        // Navigate to "/my-orders"
         navigate("/my-orders");
       } else {
         console.error("ההזמנה לא הושלמה");
@@ -290,6 +604,41 @@ const ShoppingCart = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      Swal.fire({
+        icon: "info",
+        title: "אל תשכח להשתמש בקופון שלך",
+        text: "israel",
+        confirmButtonText: "הבנתי",
+      });
+    }
+  }, [user]);
+  useEffect(() => {
+    if (userData) console.log(userData);
+  }, [userData]);
+  const [city, setCity] = useState(userData.city);
+  const [street, setStreet] = useState(userData.street);
+  const [houseNumber, setHouseNumber] = useState(userData.houseNumber);
+
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
+  };
+
+  const handleStreetChange = (e) => {
+    setStreet(e.target.value);
+  };
+
+  const handleHouseNumberChange = (e) => {
+    setHouseNumber(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("עיר:", city);
+    console.log("רחוב:", street);
+    console.log("מספר בית:", houseNumber);
+  };
   return (
     <section className="h-100 h-custom " style={{ backgroundColor: "#eee" }}>
       <MDBContainer fluid className="py-5 h-100">
@@ -322,9 +671,18 @@ const ShoppingCart = () => {
                             <MDBCol md="2" lg="2" xl="2">
                               <MDBCardImage
                                 key={index}
+                                // src={
+                                //   item.card_id.image_file?.path
+                                //     ? `http://localhost:3000/${item.card_id.image_file.path}`
+                                //     : "DefaultImg.svg.png"
+                                // }
                                 src={
-                                  item.image_file?.path
-                                    ? `http://localhost:3000/${item.image_file.path}`
+                                  user &&
+                                  item.card_id.image_file &&
+                                  item.card_id.image_file.path
+                                    ? `http://localhost:3000/${item.card_id.image_file.path}`
+                                    : item.image
+                                    ? item.image
                                     : "DefaultImg.svg.png"
                                 }
                                 fluid
@@ -333,16 +691,31 @@ const ShoppingCart = () => {
                                   item.image_file?.originalname || "Card image"
                                 }
                               />
+                              {/* <img
+                                src={
+                                  item.card_id.image_file?.path
+                                    ? `http://localhost:3000/${item.card_id.image_file.path}`
+                                    : "DefaultImg.svg.png"
+                                }
+                                alt={
+                                  item.image_file?.originalname || "Card image"
+                                }
+                                style={{ maxWidth: "100%", height: "auto" }}
+                              /> */}
                             </MDBCol>
                             <MDBCol md="3" lg="3" xl="3">
                               <MDBTypography tag="h6" className="text-muted">
-                                {item.card_id.title}
+                                {/* {item.card_id.title} */}
+                                {user ? item.card_id.title : item.title}
                               </MDBTypography>
                               <MDBTypography
                                 tag="h6"
                                 className="text-black mb-0"
                               >
-                                {item.card_id.description}
+                                {/* {item.card_id.description} */}
+                                {user
+                                  ? item.card_id.description
+                                  : item.description}
                               </MDBTypography>
                             </MDBCol>
                             <MDBCol
@@ -374,18 +747,19 @@ const ShoppingCart = () => {
                               >
                                 +
                               </span>
-                              {error && (
+                              {errors[item.card_id._id] && (
                                 <div
                                   className="alert alert-danger alert-custom  "
                                   role="alert"
                                 >
-                                  {error}
+                                  {errors[item.card_id._id]}
                                 </div>
                               )}
                             </MDBCol>
                             <MDBCol md="3" lg="2" xl="2" className="text-end">
                               <MDBTypography tag="h6" className="mb-0">
-                                {item.card_id.price} ₪
+                                {/* {item.card_id.price} ₪ */}
+                                {user ? item.card_id.price : item.price} ₪
                               </MDBTypography>
                             </MDBCol>
                             <MDBCol md="2" lg="2" xl="2" className="text-end">
@@ -408,6 +782,52 @@ const ShoppingCart = () => {
                       ))}
 
                       <div className="pt-5">
+                        {userData && (
+                          <>
+                            <form onSubmit={handleSubmit}>
+                              <h5>
+                                כתובת למשלוח זהה לכתובת איתה נרשמת? אם לא ניתן
+                                לערוך...
+                              </h5>
+                              <div className="form-group">
+                                <label htmlFor="city">עיר:</label>
+                                <input
+                                  type="text"
+                                  id="city"
+                                  className="form-control input-small"
+                                  value={city}
+                                  onChange={handleCityChange}
+                                />
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor="street">רחוב:</label>
+                                <input
+                                  type="text"
+                                  id="street"
+                                  className="form-control input-small"
+                                  value={street}
+                                  onChange={handleStreetChange}
+                                />
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor="houseNumber">מספר בית:</label>
+                                <input
+                                  type="text"
+                                  id="houseNumber"
+                                  className="form-control input-small"
+                                  value={houseNumber}
+                                  onChange={handleHouseNumberChange}
+                                />
+                              </div>
+                              <button
+                                type="submit"
+                                className="btn btn-primary mt-3 mb-4"
+                              >
+                                שמור שינויים
+                              </button>
+                            </form>
+                          </>
+                        )}
                         <MDBTypography tag="h6" className="mb-0">
                           <MDBCardText className="text-body">
                             <Link to="/" className="text-body">
@@ -462,7 +882,7 @@ const ShoppingCart = () => {
                         tag="h5"
                         className="text-uppercase mb-3 custom-text-color"
                       >
-                        יש לך קופון
+                        יש לך קופון?
                       </MDBTypography>
 
                       <div className="mb-5  ">

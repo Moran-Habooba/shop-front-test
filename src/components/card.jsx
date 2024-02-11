@@ -76,43 +76,104 @@ const Card = ({
     onLiked();
   };
 
+  // const handleAddToCart = () => {
+  //   const card_id = _id;
+  //   const quantity = count;
+
+  //   if (quantity > 0) {
+  //     addToCart(card_id, quantity)
+  //       .then((data) => {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "המוצר נוסף לסל בהצלחה!",
+  //           showConfirmButton: false,
+  //           timer: 1000,
+  //           customClass: {
+  //             popup: "small-popup",
+  //           },
+  //         }).then(() => {
+  //           navigate("/ShoppingCart");
+  //         });
+
+  //         console.log("Product added to cart:", data);
+  //         const updatedCartItems = [...cartItems, { card_id, quantity }];
+  //         setCartItems(updatedCartItems);
+
+  //         const newTotalItemsCount = totalItemsInCart + quantity;
+  //         setTotalItemsInCart(newTotalItemsCount);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error adding product to cart:", error);
+  //       });
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "שגיאה",
+  //       text: "יש לבחור כמות מוצרים להוספה",
+  //       customClass: {
+  //         popup: "small-popup",
+  //       },
+  //     });
+  //   }
+  // };
   const handleAddToCart = () => {
-    const card_id = _id;
-    const quantity = count;
+    const newCartItem = {
+      card_id: _id,
+      title,
+      price,
+      description,
+      quantity: count,
+      image: image_file?.path
+        ? `http://localhost:3000/${image_file.path}`
+        : "DefaultImg.svg.png",
+    };
 
-    if (quantity > 0) {
-      addToCart(card_id, quantity)
-        .then((data) => {
-          Swal.fire({
-            icon: "success",
-            title: "המוצר נוסף לסל בהצלחה!",
-            showConfirmButton: false,
-            timer: 1000,
-            customClass: {
-              popup: "small-popup",
-            },
-          }).then(() => {
-            navigate("/ShoppingCart");
+    if (count > 0) {
+      if (user) {
+        addToCart(_id, count)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "המוצר נוסף לסל בהצלחה!",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              navigate("/ShoppingCart");
+            });
+          })
+          .catch((error) => {
+            console.error("Error adding product to cart:", error);
+            Swal.fire({
+              icon: "error",
+              title: "שגיאה בהוספת המוצר לסל",
+            });
           });
+      } else {
+        let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+        let itemIndex = cart.findIndex(
+          (item) => item.card_id === newCartItem.card_id
+        );
+        if (itemIndex !== -1) {
+          cart[itemIndex].quantity += count;
+        } else {
+          cart.push(newCartItem);
+        }
+        localStorage.setItem("cartItems", JSON.stringify(cart));
 
-          console.log("Product added to cart:", data);
-          const updatedCartItems = [...cartItems, { card_id, quantity }];
-          setCartItems(updatedCartItems);
-
-          const newTotalItemsCount = totalItemsInCart + quantity;
-          setTotalItemsInCart(newTotalItemsCount);
-        })
-        .catch((error) => {
-          console.error("Error adding product to cart:", error);
+        Swal.fire({
+          icon: "success",
+          title: "המוצר נוסף לסל בהצלחה!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate("/ShoppingCart");
         });
+      }
     } else {
       Swal.fire({
         icon: "error",
         title: "שגיאה",
         text: "יש לבחור כמות מוצרים להוספה",
-        customClass: {
-          popup: "small-popup",
-        },
       });
     }
   };
@@ -179,25 +240,25 @@ const Card = ({
               </>
             )}
         </div>
-        {user && !user.isAdmin && (
-          <>
-            <div className="quantity-selector mr-auto ms-3">
-              <button onClick={decreaseCount} className="ms-2 quantity">
-                -
-              </button>
-              <span>{count}</span>
-              <button onClick={increaseCount} className="me-2 quantity">
-                +
-              </button>
-            </div>
-            <button
-              className="add-to-cart-btn quantity ms-4"
-              onClick={handleAddToCart}
-            >
-              הוסף לסל
+        {/* {user && !user.isAdmin && ( */}
+        <>
+          <div className="quantity-selector mr-auto ms-3">
+            <button onClick={decreaseCount} className="ms-2 quantity">
+              -
             </button>
-          </>
-        )}
+            <span>{count}</span>
+            <button onClick={increaseCount} className="me-2 quantity">
+              +
+            </button>
+          </div>
+          <button
+            className="add-to-cart-btn quantity ms-4"
+            onClick={handleAddToCart}
+          >
+            הוסף לסל
+          </button>
+        </>
+        {/* )} */}
       </div>
 
       <div>

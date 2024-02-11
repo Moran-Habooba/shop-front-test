@@ -37,5 +37,7 @@
   "apiUrlAdjustInventoryQuantity": "http://localhost:3000/api/inventoryItem/{cardId}/adjust-quantity",
   "apiUrlGetInventoryiWithDetails": "http://localhost:3000/api/inventoryItem",
 
-  "apiUrlGetAllClosedOrders": "http://localhost:3000/api/cart/orders/closed"
+  "apiUrlGetAllClosedOrders": "http://localhost:3000/api/cart/orders/closed",
+
+  "apiUrlResetPassword": "http://localhost:3000/api/users/emailVerification"
 }
