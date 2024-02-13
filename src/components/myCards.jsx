@@ -6,6 +6,7 @@ import { useState, useMemo, useEffect } from "react";
 import cardsService from "../services/cardsService";
 import { useSearch } from "../context/searchContext";
 import categoryService from "../services/categoryService";
+import { getAllCategories } from "../services/categoryService";
 
 const MyCards = () => {
   const { cards, loadCards } = useMyCards();
@@ -25,6 +26,7 @@ const MyCards = () => {
         console.error("Error fetching categories:", error);
       });
   }, []);
+
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
@@ -44,11 +46,22 @@ const MyCards = () => {
     }
   };
 
+  // const filteredCards = useMemo(() => {
+  //   if (!searchTerm && !selectedCategory) return cards;
+  //   return cards.filter((card) =>
+  //     card.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+  //   );
+  // }, [cards, searchTerm, selectedCategory]);
   const filteredCards = useMemo(() => {
-    if (!searchTerm && !selectedCategory) return cards;
-    return cards.filter((card) =>
-      card.title.toLowerCase().startsWith(searchTerm.toLowerCase())
-    );
+    return cards.filter((card) => {
+      const matchesSearchTerm = card.title
+        .toLowerCase()
+        .startsWith(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory
+        ? card.category === selectedCategory
+        : true;
+      return matchesSearchTerm && matchesCategory;
+    });
   }, [cards, searchTerm, selectedCategory]);
 
   return (

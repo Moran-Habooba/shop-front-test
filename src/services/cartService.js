@@ -87,17 +87,3 @@ export async function getClosedOrders() {
     throw error;
   }
 }
-///////////פה הוספתי ליוזר לא מחובר
-
-export async function syncLocalCartWithServer(localCartItems) {
-  refreshTokenHeader();
-  try {
-    const response = await httpService.post(config.apiUrlSyncCart, {
-      items: localCartItems,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error syncing local cart with server:", error);
-    throw error;
-  }
-}

@@ -13,7 +13,7 @@ const About = () => {
 
     if (user) {
       Swal.fire({
-        title: "You are already Business! 😊",
+        title: "אתה כבר משתמש רשום  😊",
         icon: "info",
         timer: 1300,
         timerProgressBar: true,

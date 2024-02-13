@@ -147,24 +147,30 @@ export function AuthProvider({ children }) {
   };
 
   const resetLogoutTimer = () => {
-    if (logoutTimer) {
+    if (user && logoutTimer) {
       clearTimeout(logoutTimer);
     }
 
-    const newTimer = setTimeout(() => {
-      logout();
-    }, 4 * 60 * 60 * 1000);
+    if (user) {
+      const newTimer = setTimeout(() => {
+        logout();
+      }, 4 * 60 * 60 * 1000);
 
-    setLogoutTimer(newTimer);
+      setLogoutTimer(newTimer);
+    }
   };
 
   useEffect(() => {
     const resetTimerOnActivity = () => {
-      resetLogoutTimer();
+      if (user) {
+        resetLogoutTimer();
+      }
     };
 
-    window.addEventListener("mousemove", resetTimerOnActivity);
-    window.addEventListener("keydown", resetTimerOnActivity);
+    if (user) {
+      window.addEventListener("mousemove", resetTimerOnActivity);
+      window.addEventListener("keydown", resetTimerOnActivity);
+    }
 
     return () => {
       window.removeEventListener("mousemove", resetTimerOnActivity);

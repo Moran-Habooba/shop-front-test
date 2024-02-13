@@ -140,6 +140,11 @@ const BusinessNavBar = () => {
                 עגלת קניות
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to="/my-orders" className="nav-link">
+                ההזמנות שלי
+              </NavLink>
+            </li>
 
             <li className="nav-item dropdown">
               {user ? (

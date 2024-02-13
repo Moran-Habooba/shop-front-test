@@ -240,25 +240,25 @@ const Card = ({
               </>
             )}
         </div>
-        {/* {user && !user.isAdmin && ( */}
-        <>
-          <div className="quantity-selector mr-auto ms-3">
-            <button onClick={decreaseCount} className="ms-2 quantity">
-              -
+        {!user?.isAdmin && (
+          <>
+            <div className="quantity-selector mr-auto ms-3">
+              <button onClick={decreaseCount} className="ms-2 quantity">
+                -
+              </button>
+              <span>{count}</span>
+              <button onClick={increaseCount} className="me-2 quantity">
+                +
+              </button>
+            </div>
+            <button
+              className="add-to-cart-btn quantity ms-4"
+              onClick={handleAddToCart}
+            >
+              הוסף לסל
             </button>
-            <span>{count}</span>
-            <button onClick={increaseCount} className="me-2 quantity">
-              +
-            </button>
-          </div>
-          <button
-            className="add-to-cart-btn quantity ms-4"
-            onClick={handleAddToCart}
-          >
-            הוסף לסל
-          </button>
-        </>
-        {/* )} */}
+          </>
+        )}
       </div>
 
       <div>

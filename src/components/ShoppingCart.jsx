@@ -17,7 +17,6 @@ import {
   removeFromCart,
   updateCart,
   completeOrder,
-  syncLocalCartWithServer,
 } from "../services/cartService";
 import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/auth.context";
@@ -37,18 +36,6 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const { cartItems, setCartItems, totalItemsInCart } = useCart();
   const [errors, setErrors] = useState({});
-
-  const handleUserLogin = async (user) => {
-    try {
-      const localCartItems =
-        JSON.parse(localStorage.getItem("cartItems")) || [];
-      await syncLocalCartWithServer(localCartItems);
-
-      localStorage.removeItem("cartItems");
-    } catch (error) {
-      console.error("Error syncing local cart with server:", error);
-    }
-  };
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -566,6 +553,43 @@ const ShoppingCart = () => {
   //     console.error("Error completing the order:", error);
   //   }
   // };
+  // const handleCompleteOrder = async () => {
+  //   if (!user) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
+  //       showConfirmButton: false,
+  //       timer: 4000,
+  //     });
+  //     setTimeout(() => {
+  //       navigate("/sign-in");
+  //     }, 5000);
+  //     return;
+  //   }
+
+  //   const orderDetails = {
+  //     items: cartItems.map((item) => ({
+  //       cardId: item.card_id._id,
+  //       quantity: item.quantity,
+  //     })),
+  //     city,
+  //     street,
+  //     houseNumber,
+  //   };
+  //   console.log("Sending order details to server:", orderDetails);
+
+  //   try {
+  //     const response = await completeOrder(orderDetails);
+  //     if (response.status === 200) {
+  //       setCartItems([]);
+  //       navigate("/my-orders");
+  //     } else {
+  //       console.error("ההזמנה לא הושלמה");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error completing the order:", error);
+  //   }
+  // };
   const handleCompleteOrder = async () => {
     if (!user) {
       Swal.fire({
@@ -594,6 +618,18 @@ const ShoppingCart = () => {
     try {
       const response = await completeOrder(orderDetails);
       if (response.status === 200) {
+        for (const item of cartItems) {
+          try {
+            await adjustInventoryQuantity(item.card_id._id, -item.quantity);
+          } catch (error) {
+            console.error(
+              "Failed to adjust inventory for item:",
+              item.card_id._id,
+              error
+            );
+          }
+        }
+
         setCartItems([]);
         navigate("/my-orders");
       } else {
@@ -614,12 +650,13 @@ const ShoppingCart = () => {
       });
     }
   }, [user]);
+
   useEffect(() => {
     if (userData) console.log(userData);
   }, [userData]);
-  const [city, setCity] = useState(userData.city);
-  const [street, setStreet] = useState(userData.street);
-  const [houseNumber, setHouseNumber] = useState(userData.houseNumber);
+  const [city, setCity] = useState(userData?.city);
+  const [street, setStreet] = useState(userData?.street);
+  const [houseNumber, setHouseNumber] = useState(userData?.houseNumber);
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -782,7 +819,7 @@ const ShoppingCart = () => {
                       ))}
 
                       <div className="pt-5">
-                        {userData && (
+                        {user && userData && (
                           <>
                             <form onSubmit={handleSubmit}>
                               <h5>

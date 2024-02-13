@@ -34,11 +34,11 @@ const ContactUs = ({ redirect }) => {
       try {
         formspreeSubmit(values);
         Swal.fire({
-          title: "Success!",
-          text: "Message sent successfully.",
+          title: "ההודעה נשלחה בהצלחה",
+          text: "נחזור אליך בהקדם ",
           icon: "success",
           confirmButtonText: "OK",
-          timer: 1000,
+          timer: 1200,
           showConfirmButton: false,
         });
         setTimeout(() => {
@@ -71,21 +71,6 @@ const ContactUs = ({ redirect }) => {
       <div className="container mb-5 container-shadow custom-body-contact-us ">
         <div className="row justify-content-center  ">
           <div className="col-lg-6 custom-container-contact-us ">
-            {/* <PageHeader
-              title={
-                <>
-                  צרו קשר
-                  <i className="bi bi-telephone-fill"></i>
-                </>
-              }
-              description={
-                <>
-                  לכל שאלה, התייעצות או פנייה אנחנו כאן...
-                  <br />
-                  השאירו פרטים ונחזור אליכם בהקדם
-                </>
-              }
-            /> */}
             <form onSubmit={form.handleSubmit} className="mt-5 form-border ">
               {serverError && (
                 <div className="alert alert-danger">{serverError}</div>

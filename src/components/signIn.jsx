@@ -2,19 +2,39 @@ import React from "react";
 import PageHeader from "../common/pageHeader";
 import Input from "../common/input";
 import { validateFormikUsingJoi } from "../utils/validateFormikUsingJoi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import Joi from "joi";
 import { useAuth } from "../context/auth.context";
 import { useCancelNavigate } from "../hook/useCancelNavigate'";
+import { getJWT } from "../services/usersService";
 
 const SignIn = ({ redirect }) => {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const { login, user } = useAuth();
   const handleCancel = useCancelNavigate("/");
+  /////כשיוזר לא מחובר
+  useEffect(() => {
+    if (user) {
+      const syncCartWithServer = async () => {
+        const localCartItems =
+          JSON.parse(localStorage.getItem("cartItems")) || [];
+        if (localCartItems.length > 0) {
+          try {
+            await syncLocalCartWithServer(localCartItems);
+            localStorage.removeItem("cartItems");
+          } catch (error) {
+            console.error("Error syncing cart with server:", error);
+          }
+        }
+      };
+
+      syncCartWithServer();
+    }
+  }, [user]); // תלוי במשתנה 'user' כדי לזהות שינויים בסטטוס ההתחברות
 
   const handlePoP = () => {
     Swal.fire({
@@ -78,6 +98,32 @@ const SignIn = ({ redirect }) => {
       error: form.touched[name] && form.errors[name],
     };
   };
+  ///////////פה הוספתי ליוזר לא מחובר
+
+  async function syncLocalCartWithServer() {
+    const token = getJWT();
+    const localCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    if (localCartItems.length > 0) {
+      for (const item of localCartItems) {
+        try {
+          await fetch("http://localhost:3000/api/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify({
+              card_id: item.card_id,
+              quantity: item.quantity,
+            }),
+          });
+        } catch (error) {
+          console.error("Failed to add item to cart:", error);
+        }
+      }
+      localStorage.removeItem("cartItems");
+    }
+  }
 
   return (
     <>

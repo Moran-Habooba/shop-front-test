@@ -98,6 +98,13 @@ const Footer = () => {
             </NavLink>
           </li>
         )}
+        {user && user.isBusiness && (
+          <li className="nav-item">
+            <NavLink to="/my-orders" className="nav-link">
+              ההזמנות שלי
+            </NavLink>
+          </li>
+        )}
       </ul>
       <div
         style={{
