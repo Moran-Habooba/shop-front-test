@@ -64,6 +64,14 @@ export function resetPassword(email, newPassword) {
     newPassword,
   });
 }
+export async function resetUserPassword(token, email, newPassword) {
+  return httpService.post(config.apiUrlResetUserPassword, {
+    email,
+    newPassword,
+    token,
+  });
+}
+
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
   refreshTokenHeader();
@@ -94,6 +102,7 @@ const usersService = {
   deleteUser,
   ReplaceUserStatus,
   resetPassword,
+  resetUserPassword,
 };
 
 export default usersService;

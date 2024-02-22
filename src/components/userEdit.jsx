@@ -178,13 +178,11 @@ const UserEdit = ({ redirect }) => {
       city,
       zip,
       country,
-      // password: "",
       image_file,
     } = user;
     form.setValues({
       first_name: first_name || "",
       last_name: last_name || "",
-      // image_file: image_file || "",
       phone: phone || "",
       city: city || "",
       country: country || "",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProductsByCategory } from "../../services/categoryService";
 import Card from "../card";
+import "../styls/CategoryPages.css";
 
 const ShabbatCategoryPage = () => {
   const [products, setProducts] = useState([]);

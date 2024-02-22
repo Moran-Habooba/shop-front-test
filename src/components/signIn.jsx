@@ -10,6 +10,7 @@ import Joi from "joi";
 import { useAuth } from "../context/auth.context";
 import { useCancelNavigate } from "../hook/useCancelNavigate'";
 import { getJWT } from "../services/usersService";
+import "./styls/signIn.css";
 
 const SignIn = ({ redirect }) => {
   const [serverError, setServerError] = useState("");
@@ -34,11 +35,11 @@ const SignIn = ({ redirect }) => {
 
       syncCartWithServer();
     }
-  }, [user]); // תלוי במשתנה 'user' כדי לזהות שינויים בסטטוס ההתחברות
+  }, [user]);
 
   const handlePoP = () => {
     Swal.fire({
-      html: "Login was successful!</strong>",
+      html: "התחברת בהצלחה</strong>",
       icon: "success",
       showConfirmButton: false,
       timer: 1000,
@@ -128,10 +129,10 @@ const SignIn = ({ redirect }) => {
   return (
     <>
       <PageHeader title="ברוכים השבים" description="" />
-      <div className="container custom-body ">
-        <div className="row justify-content-center">
+      <div className="container  customforsmart">
+        <div className="row justify-content-center ">
           <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="border p-3 m-5">
+            <div className="border p-3 m-5 ">
               <div className="form-top">
                 <div className="form-top-left">
                   <h3 className="custom-text-contact">

@@ -163,7 +163,7 @@ const HomePage = () => {
     if (visibleCards.length === 0) {
       return (
         <div className="fs-3 text-danger fw-bold">
-          No cards matching your search...
+          לא נמצאו מוצרים התואמים לחיפוש שלך...
         </div>
       );
     }
@@ -208,34 +208,19 @@ const HomePage = () => {
         className="carousel slide"
         data-bs-ride="carousel"
         style={{
-          position: "absolute",
-          top: "34%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
           zIndex: 2,
         }}
       >
-        <div className="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="0"
-            className="active"
-            aria-label="Slide 1"
-            aria-current="true"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#myCarousel"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-            className=""
-          ></button>
-        </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img src="baner.png" alt="abner " style={{ width: "100%" }} />
-            <svg
+            <img
+              src="baner.png"
+              alt="baner "
+              // style={{ width: "100%" }}
+              className="img-fluid"
+            />
+
+            {/* <svg
               className="bd-placeholder-img"
               width="100%"
               height="100%"
@@ -249,7 +234,7 @@ const HomePage = () => {
                 height="100%"
                 fill="var(--bs-secondary-color)"
               ></rect>
-            </svg>
+            </svg> */}
             <div className="container">
               <div className="carousel-caption text-end">
                 <p>
@@ -265,9 +250,14 @@ const HomePage = () => {
             </div>
           </div>
           <div className="carousel-item">
-            <img src="baner2.png" alt="banner " style={{ width: "100%" }} />
+            <img
+              src="baner2.png"
+              alt="banner "
+              // style={{ width: "100%" }}
+              className="img-fluid"
+            />
 
-            <svg
+            {/* <svg
               className="bd-placeholder-img"
               width="100%"
               height="100%"
@@ -281,12 +271,12 @@ const HomePage = () => {
                 height="100%"
                 fill="var(--bs-secondary-color)"
               ></rect>
-            </svg>
+            </svg> */}
             <div className="container"></div>
           </div>
         </div>
         <button
-          className="carousel-control-prev"
+          className="carousel-control-prev "
           type="button"
           data-bs-target="#myCarousel"
           data-bs-slide="prev"
@@ -309,29 +299,41 @@ const HomePage = () => {
         </button>
       </div>
       {/* ----------- */}
-      <div className="image-text-container mt-5 ">
+      <div>
         <div className="image-text-container">
-          <div className="image-text-item me-5">
+          <div className="image-text-item ">
             <img src="minilogo.png" alt="Shipments" />
             <p className="minibaner"> משלוחים עד הבית</p>
           </div>
-          <div className="image-text-item me-5">
-            <img src="minilogo2.png" alt="Description2" />
+          <div className="image-text-item">
+            <img
+              className="img-banner"
+              src="minilogo2.png"
+              alt="Description2"
+            />
             <p className="minibaner"> קנייה מאובטחת</p>
           </div>
-          <div className="image-text-item me-5">
-            <img src="minilogo3.png" alt="Description3" />
+          <div className="image-text-item">
+            <img
+              className="img-banner"
+              src="minilogo3.png"
+              alt="Description3"
+            />
             <p className="minibaner"> מגוון מוצרים איכותיים</p>
           </div>
-          <div className="image-text-item me-5">
-            <img src="minilogo4.png" alt="Description4" />
+          <div className="image-text-item">
+            <img
+              className="img-banner"
+              src="minilogo4.png"
+              alt="Description4"
+            />
             <p className="minibaner"> שרות לקוחות</p>
           </div>
         </div>
       </div>
       <div>
         <h1
-          className="text-center mb-5 p-3 border"
+          className="text-center mb-5 p-3 border "
           style={{ backgroundColor: "#3b5d50", color: "#e5b55c" }}
         >
           הנבחרים שלנו
@@ -343,7 +345,7 @@ const HomePage = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="form-select mb-3"
+            className="form-select mb-3 "
             style={{ width: "200px" }}
           >
             <option value="">בחר קטגוריה</option>

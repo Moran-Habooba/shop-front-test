@@ -155,7 +155,6 @@ const SignUp = ({ redirect }) => {
             הצטרפו למועדון הלקוחות שלנו ותוכלו להנות ממגוון הטבות ייחודיות
             עבורך! 10% הנחה בכל רכישה, הטבת יום הולדת ועוד...
             <br />
-            {/* Quick and simple, registration is your gateway to a new adventure. */}
             <strong>הצטרפו עכשיו!</strong>
           </>
         }
@@ -163,7 +162,7 @@ const SignUp = ({ redirect }) => {
       <div className="container custom-body ">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10 custom-container">
-            <div className="border p-3 m-5 ">
+            <div className="border p-3 m-5  ">
               <div className="form-top ">
                 <div className="form-top-left">
                   <h3 className="custom-text-contact">

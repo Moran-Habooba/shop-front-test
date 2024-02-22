@@ -176,7 +176,7 @@ export function AuthProvider({ children }) {
       window.removeEventListener("mousemove", resetTimerOnActivity);
       window.removeEventListener("keydown", resetTimerOnActivity);
     };
-  }, []);
+  });
 
   return (
     <authContext.Provider

@@ -1,0 +1,15 @@
+@media (max-width: 1249px) {
+  .customforsmart {
+    width: 100% !important;
+    margin: 0 auto 0 -10px !important;
+    background-position: 60% center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../../../public/formimg.png");
+  }
+  .border {
+    color: white;
+    background-color: rgba(59, 93, 80, 0.7);
+    border-radius: 15px;
+  }
+}

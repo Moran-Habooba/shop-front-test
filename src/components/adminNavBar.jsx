@@ -7,6 +7,8 @@ import { useSearch } from "../context/searchContext";
 import { useSearchBarRef } from "../context/useSearchBarRef";
 import { getUserById } from "../services/usersService";
 import "./styls/search.css";
+import "./styls/sandBox.css";
+
 import { getAllCategories } from "../services/categoryService";
 
 const AdminNavBar = () => {
@@ -17,6 +19,7 @@ const AdminNavBar = () => {
   const [userName, setUserName] = useState("");
   const [userProfileImage, setUserProfileImage] = useState("");
   const [categories, setCategories] = useState([]);
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
 
   const handleInputChange = () => {
     setSearchTerm(searchInput.current.value);
@@ -47,55 +50,74 @@ const AdminNavBar = () => {
       setCategories(data);
     });
   }, []);
-
+  const handleNavLinkClick = () => {
+    setIsNavExpanded(false);
+  };
   return (
-    <nav className="navbar navbar-expand-sm  navbar-light  ">
-      <div className="container-fluid mt-5" style={{ height: "100px" }}>
+    <nav className="navbar navbar-expand-lg navbar-light ">
+      <div
+        className="container-fluid mt-5 "
+        style={{ height: "100px", width: "100%" }}
+      >
         <div className="logo mb-5 ">
           <Link to={"/"} className="navbar-brand">
             <div className="logo ">
-              <img src="/logo.png" alt="Logo" height="300" />
+              <img
+                src="/logo.png"
+                alt="Logo"
+                height="100"
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </Link>
         </div>
-        {/* <button
+        <button
+          onClick={() => setIsNavExpanded(!isNavExpanded)}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
-          aria-expanded="false"
+          aria-expanded={isNavExpanded ? "true" : "false"}
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
-        </button> */}
+        </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          className={`collapse navbar-collapse ${isNavExpanded ? "show" : ""}`}
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink
                 to="/"
                 className="nav-link with-underline"
                 aria-current="page"
+                onClick={handleNavLinkClick}
               >
                 דף הבית
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/about" className="nav-link with-underline">
+              <NavLink
+                to="/about"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 אודות
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/contact-Us" className="nav-link with-underline">
+              <NavLink
+                to="/contact-Us"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 צור קשר
               </NavLink>
             </li>
-            {/* <li className="nav-item">
-              <NavLink to="/my-favorites" className="nav-link with-underline">
-                המועדפים שלי
-              </NavLink>
-            </li> */}
+
             <li className="nav-item dropdown">
               <NavLink
                 to="/categories"
@@ -116,6 +138,7 @@ const AdminNavBar = () => {
                     <NavLink
                       to={`/categories/${category.name}`}
                       className="dropdown-item"
+                      onClick={handleNavLinkClick}
                     >
                       {category.name}
                     </NavLink>
@@ -124,19 +147,31 @@ const AdminNavBar = () => {
               </ul>
             </li>
             <li className="nav-item">
-              <NavLink to="/create-card" className="nav-link with-underline">
+              <NavLink
+                to="/create-card"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 הוספת מוצר
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/my-cards" className="nav-link with-underline">
+              <NavLink
+                to="/my-cards"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 מוצרים
               </NavLink>
             </li>
 
             <li className="nav-item">
-              <NavLink to="/sand-box" className="nav-link with-underline">
-                ניהול החנות{" "}
+              <NavLink
+                to="/sand-box"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
+                ניהול החנות
               </NavLink>
             </li>
 
@@ -164,6 +199,7 @@ const AdminNavBar = () => {
                   </span>
                   <ul
                     className="dropdown-menu"
+                    onClick={handleNavLinkClick}
                     aria-labelledby="navbarDropdown"
                   >
                     <>
@@ -219,6 +255,7 @@ const AdminNavBar = () => {
           >
             <button
               className="btn btn-outline-light me-4 btn-search"
+              onClick={handleNavLinkClick}
               type="submit"
             >
               חיפוש
@@ -238,6 +275,7 @@ const AdminNavBar = () => {
             <span>
               <NavLink onClick={toggleDarkMode}>
                 <i
+                  onClick={handleNavLinkClick}
                   className={`bi bi-moon-stars-fill me-3  ${
                     darkMode ? "dark-mode-icon" : "light-mode-icon"
                   }`}

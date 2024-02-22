@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { useState } from "react";
 import { addToCart } from "../services/cartService";
-import { useCart } from "../context/cart.context";
 import { useNavigate } from "react-router-dom";
 
 const Card = ({
@@ -23,14 +22,12 @@ const Card = ({
   },
   onLiked,
   liked,
-  isCreator,
+  // isCreator,
 }) => {
   const location = useLocation();
   const { user } = useAuth();
   const [count, setCount] = useState(0);
   const likeCount = likes.length;
-  const { cartItems, setCartItems, totalItemsInCart, setTotalItemsInCart } =
-    useCart();
   const navigate = useNavigate();
   const handleClick = () => {
     if (location.pathname === "/" || location.pathname === "/my-cards") {

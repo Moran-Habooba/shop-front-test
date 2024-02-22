@@ -1,0 +1,18 @@
+@media (max-width: 800px) {
+  .table td:before {
+    content: attr(data-header);
+    float: left;
+    font-weight: bold;
+    padding-right: 1px;
+    margin-right: -5px;
+  }
+
+  .table td {
+    display: block;
+    text-align: right;
+  }
+
+  .table thead {
+    display: none;
+  }
+}

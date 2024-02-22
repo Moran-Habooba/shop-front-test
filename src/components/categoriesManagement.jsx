@@ -152,9 +152,9 @@ const CategoriesManagement = () => {
         <tbody>
           {categories.map((category) => (
             <tr key={category._id}>
-              <td>{category._id}</td>
-              <td>{category.name}</td>
-              <td>{category.productCount}</td>
+              <td data-label=" מספר ID">{category._id}</td>
+              <td data-label="שם הקטגוריה ">{category.name}</td>
+              <td data-label="כמות במלאי">{category.productCount}</td>
               <td>
                 <button
                   type="button"

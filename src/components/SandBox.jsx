@@ -99,7 +99,7 @@ const SandBox = () => {
   };
 
   return (
-    <div>
+    <div className="gears">
       <i id="gear1" className="bi bi-gear-fill spin fs-1"></i>
       <i id="gear2" className="bi bi-gear-fill spin-back fs-1 "></i>
       <PageHeader
@@ -128,9 +128,11 @@ const SandBox = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td>{user._id}</td>
-              <td>{formatName(user.first_name, user.last_name)}</td>
-              <td>{getStatus(user)}</td>
+              <td data-label="מספר ID">{user._id}</td>
+              <td data-label="שם משתמש ">
+                {formatName(user.first_name, user.last_name)}
+              </td>
+              <td data-label="סוג משתמש ">{getStatus(user)}</td>
               <td>
                 <>
                   <div

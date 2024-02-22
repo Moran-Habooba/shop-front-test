@@ -15,7 +15,7 @@ const Navbar = () => {
   const searchInput = useSearchBarRef();
   const [categories, setCategories] = useState([]);
   const { totalItemsInCart = 0 } = useCart();
-
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
   const isRegularUser = user && !user.isBusiness && !user.isAdmin;
 
   const { darkMode, setDarkMode } = useDarkMode();
@@ -61,10 +61,12 @@ const Navbar = () => {
       }
     }
   }, []);
-
+  const handleNavLinkClick = () => {
+    setIsNavExpanded(false);
+  };
   return (
     <nav
-      className="navbar navbar-expand-sm  navbar-light"
+      className="navbar navbar-expand-lg  navbar-light"
       style={{ height: "160px" }}
     >
       <div className="container-fluid mt-5">
@@ -77,35 +79,48 @@ const Navbar = () => {
         </div>
 
         <button
+          onClick={() => setIsNavExpanded(!isNavExpanded)}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
-          aria-expanded="false"
+          aria-expanded={isNavExpanded ? "true" : "false"}
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          className={`collapse navbar-collapse ${isNavExpanded ? "show" : ""}`}
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <NavLink
                 to="/"
                 className="nav-link with-underline  "
                 aria-current="page"
+                onClick={handleNavLinkClick}
               >
                 דף הבית
               </NavLink>
             </li>
             <li className="nav-item ">
-              <NavLink to="/about" className="nav-link with-underline">
+              <NavLink
+                to="/about"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 אודות
               </NavLink>
             </li>
             <li className="nav-item ">
-              <NavLink to="/contact-Us" className="nav-link with-underline">
+              <NavLink
+                to="/contact-Us"
+                className="nav-link with-underline"
+                onClick={handleNavLinkClick}
+              >
                 צור קשר
               </NavLink>
             </li>
@@ -129,6 +144,7 @@ const Navbar = () => {
                     <NavLink
                       to={`/categories/${category.name}`}
                       className="dropdown-item"
+                      onClick={handleNavLinkClick}
                     >
                       {category.name}
                     </NavLink>
@@ -141,6 +157,7 @@ const Navbar = () => {
                 <li className="nav-item">
                   <NavLink
                     to="/my-favorites"
+                    onClick={handleNavLinkClick}
                     className="nav-link with-underline"
                   >
                     המועדפים שלי
@@ -167,11 +184,12 @@ const Navbar = () => {
                     aria-expanded="false"
                   >
                     <span>
-                      <i className="bi bi-box-arrow-in-right me-2 "></i>
+                      <i className="bi bi-box-arrow-in-right me-2"></i>
                     </span>
                     הרשמה/התחברות
                   </span>
                   <ul
+                    onClick={handleNavLinkClick}
                     className="dropdown-menu "
                     aria-labelledby="navbarDropdown "
                   >
@@ -200,6 +218,7 @@ const Navbar = () => {
                     alt="Default profile"
                     width="30"
                     height="30"
+                    onClick={handleNavLinkClick}
                   />
                 </Link>
                 <span
@@ -215,6 +234,7 @@ const Navbar = () => {
           </ul>
           <Link to="/ShoppingCart" style={{ textDecoration: "none" }}>
             <i
+              onClick={handleNavLinkClick}
               className="bi bi-cart  fs-3 me-5"
               style={{ cursor: "pointer", color: "#e5b55c" }}
             ></i>
@@ -230,6 +250,7 @@ const Navbar = () => {
           >
             <button
               className="btn btn-outline-light me-4 btn-search"
+              onClick={handleNavLinkClick}
               type="submit"
             >
               חיפוש
@@ -248,6 +269,7 @@ const Navbar = () => {
             <span>
               <NavLink onClick={toggleDarkMode}>
                 <i
+                  onClick={handleNavLinkClick}
                   className={`bi bi-moon-stars-fill me-3  ${
                     darkMode ? "dark-mode-icon" : "light-mode-icon"
                   }`}

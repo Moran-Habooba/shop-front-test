@@ -20,3 +20,21 @@
 .custom-container {
   margin-left: 70% !important;
 }
+@media (max-width: 1280px) {
+  .custom-body {
+    width: 120% !important;
+    margin: 0 auto 0 -225px !important;
+    background-image: none;
+  }
+  .border {
+    color: white;
+    background-color: rgba(59, 93, 80, 0.8);
+    border-radius: 15px;
+  }
+  .custom-container {
+    background-position: 60% center;
+    background-image: url("../../../public/formimg.png");
+    background-size: contain;
+    background-repeat: repeat;
+  }
+}

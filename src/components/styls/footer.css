@@ -28,3 +28,12 @@
   display: flex;
   align-items: center;
 }
+@media (max-width: 987px) {
+  .custom {
+    height: 150px;
+    left: -5%;
+  }
+  .nav {
+    margin-top: 10%;
+  }
+}

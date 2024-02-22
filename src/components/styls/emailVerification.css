@@ -1,0 +1,13 @@
+.img-fixed {
+  width: 350px;
+  height: auto;
+}
+
+.card {
+  margin-right: 140px;
+}
+@media (max-width: 990px) {
+  .card {
+    margin-right: 40px;
+  }
+}

@@ -36,6 +36,8 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const { cartItems, setCartItems, totalItemsInCart } = useCart();
   const [errors, setErrors] = useState({});
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [couponAttempted, setCouponAttempted] = useState(false);
 
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
@@ -60,6 +62,7 @@ const ShoppingCart = () => {
     setCartTotal(total);
   };
   const handleCouponSubmit = () => {
+    setCouponAttempted(true);
     if (user && couponCode.toLowerCase() === "israel") {
       setIsCouponApplied(true);
       calculateTotalWithDiscount();
@@ -83,129 +86,15 @@ const ShoppingCart = () => {
 
     setCartTotal(total.toFixed(2));
   };
-
-  // const handleRemoveItem = async (itemToRemove) => {
-  //     try {
-  //       const productIdToRemove = itemToRemove.card_id._id;
-  //       console.log(productIdToRemove);
-
-  //       const response = await removeFromCart(productIdToRemove);
-
-  //       if (response.status === 200) {
-  //         const updatedCartItems = cartItems.filter(
-  //           (item) => item.card_id._id !== productIdToRemove
-  //         );
-
-  //         setCartItems(updatedCartItems);
-  //       } else {
-  //         console.error("Item not found in the cart");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error removing the item from the cart:", error);
-  //     }
-  //   };
-
-  // function changeQuantity(item, change) {
-  //   console.log(
-  //     `Changing quantity for item ${item.card_id._id}, change: ${change}`
-  //   );
-  //   let newQuantity = item.quantity + change;
-
-  //   if (newQuantity <= 0) {
-  //     setCartItems(
-  //       cartItems.filter(
-  //         (cartItem) => cartItem.card_id._id !== item.card_id._id
-  //       )
-  //     );
-  //     removeFromCart(item.card_id._id)
-  //       .then((response) => {
-  //         console.log(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error removing the item:", error);
-  //       });
-  //   } else {
-  //     newQuantity = Math.max(newQuantity, 0);
-  //     const updatedItem = { ...item, quantity: newQuantity };
-  //     const updatedItems = cartItems.map((cartItem) =>
-  //       cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //     );
-
-  //     setCartItems(updatedItems);
-
-  //     updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-  //       .then((response) => {
-  //         console.log("Cart updated:", response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error updating the cart:", error);
-  //       });
-  //   }
-  // }
-
-  // async function changeQuantity(item, change) {
-  //   try {
-  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
-  //       item.card_id._id
-  //     );
-  //     const inventoryData = inventoryResponse.data;
-  //     // console.log("Inventory response:", inventoryData);
-
-  //     const availableInventory = inventoryData.quantity;
-  //     // console.log("availableInventory response:", availableInventory);
-  //     let newQuantity = item.quantity + change;
-
-  //     if (newQuantity > availableInventory) {
-  //       setError("המלאי אזל");
-  //       return;
-  //     } else {
-  //       setError("");
-  //     }
-
-  //     if (newQuantity <= 0) {
-  //       setCartItems(
-  //         cartItems.filter(
-  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
-  //         )
-  //       );
-  //       removeFromCart(item.card_id._id)
-  //         .then((response) => {
-  //           console.log(response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error removing the item:", error);
-  //         });
-  //     } else {
-  //       newQuantity = Math.max(newQuantity, 0);
-  //       const updatedItem = { ...item, quantity: newQuantity };
-  //       const updatedItems = cartItems.map((cartItem) =>
-  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //       );
-
-  //       setCartItems(updatedItems);
-
-  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-  //         .then((response) => {
-  //           console.log("Cart updated:", response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error updating the cart:", error);
-  //         });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching inventory for the item:", error);
-  //   }
-  // }
   // פה שנתי ליוזר לא מחובר
   const handleRemoveItem = async (itemToRemove) => {
     try {
       if (!user) {
-        // If the user is not logged in, update the local cart only
         const updatedCartItems = cartItems.filter(
           (item) => item.card_id !== itemToRemove.card_id
         );
-        setCartItems(updatedCartItems); // Update local state
-        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems)); // Update local storage
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
         return;
       }
 
@@ -215,7 +104,6 @@ const ShoppingCart = () => {
       const response = await removeFromCart(productIdToRemove);
 
       if (response.status === 200) {
-        // Remove the specific item from the cart
         setCartItems((prevCartItems) =>
           prevCartItems.filter((item) => item.card_id._id !== productIdToRemove)
         );
@@ -228,112 +116,24 @@ const ShoppingCart = () => {
     }
   };
 
-  // async function changeQuantity(item, change) {
-  //   try {
-  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
-  //       item.card_id._id
-  //     );
-  //     const inventoryData = inventoryResponse.data;
-
-  //     const availableInventory = inventoryData.quantity;
-
-  //     let newQuantity = item.quantity + change;
-
-  //     const newErrors = { ...errors };
-
-  //     if (newQuantity > availableInventory) {
-  //       newErrors[item.card_id._id] = "המלאי אזל";
-  //       setErrors(newErrors);
-  //       return;
-  //     } else {
-  //       delete newErrors[item.card_id._id];
-  //       setErrors(newErrors);
-  //     }
-
-  //     if (newQuantity <= 0) {
-  //       setCartItems(
-  //         cartItems.filter(
-  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
-  //         )
-  //       );
-  //       removeFromCart(item.card_id._id)
-  //         .then((response) => {
-  //           console.log(response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error removing the item:", error);
-  //         });
-  //     } else {
-  //       newQuantity = Math.max(newQuantity, 0);
-  //       const updatedItem = { ...item, quantity: newQuantity };
-  //       const updatedItems = cartItems.map((cartItem) =>
-  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //       );
-
-  //       setCartItems(updatedItems);
-
-  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-  //         .then((response) => {
-  //           console.log("Cart updated:", response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error updating the cart:", error);
-  //         });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching inventory for the item:", error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const fetchCartItems = async () => {
-  //     try {
-  //       const response = await getCartItems();
-  //       const cartData = response.data.cart;
-
-  //       if (!cartData) {
-  //         return;
-  //       }
-
-  //       const cartItemsData = cartData.items;
-
-  //       const updatedCartItems = cartItemsData.map((item) => {
-  //         const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
-
-  //         return {
-  //           ...item,
-  //           dynamicImageUrl,
-  //         };
-  //       });
-
-  //       setCartItems(updatedCartItems);
-  //     } catch (error) {
-  //       console.error("שגיאה בקריאת רשימת המוצרים מהשרת:", error);
-  //     }
-  //   };
-
-  //   fetchCartItems();
-  // }, [setCartItems]);
-
   // פה שיניתי ליוזר לא מחובר
   async function changeQuantity(item, change) {
     try {
       if (!user) {
-        // If the user is not logged in, update the local cart directly
         let newQuantity = item.quantity + change;
         if (newQuantity <= 0) {
           const updatedCartItems = cartItems.filter(
-            (cartItem) => cartItem.card_id._id !== item.card_id._id
+            (cartItem) => cartItem.card_id !== item.card_id
           );
           setCartItems(updatedCartItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems)); // Update local storage
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
         } else {
           const updatedItem = { ...item, quantity: newQuantity };
           const updatedItems = cartItems.map((cartItem) =>
             cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
           );
           setCartItems(updatedItems);
-          localStorage.setItem("cartItems", JSON.stringify(updatedItems)); // Update local storage
+          localStorage.setItem("cartItems", JSON.stringify(updatedItems));
         }
         return;
       }
@@ -394,6 +194,7 @@ const ShoppingCart = () => {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
     const loadCartFromLocal = () => {
       const localCartItems =
         JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -451,15 +252,6 @@ const ShoppingCart = () => {
     fetchCartItems();
   }, [user, setCartItems]);
 
-  // const totalCartPrice = useMemo(() => {
-  //   if (!Array.isArray(cartItems) || cartItems.length === 0) {
-  //     return 0;
-  //   }
-  //   return cartItems
-  //     .reduce((total, item) => total + item.card_id.price * item.quantity, 0)
-  //     .toFixed(2);
-  // }, [cartItems]);
-  /////פה החלפתי כשיוזר לא מחובר
   const totalCartPrice = useMemo(() => {
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
       return 0;
@@ -482,114 +274,6 @@ const ShoppingCart = () => {
     return price.toFixed(2);
   }, [totalCartPrice, shippingCost, isCouponApplied]);
 
-  // const handleCompleteOrder = async () => {
-  //   try {
-  //     const response = await completeOrder();
-  //     if (response.status === 200) {
-  //       setCartItems([]);
-
-  //       navigate("/my-orders");
-  //     } else {
-  //       console.error("ההזמנה לא הושלמה");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error completing the order:", error);
-  //   }
-  // };
-  // const handleCompleteOrder = async () => {
-  //   try {
-  //     const response = await completeOrder();
-
-  //     if (response.status === 200) {
-  //       setCartItems([]);
-
-  //       cartItems.forEach(async (item) => {
-  //         const cardId = item.card_id._id;
-  //         const quantity = -item.quantity;
-
-  //         await adjustInventoryQuantity(cardId, quantity);
-  //       });
-
-  //       navigate("/my-orders");
-  //     } else {
-  //       console.error("ההזמנה לא הושלמה");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error completing the order:", error);
-  //   }
-  // };
-  // const handleCompleteOrder = async () => {
-  //   try {
-  //     if (!user) {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
-  //         showConfirmButton: false,
-  //         timer: 4000,
-  //       });
-  //       setTimeout(() => {
-  //         navigate("/sign-in");
-  //       }, 5000);
-  //       return;
-  //     }
-
-  //     const response = await completeOrder();
-
-  //     if (response.status === 200) {
-  //       setCartItems([]);
-
-  //       cartItems.forEach(async (item) => {
-  //         const cardId = item.card_id._id;
-  //         const quantity = -item.quantity;
-
-  //         await adjustInventoryQuantity(cardId, quantity);
-  //       });
-
-  //       navigate("/my-orders");
-  //     } else {
-  //       console.error("ההזמנה לא הושלמה");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error completing the order:", error);
-  //   }
-  // };
-  // const handleCompleteOrder = async () => {
-  //   if (!user) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
-  //       showConfirmButton: false,
-  //       timer: 4000,
-  //     });
-  //     setTimeout(() => {
-  //       navigate("/sign-in");
-  //     }, 5000);
-  //     return;
-  //   }
-
-  //   const orderDetails = {
-  //     items: cartItems.map((item) => ({
-  //       cardId: item.card_id._id,
-  //       quantity: item.quantity,
-  //     })),
-  //     city,
-  //     street,
-  //     houseNumber,
-  //   };
-  //   console.log("Sending order details to server:", orderDetails);
-
-  //   try {
-  //     const response = await completeOrder(orderDetails);
-  //     if (response.status === 200) {
-  //       setCartItems([]);
-  //       navigate("/my-orders");
-  //     } else {
-  //       console.error("ההזמנה לא הושלמה");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error completing the order:", error);
-  //   }
-  // };
   const handleCompleteOrder = async () => {
     if (!user) {
       Swal.fire({
@@ -672,13 +356,21 @@ const ShoppingCart = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // קוד לשמירת הנתונים...
     console.log("עיר:", city);
     console.log("רחוב:", street);
     console.log("מספר בית:", houseNumber);
+
+    // הנחה שהשמירה בוצעה בהצלחה
+    setSaveSuccess(true);
+
+    // אפשר להוסיף כאן קוד לאיפוס ההודעה אחרי כמה שניות
+    setTimeout(() => setSaveSuccess(false), 3000);
   };
+
   return (
     <section className="h-100 h-custom " style={{ backgroundColor: "#eee" }}>
-      <MDBContainer fluid className="py-5 h-100">
+      <MDBContainer fluid className="py-5 h-100 ">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol size="12">
             <MDBCard
@@ -692,7 +384,7 @@ const ShoppingCart = () => {
                       <div className="d-flex justify-content-between align-items-center mb-5">
                         <MDBTypography
                           tag="h1"
-                          className="fw-bold mb-0 custom-text-colorr"
+                          className="fw-bold mb-0 custom-text-color"
                         >
                           עגלת קניות
                         </MDBTypography>
@@ -708,11 +400,6 @@ const ShoppingCart = () => {
                             <MDBCol md="2" lg="2" xl="2">
                               <MDBCardImage
                                 key={index}
-                                // src={
-                                //   item.card_id.image_file?.path
-                                //     ? `http://localhost:3000/${item.card_id.image_file.path}`
-                                //     : "DefaultImg.svg.png"
-                                // }
                                 src={
                                   user &&
                                   item.card_id.image_file &&
@@ -728,17 +415,6 @@ const ShoppingCart = () => {
                                   item.image_file?.originalname || "Card image"
                                 }
                               />
-                              {/* <img
-                                src={
-                                  item.card_id.image_file?.path
-                                    ? `http://localhost:3000/${item.card_id.image_file.path}`
-                                    : "DefaultImg.svg.png"
-                                }
-                                alt={
-                                  item.image_file?.originalname || "Card image"
-                                }
-                                style={{ maxWidth: "100%", height: "auto" }}
-                              /> */}
                             </MDBCol>
                             <MDBCol md="3" lg="3" xl="3">
                               <MDBTypography tag="h6" className="text-muted">
@@ -863,6 +539,11 @@ const ShoppingCart = () => {
                                 שמור שינויים
                               </button>
                             </form>
+                            {saveSuccess && (
+                              <div className="text-success fw-bold">
+                                נשמר בהצלחה!
+                              </div>
+                            )}
                           </>
                         )}
                         <MDBTypography tag="h6" className="mb-0">
@@ -937,6 +618,24 @@ const ShoppingCart = () => {
                         >
                           החל קופון
                         </button>
+                        {isCouponApplied && (
+                          <div
+                            className="alert alert-success mt-3"
+                            role="alert"
+                            style={{ maxWidth: "300px", margin: "0 auto" }}
+                          >
+                            קופון הופעל בהצלחה!
+                          </div>
+                        )}
+                        {!isCouponApplied && couponAttempted && (
+                          <div
+                            className="alert alert-danger mt-3"
+                            role="alert"
+                            style={{ maxWidth: "300px", margin: "0 auto" }}
+                          >
+                            קופון לא קיים
+                          </div>
+                        )}
                       </div>
 
                       <hr className="my-4" />

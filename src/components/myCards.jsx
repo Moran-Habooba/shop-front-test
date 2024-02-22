@@ -6,7 +6,6 @@ import { useState, useMemo, useEffect } from "react";
 import cardsService from "../services/cardsService";
 import { useSearch } from "../context/searchContext";
 import categoryService from "../services/categoryService";
-import { getAllCategories } from "../services/categoryService";
 
 const MyCards = () => {
   const { cards, loadCards } = useMyCards();
@@ -113,7 +112,7 @@ const MyCards = () => {
       <div className="row">
         {!filteredCards.length ? (
           <p className="text-danger fw-bold fs-5 text-center">
-            No cards...
+            אין מוצרים בקטגוריה זו....
             <br />
             <i className="bi bi-exclamation-triangle fs-3"></i>
           </p>

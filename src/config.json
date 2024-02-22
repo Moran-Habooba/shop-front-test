@@ -39,5 +39,6 @@
 
   "apiUrlGetAllClosedOrders": "http://localhost:3000/api/cart/orders/closed",
 
-  "apiUrlResetPassword": "http://localhost:3000/api/users/emailVerification"
+  "apiUrlResetPassword": "http://localhost:3000/api/users/emailVerification",
+  "apiUrlResetUserPassword": "http://localhost:3000/api/users/resetPassword"
 }

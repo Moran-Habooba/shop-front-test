@@ -7,10 +7,15 @@ const ProtectedRoute = ({
   onlyBiz = false,
   onlyAdmin = false,
   onlyRegularAndBusiness = false,
+  // onlyRegular = false,
 }) => {
   const { user } = useAuth();
 
   if (!user) return <Navigate to="/sign-in" />;
+
+  // if (onlyRegular && (user.isAdmin || user.isBusiness)) {
+  //   return <Navigate to="/sign-in" />;
+  // }
 
   if (onlyBiz && (!user.isBusiness || user.isAdmin))
     return <Navigate to="/sign-in" />;

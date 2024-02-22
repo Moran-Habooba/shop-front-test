@@ -116,10 +116,10 @@ const CardManagement = () => {
         <tbody>
           {cards.map((card) => (
             <tr key={card._id}>
-              <td>{card._id}</td>
-              <td>{card.title}</td>
-              <td>{card.category}</td>
-              <td>{card.quantity}</td>
+              <td data-label="מספר מזהה">{card._id}</td>
+              <td data-label="שם המוצר">{card.title}</td>
+              <td data-label="קטגוריה">{card.category}</td>
+              <td data-label="כמות במלאי">{card.quantity}</td>
               <td>
                 {editBizNumber === card._id ? (
                   <>

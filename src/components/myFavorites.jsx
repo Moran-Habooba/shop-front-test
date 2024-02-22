@@ -46,7 +46,7 @@ const FavoriteCards = () => {
     if (favoriteCards.length === 0 && searchTerm) {
       return (
         <p className="text-danger fw-bold fs-5 text-center">
-          No matching results found for "{searchTerm}"...
+          לא נמצאו תוצאות מתאימות ל - "{searchTerm}"...
           <br />
           <i className="bi bi-exclamation-triangle fs-3"></i>
         </p>
@@ -54,7 +54,7 @@ const FavoriteCards = () => {
     } else if (favoriteCards.length === 0) {
       return (
         <p className="text-danger fw-bold fs-5 text-center">
-          No favorite cards found...
+          עדיין אין לך מוצרים ברשימת המועדפים
           <br />
           <i className="bi bi-exclamation-triangle fs-3"></i>
         </p>
@@ -78,8 +78,8 @@ const FavoriteCards = () => {
   return (
     <div>
       <PageHeader
-        title=" My Favorites"
-        description=" Here you'll find all the cards you've marked as favorites"
+        title=" המועדפים  שלי"
+        description=" כאן תוכל לראות את כל המוצרים שאהבת"
       />
       <div className="row">
         <FavoriteCards />

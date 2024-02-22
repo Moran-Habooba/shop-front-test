@@ -10,7 +10,7 @@ const SignOut = ({ redirect = "/" }) => {
 
   const handleLogoutPop = () => {
     Swal.fire({
-      html: "successfully logged out!</strong>",
+      html: "התנתקת בהצלחה !</strong>",
       icon: "success",
       showConfirmButton: false,
       timer: 1000,

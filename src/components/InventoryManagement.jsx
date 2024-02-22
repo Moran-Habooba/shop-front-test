@@ -45,9 +45,9 @@ function InventoryManagement() {
         </thead>
         <tbody>
           <tr>
-            <td>{inventoryItems.length}</td>
-            <td>{availableInventoryCount}</td>
-            <td>{unavailableInventoryCount}</td>
+            <td data-label="כל המוצרים ">{inventoryItems.length}</td>
+            <td data-label="במלאי">{availableInventoryCount}</td>
+            <td data-label="לא במלאי">{unavailableInventoryCount}</td>
           </tr>
         </tbody>
       </table>

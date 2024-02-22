@@ -33,6 +33,7 @@ import {
   EmailVerification,
   ResetPassword,
 } from "./components";
+import TokenProtectedRoute from "./common/tokenProtectedRoute";
 
 function App() {
   const { user } = useAuth();
@@ -50,7 +51,6 @@ function App() {
       <header className="pb-3">
         <ConditionedNavBar />
       </header>
-
       <main className="flex-fill container">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -123,7 +123,14 @@ function App() {
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
           <Route path="/categories/נטלות" element={<NatlaCategoryPage />} />
           <Route path="/emailVerification" element={<EmailVerification />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route
+            path="/resetPassword"
+            element={
+              <TokenProtectedRoute>
+                <ResetPassword />
+              </TokenProtectedRoute>
+            }
+          />
           <Route
             path="/ShoppingCart"
             element={

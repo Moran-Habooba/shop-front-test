@@ -74,3 +74,9 @@
 .category {
   font-weight: 600;
 }
+
+@media (max-width: 800px) {
+  td {
+    width: 100% !important;
+  }
+}

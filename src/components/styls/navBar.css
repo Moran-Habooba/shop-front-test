@@ -21,7 +21,7 @@
 }
 
 .with-underline:hover::after {
-  width: 100%; /* הגדלת הקו כאשר הרוזן מועבר מעל הלינק */
+  width: 100%;
 }
 
 .nav-link,
@@ -62,7 +62,6 @@
   text-align: right !important;
 }
 .btn-search {
-  /* background-color: #f9bf29 !important; */
   border-color: #f9bf29 !important;
   border-width: 2px !important;
 }
@@ -94,11 +93,11 @@
 }
 
 /* //////// */
-.navbar-light {
-  z-index: 9999;
-}
+/* .navbar-light {
+  z-index: 1050;
+} */
 
-@keyframes wave-animation {
+/* @keyframes wave-animation {
   0%,
   100% {
     transform: rotate(0deg);
@@ -112,28 +111,85 @@
   75% {
     transform: rotate(-5deg);
   }
-}
+} */
 
 .wave-once {
   display: inline-block;
   animation: wave-animation 1s ease-in-out 1;
 }
 
-@media (max-width: 1042px) {
-  .navbar-nav {
-    flex-direction: row;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .navbar-brand,
-  .nav-link,
-  .form-control {
-    min-width: 0;
-    width: auto;
+.navbar {
+  background-color: #3b5d50;
+  font-size: larger;
+}
+
+@media (max-width: 990px) {
+  .navbar {
+    /* padding: 0.5rem; */
+    width: 100%;
+    height: 100px !important;
   }
 
-  .form-control {
-    flex: 1;
+  .navbar-toggler {
+    position: absolute;
+    top: 50px !important;
   }
+  .logo {
+    margin-right: 50px;
+    margin-top: -2.5rem !important;
+  }
+  .navbar-brand {
+    display: block;
+    text-align: center;
+  }
+
+  .navbar-brand img {
+    height: 150px;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-item {
+    margin: 0.5rem 0;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+  }
+
+  .dropdown-menu {
+    position: static;
+  }
+  .cart-item-count {
+    margin-top: -30px;
+    margin-bottom: 15px;
+  }
+  .bi-moon-stars-fill {
+    margin-left: 20px;
+  }
+  .form-control {
+    margin-bottom: 10px;
+  }
+  .navbar-collapse {
+    position: absolute;
+    top: 90px;
+    /* left: 0; */
+    /* width: 100%; */
+    background-color: #3b5d50;
+    transition: transform 0.3s;
+    z-index: 1050;
+    right: 0;
+  }
+  .show {
+    /* width: 65%; */
+  }
+  .navbar-toggler {
+    z-index: 1051;
+  }
+  /* .container-fluid {
+    height: 140px;
+  } */
 }

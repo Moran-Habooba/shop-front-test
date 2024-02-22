@@ -61,3 +61,13 @@
   background-color: #3b5d50 !important;
   border-color: #3b5d50 !important;
 }
+@media (max-width: 1249px) {
+  .form-border {
+    width: 80%;
+    margin: 0 auto 0 -40px;
+    background-color: rgba(229, 181, 92, 0.8);
+  }
+  .custom-body-contact-us {
+    background-position: bottom;
+  }
+}
