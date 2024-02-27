@@ -95,7 +95,7 @@ function App() {
           <Route
             path="/my-favorites"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute onlyBiz>
                 <MyFavorites />
               </ProtectedRoute>
             }
@@ -122,7 +122,14 @@ function App() {
           <Route path="/categories/חגים" element={<HagimCategoryPage />} />
           <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
           <Route path="/categories/נטלות" element={<NatlaCategoryPage />} />
-          <Route path="/emailVerification" element={<EmailVerification />} />
+          <Route
+            path="/emailVerification"
+            element={
+              <TokenProtectedRoute>
+                <EmailVerification />
+              </TokenProtectedRoute>
+            }
+          />
           <Route
             path="/resetPassword"
             element={

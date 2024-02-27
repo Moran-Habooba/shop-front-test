@@ -65,7 +65,7 @@ const AdminNavBar = () => {
               <img
                 src="/logo.png"
                 alt="Logo"
-                height="100"
+                height="200"
                 style={{ objectFit: "cover" }}
               />
             </div>

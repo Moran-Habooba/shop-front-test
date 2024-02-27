@@ -1,20 +1,20 @@
 .close-button {
-  border: 1px solid #f9bf29; /* Black border */
+  border: 1px solid #f9bf29;
   border-radius: 5px;
-  background-color: #f9bf29; /* Yellow background */
+  background-color: #f9bf29;
   font-weight: bold;
-  padding: 5px 10px; /* Padding around the text */
-  display: inline-block; /* Allows setting width and height */
-  cursor: pointer; /* Changes cursor to indicate it's clickable */
-  user-select: none; /* Prevents text selection */
+  padding: 5px 10px;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
 }
 
 .close-button:hover {
-  background-color: #f9bf29; /* Darker yellow on hover */
+  background-color: #f9bf29;
 }
 
 .close-button:active {
-  background-color: #f9bf29; /* Even darker yellow when pressed */
+  background-color: #f9bf29;
 }
 
 .btn-apply {
@@ -31,4 +31,21 @@
 .modal-title {
   color: #3b5d50;
   font-weight: 700;
+}
+@media (max-width: 800px) {
+  td[data-label]::before {
+    content: attr(data-label) !important;
+    float: left;
+    font-weight: bold;
+  }
+
+  td {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    display: block;
+  }
 }

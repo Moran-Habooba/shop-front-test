@@ -5,15 +5,17 @@ import { useAuth } from "../context/auth.context";
 import { addToCart } from "../services/cartService";
 import "./styls/cardstable.css";
 import { getAllCategories } from "../services/categoryService";
+import { useNavigate } from "react-router-dom";
 
 const CardsTable = () => {
   const [cards, setCards] = useState([]);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [categories, setCategories] = useState([]);
-
+  const [orderQuantities, setOrderQuantities] = useState({});
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -38,15 +40,29 @@ const CardsTable = () => {
         } else if (sortOrder === "priceDesc") {
           data.sort((a, b) => b.price - a.price);
         }
-        setCards(data);
+        const updatedCards = data.map((card) => ({
+          ...card,
+          orderQuantity: orderQuantities[card._id] || 0,
+        }));
+
+        setCards(updatedCards);
       } catch (error) {
         console.error("Error loading cards:", error);
       }
     };
 
     fetchCards();
-  }, [selectedCategory, sortOrder]);
-
+  }, [selectedCategory, sortOrder, orderQuantities]);
+  const handleQuantityChange = (cardId, isIncrease) => {
+    setOrderQuantities((prev) => ({
+      ...prev,
+      [cardId]: isIncrease
+        ? (prev[cardId] || 0) + 1
+        : Math.max((prev[cardId] || 0) - 1, 0),
+    }));
+  };
+  const increaseCount = (cardId) => handleQuantityChange(cardId, true);
+  const decreaseCount = (cardId) => handleQuantityChange(cardId, false);
   //////
 
   useEffect(() => {
@@ -62,62 +78,122 @@ const CardsTable = () => {
     });
   }, [user]);
 
-  const increaseCount = (cardId) => {
-    setCards((currentCards) =>
-      currentCards.map((card) =>
-        card._id === cardId && card.quantity > card.orderQuantity
-          ? { ...card, orderQuantity: card.orderQuantity + 1 }
-          : card
-      )
-    );
-  };
+  // const increaseCount = (cardId) => {
+  //   setCards((currentCards) =>
+  //     currentCards.map((card) =>
+  //       card._id === cardId && card.quantity > card.orderQuantity
+  //         ? { ...card, orderQuantity: card.orderQuantity + 1 }
+  //         : card
+  //     )
+  //   );
+  // };
 
-  const decreaseCount = (cardId) => {
-    setCards((currentCards) =>
-      currentCards.map((card) =>
-        card._id === cardId && card.orderQuantity > 0
-          ? { ...card, orderQuantity: card.orderQuantity - 1 }
-          : card
-      )
-    );
-  };
+  // const decreaseCount = (cardId) => {
+  //   setCards((currentCards) =>
+  //     currentCards.map((card) =>
+  //       card._id === cardId && card.orderQuantity > 0
+  //         ? { ...card, orderQuantity: card.orderQuantity - 1 }
+  //         : card
+  //     )
+  //   );
+  // };
+  // const handleAddToCart = async (cardId, orderQuantity) => {
+  //   if (orderQuantity > 0) {
+  //     try {
+  //       const res = await addToCart(cardId, orderQuantity);
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "המוצר נוסף לסל בהצלחה!",
+  //           showConfirmButton: false,
+  //           timer: 1000,
+  //           customClass: {
+  //             popup: "small-popup",
+  //           },
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error adding product to cart:", error);
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "שגיאה",
+  //         text: "לא ניתן להוסיף את המוצר לסל.",
+  //         customClass: {
+  //           popup: "small-popup",
+  //         },
+  //       });
+  //     }
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "שגיאה",
+  //       text: "יש לבחור כמות מוצרים להוספה",
+  //       customClass: {
+  //         popup: "small-popup",
+  //       },
+  //     });
+  //   }
+  // };
   const handleAddToCart = async (cardId, orderQuantity) => {
-    if (orderQuantity > 0) {
-      try {
-        const res = await addToCart(cardId, orderQuantity);
-        if (res.status === 200) {
+    const cardToAdd = cards.find((card) => card._id === cardId);
+
+    if (orderQuantity > 0 && cardToAdd) {
+      if (user) {
+        try {
+          const res = await addToCart(cardId, orderQuantity);
+          if (res.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "המוצר נוסף לסל בהצלחה!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } catch (error) {
+          console.error("Error adding product to cart:", error);
           Swal.fire({
-            icon: "success",
-            title: "המוצר נוסף לסל בהצלחה!",
-            showConfirmButton: false,
-            timer: 1000,
-            customClass: {
-              popup: "small-popup",
-            },
+            icon: "error",
+            title: "שגיאה",
+            text: "לא ניתן להוסיף את המוצר לסל.",
           });
         }
-      } catch (error) {
-        console.error("Error adding product to cart:", error);
+      } else {
+        let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+        let itemIndex = cart.findIndex((item) => item.card_id === cardId);
+        if (itemIndex !== -1) {
+          cart[itemIndex].quantity += orderQuantity;
+        } else {
+          cart.push({
+            card_id: cardId,
+            title: cardToAdd.title,
+            price: cardToAdd.price,
+            description: cardToAdd.description,
+            quantity: orderQuantity,
+            image: cardToAdd.image_file?.path
+              ? `http://localhost:3000/${cardToAdd.image_file.path}`
+              : "DefaultImg.svg.png",
+          });
+        }
+        localStorage.setItem("cartItems", JSON.stringify(cart));
+
         Swal.fire({
-          icon: "error",
-          title: "שגיאה",
-          text: "לא ניתן להוסיף את המוצר לסל.",
-          customClass: {
-            popup: "small-popup",
-          },
+          icon: "success",
+          title: "המוצר נוסף לסל בהצלחה!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate("/ShoppingCart");
         });
       }
     } else {
       Swal.fire({
-        icon: "error",
-        title: "שגיאה",
+        icon: "warning",
+        title: "שים לב",
         text: "יש לבחור כמות מוצרים להוספה",
-        customClass: {
-          popup: "small-popup",
-        },
       });
     }
   };
+
   const handleToggleFavorite = async (cardId, isLiked) => {
     try {
       const res = await cardsService.likeCard(cardId, { liked: !isLiked });
@@ -224,6 +300,14 @@ const CardsTable = () => {
 
                 <td>
                   <p className="price">מחיר: ₪{card.price}</p>
+                  <p>
+                    כמות במלאי:
+                    {card.quantity > 0 ? (
+                      card.quantity
+                    ) : (
+                      <span style={{ color: "red" }}> המלאי אזל </span>
+                    )}
+                  </p>
                   <p className="category">קטגוריה: {card.category}</p>
                   {!user?.isAdmin && (
                     <>

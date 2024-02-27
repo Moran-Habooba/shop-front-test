@@ -168,8 +168,8 @@ const Card = ({
       }
     } else {
       Swal.fire({
-        icon: "error",
-        title: "שגיאה",
+        icon: "warning",
+        title: "שים לב",
         text: "יש לבחור כמות מוצרים להוספה",
       });
     }

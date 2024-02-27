@@ -3,7 +3,7 @@ import { resetPassword } from "../services/usersService";
 import "./styls/emailVerification.css";
 import Joi from "joi";
 import { useFormik } from "formik";
-// import Swal from "sweetalert2";
+
 const EmailVerification = () => {
   // const [email, setEmail] = useState("");
   // const [message, setMessage] = useState("");

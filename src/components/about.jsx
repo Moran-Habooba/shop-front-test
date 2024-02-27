@@ -3,7 +3,6 @@ import PageHeader from "../common/pageHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import Swal from "sweetalert2";
-
 const About = () => {
   const { user } = useAuth();
   const navigate = useNavigate();

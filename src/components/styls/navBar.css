@@ -112,7 +112,21 @@
     transform: rotate(-5deg);
   }
 } */
-
+@keyframes wave-animation {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
 .wave-once {
   display: inline-block;
   animation: wave-animation 1s ease-in-out 1;

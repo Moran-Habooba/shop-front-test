@@ -58,6 +58,12 @@ axios.interceptors.response.use(
           // timerProgressBar: true,
           showConfirmButton: false,
         });
+      } else if (error.response.data === "User not found") {
+        Swal.fire({
+          icon: "warning",
+          title: "מייל לא נמצא",
+          text: "המייל שהזנת לא נמצא במערכת. אנא בדוק את הכתובת ונסה שנית.",
+        });
       } else {
         Swal.fire({
           icon: "error",

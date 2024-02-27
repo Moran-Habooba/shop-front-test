@@ -163,3 +163,65 @@ th {
     margin-top: -100px !important;
   }
 }
+@media (max-width: 1734px) {
+  #gear1,
+  #gear2 {
+    margin-right: 2.5em;
+    font-size: 45px !important;
+  }
+}
+
+@media (max-width: 280px) {
+  #gear1,
+  #gear2 {
+    margin-right: 1.5em;
+    font-size: 45px !important;
+  }
+  .table,
+  .table tbody,
+  .table tr,
+  .table td,
+  .table th {
+    display: block;
+  }
+
+  .table td,
+  .table th {
+    text-align: right;
+    padding-right: 29% !important;
+    padding-left: 10px !important; /* נוסף להבטחת שוליים סבירים */
+    border-bottom: 1px solid #3b5d50 !important;
+    box-sizing: border-box; /* כדי לשלוט טוב יותר על הרוחב */
+  }
+
+  .table td:before {
+    content: attr(data-label);
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .table td,
+  .table th {
+    width: 100%; /* מגדיר את רוחב התאים והכותרות להיות רחבים כמו הטבלה */
+    max-width: none; /* ביטול הגבלת הרוחב המקסימלי אם הייתה קיימת */
+    font-size: 0.7rem; /* הקטנת גודל הטקסט */
+  }
+
+  .table {
+    overflow-x: auto; /* מאפשר גלילה אופקית לטבלה אם תזדקק לכך */
+  }
+  .btn {
+    margin-right: -55px !important;
+  }
+  .btn-apply {
+    margin-right: 5px !important;
+  }
+  .btn-primary,
+  .btn-secondary {
+    margin-right: 5px !important;
+  }
+}

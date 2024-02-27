@@ -105,11 +105,37 @@
   }
 
   .filter-container {
-    margin-right: 25% !important;
+    margin-right: 35% !important;
     width: 50% !important;
   }
   .form-select {
     /* font-size: 0.8rem !important; */
     width: 145px !important;
+  }
+  .view-mode-container {
+    justify-content: center;
+  }
+}
+@media (max-width: 280px) {
+  .filter-container {
+    margin-right: 23% !important;
+    width: 50% !important;
+  }
+  .btn-view-mode {
+    margin-left: -45px !important;
+  }
+  .view-mode-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0px;
+    margin-left: 195px !important;
+  }
+
+  .btn-view-mode,
+  .btn-view-mode-text {
+    margin: 0;
+    padding: 8px 96px;
   }
 }
