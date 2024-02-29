@@ -44,7 +44,6 @@ const HomePage = () => {
     fetchData();
   }, []);
 
-  // סינון ומיון הכרטיסים בהתאם לבחירות
   useEffect(() => {
     let filteredCards = [...originalCards];
 

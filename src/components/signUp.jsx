@@ -20,7 +20,7 @@ const SignUp = ({ redirect }) => {
 
   const handlePoPsignUp = () => {
     Swal.fire({
-      html: "Registration successfully!</strong>",
+      html: "נרשמת בהצלחה!</strong>",
       icon: "success",
       showConfirmButton: false,
       timer: 1000,
@@ -162,7 +162,7 @@ const SignUp = ({ redirect }) => {
       <div className="container custom-body ">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10 custom-container">
-            <div className="border p-3 m-5  ">
+            <div className="border p-3  customborder2 ">
               <div className="form-top ">
                 <div className="form-top-left">
                   <h3 className="custom-text-contact">

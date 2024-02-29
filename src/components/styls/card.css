@@ -64,9 +64,13 @@
 .out-of-stock {
   color: red;
 }
+
 @media (max-width: 800px) {
   .card {
     width: 40vh !important;
+  }
+  .card-img-top {
+    height: auto !important;
   }
 }
 @media (max-width: 280px) {

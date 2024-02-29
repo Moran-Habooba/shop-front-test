@@ -85,7 +85,7 @@ const Card = ({
   //           title: "המוצר נוסף לסל בהצלחה!",
   //           showConfirmButton: false,
   //           timer: 1000,
-  //           customClass: {
+  //           customclassName: {
   //             popup: "small-popup",
   //           },
   //         }).then(() => {
@@ -107,7 +107,7 @@ const Card = ({
   //       icon: "error",
   //       title: "שגיאה",
   //       text: "יש לבחור כמות מוצרים להוספה",
-  //       customClass: {
+  //       customclassName: {
   //         popup: "small-popup",
   //       },
   //     });
@@ -176,7 +176,7 @@ const Card = ({
   };
 
   return (
-    <div className="card me-4 mb-4 p-2" style={{ width: "16rem" }}>
+    <div className="card  me-4 mb-4 p-2" style={{ width: "16rem" }}>
       <img
         src={
           image_file?.path

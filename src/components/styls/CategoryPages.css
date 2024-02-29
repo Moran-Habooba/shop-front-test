@@ -2,4 +2,28 @@
   .container {
     margin-top: 1.2em !important;
   }
+
+  .cardStyle {
+    margin-right: -1.5em !important;
+  }
+  .CategoryTitle {
+    margin-right: 1.2em;
+  }
+}
+@media (max-width: 280px) {
+  .card {
+    width: 35vh !important;
+  }
+  .card-body {
+    padding: 0% !important;
+  }
+  .card .quantity-selector {
+    margin-left: 0 !important;
+  }
+  .quantity-selector {
+    margin-top: 8px;
+  }
+  .add-to-cart-btn {
+    margin-top: 8px;
+  }
 }

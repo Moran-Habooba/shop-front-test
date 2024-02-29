@@ -37,3 +37,11 @@
     margin-top: 10%;
   }
 }
+@media (max-width: 280px) {
+  .custom {
+    margin: 0 !important;
+    width: 33vh;
+    margin-bottom: 5px !important;
+    height: 100px;
+  }
+}

@@ -17,7 +17,6 @@ const SignIn = ({ redirect }) => {
   const navigate = useNavigate();
   const { login, user } = useAuth();
   const handleCancel = useCancelNavigate("/");
-  /////כשיוזר לא מחובר
   useEffect(() => {
     if (user) {
       const syncCartWithServer = async () => {
@@ -99,7 +98,6 @@ const SignIn = ({ redirect }) => {
       error: form.touched[name] && form.errors[name],
     };
   };
-  ///////////פה הוספתי ליוזר לא מחובר
 
   async function syncLocalCartWithServer() {
     const token = getJWT();
@@ -132,7 +130,7 @@ const SignIn = ({ redirect }) => {
       <div className="container  customforsmart">
         <div className="row justify-content-center ">
           <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="border p-3 m-5 ">
+            <div className="border p-3  custom-border ">
               <div className="form-top">
                 <div className="form-top-left">
                   <h3 className="custom-text-contact">
@@ -179,7 +177,16 @@ const SignIn = ({ redirect }) => {
                   התחבר
                 </button>
               </form>
-              <Link to={"/emailVerification"}>שכחת את הסיסמא?</Link>
+              <Link to={"/emailVerification"} style={{ color: "#e5b55c" }}>
+                שכחת את הסיסמא?
+              </Link>
+              <Link
+                to={"/sign-up"}
+                className="me-5"
+                style={{ color: "#e5b55c" }}
+              >
+                עדיין אין לך חשבון?
+              </Link>
             </div>
           </div>
         </div>

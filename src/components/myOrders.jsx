@@ -23,7 +23,7 @@ const MyOrders = () => {
   return (
     <div className="custom-table-responsive">
       <h1>ההזמנות שלי</h1>
-      <div class="table-responsive-md">
+      <div className="table-responsive-md">
         <table className="table table-striped table-bordered ">
           <thead>
             <tr>

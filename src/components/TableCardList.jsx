@@ -54,13 +54,20 @@ const CardsTable = () => {
     fetchCards();
   }, [selectedCategory, sortOrder, orderQuantities]);
   const handleQuantityChange = (cardId, isIncrease) => {
-    setOrderQuantities((prev) => ({
-      ...prev,
-      [cardId]: isIncrease
-        ? (prev[cardId] || 0) + 1
-        : Math.max((prev[cardId] || 0) - 1, 0),
-    }));
+    setOrderQuantities((prev) => {
+      const currentQuantity = prev[cardId] || 0;
+      const card = cards.find((c) => c._id === cardId);
+      const maxQuantity = card ? card.quantity : 0;
+
+      if (isIncrease && currentQuantity < maxQuantity) {
+        return { ...prev, [cardId]: currentQuantity + 1 };
+      } else if (!isIncrease && currentQuantity > 0) {
+        return { ...prev, [cardId]: currentQuantity - 1 };
+      }
+      return prev;
+    });
   };
+
   const increaseCount = (cardId) => handleQuantityChange(cardId, true);
   const decreaseCount = (cardId) => handleQuantityChange(cardId, false);
   //////
@@ -107,7 +114,7 @@ const CardsTable = () => {
   //           title: "המוצר נוסף לסל בהצלחה!",
   //           showConfirmButton: false,
   //           timer: 1000,
-  //           customClass: {
+  //           customclass: {
   //             popup: "small-popup",
   //           },
   //         });
@@ -118,7 +125,7 @@ const CardsTable = () => {
   //         icon: "error",
   //         title: "שגיאה",
   //         text: "לא ניתן להוסיף את המוצר לסל.",
-  //         customClass: {
+  //         customclass: {
   //           popup: "small-popup",
   //         },
   //       });
@@ -128,7 +135,7 @@ const CardsTable = () => {
   //       icon: "error",
   //       title: "שגיאה",
   //       text: "יש לבחור כמות מוצרים להוספה",
-  //       customClass: {
+  //       customclass: {
   //         popup: "small-popup",
   //       },
   //     });
@@ -140,15 +147,27 @@ const CardsTable = () => {
     if (orderQuantity > 0 && cardToAdd) {
       if (user) {
         try {
-          const res = await addToCart(cardId, orderQuantity);
-          if (res.status === 200) {
+          // const res = await addToCart(cardId, orderQuantity);
+          // if (res.status === 200) {
+          //   Swal.fire({
+          //     icon: "success",
+          //     title: "המוצר נוסף לסל בהצלחה!",
+          //     showConfirmButton: false,
+          //     timer: 1500,
+          //   }).then(() => {
+          //     navigate("/ShoppingCart");
+          //   });
+          // }
+          addToCart(cardId, orderQuantity).then(() => {
             Swal.fire({
               icon: "success",
               title: "המוצר נוסף לסל בהצלחה!",
               showConfirmButton: false,
               timer: 1500,
+            }).then(() => {
+              navigate("/ShoppingCart");
             });
-          }
+          });
         } catch (error) {
           console.error("Error adding product to cart:", error);
           Swal.fire({
@@ -313,16 +332,16 @@ const CardsTable = () => {
                     <>
                       <button
                         className="quantity me-2 ms-1"
-                        onClick={() => increaseCount(card._id)}
+                        onClick={() => decreaseCount(card._id)}
                       >
-                        +
+                        -
                       </button>
                       <span> {card.orderQuantity}</span>
                       <button
                         className="quantity me-2"
-                        onClick={() => decreaseCount(card._id)}
+                        onClick={() => increaseCount(card._id)}
                       >
-                        -
+                        +
                       </button>
                       <button
                         className="quantity me-3"

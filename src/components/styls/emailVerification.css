@@ -3,11 +3,12 @@
   height: auto;
 }
 
-.card {
+/* .card {
   margin-right: 140px;
-}
+} */
 @media (max-width: 990px) {
-  .card {
-    margin-right: 40px;
+  .card-email {
+    margin-right: 5px;
+    padding: 5px;
   }
 }

@@ -132,7 +132,6 @@ const Navbar = () => {
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                onClick={handleNavLinkClick}
               >
                 קטגוריות
               </NavLink>

@@ -22,14 +22,15 @@ import {
   CardsEdit,
   UserEdit,
   ContactUs,
-  KippahsCategoryPage,
-  ShabbatCategoryPage,
-  MezuzahCategoryPage,
-  HagimCategoryPage,
-  SidurimCategoryPage,
+  CategoryPage,
+  // KippahsCategoryPage,
+  // ShabbatCategoryPage,
+  // MezuzahCategoryPage,
+  // HagimCategoryPage,
+  // SidurimCategoryPage,
+  // NatlaCategoryPage,
   ShoppingCart,
   MyOrders,
-  NatlaCategoryPage,
   EmailVerification,
   ResetPassword,
 } from "./components";
@@ -116,20 +117,31 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/categories/כיפות" element={<KippahsCategoryPage />} />
-          <Route path="/categories/שבת" element={<ShabbatCategoryPage />} />
-          <Route path="/categories/מזוזות" element={<MezuzahCategoryPage />} />
-          <Route path="/categories/חגים" element={<HagimCategoryPage />} />
-          <Route path="/categories/סידורים" element={<SidurimCategoryPage />} />
-          <Route path="/categories/נטלות" element={<NatlaCategoryPage />} />
           <Route
-            path="/emailVerification"
-            element={
-              <TokenProtectedRoute>
-                <EmailVerification />
-              </TokenProtectedRoute>
-            }
+            path="/categories/כיפות"
+            element={<CategoryPage category="כיפות" title="כיפות" />}
           />
+          <Route
+            path="/categories/שבת"
+            element={<CategoryPage category="שבת" title="שבת קודש" />}
+          />
+          <Route
+            path="/categories/מזוזות"
+            element={<CategoryPage category="מזוזות" title="מזוזות" />}
+          />
+          <Route
+            path="/categories/חגים"
+            element={<CategoryPage category="חגים" title="חגים" />}
+          />
+          <Route
+            path="/categories/סידורים"
+            element={<CategoryPage category="סידורים" title="סידורים" />}
+          />
+          <Route
+            path="/categories/נטלות"
+            element={<CategoryPage category="נטלות" title="נטלות " />}
+          />
+          <Route path="/emailVerification" element={<EmailVerification />} />
           <Route
             path="/resetPassword"
             element={
@@ -138,14 +150,7 @@ function App() {
               </TokenProtectedRoute>
             }
           />
-          <Route
-            path="/ShoppingCart"
-            element={
-              // <ProtectedRoute onlyBiz>
-              <ShoppingCart />
-              // </ProtectedRoute>
-            }
-          />
+          <Route path="/ShoppingCart" element={<ShoppingCart />} />
           <Route
             path="/my-orders"
             element={
@@ -154,10 +159,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/InventoryManagement"
-            element={<InventoryManagement />}
-          /> */}
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

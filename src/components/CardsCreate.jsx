@@ -106,6 +106,16 @@ const CardsCreate = () => {
 
   return (
     <>
+      <style>
+        {`
+          .form-top-left h3 {
+            color: #e5b55c;
+          }
+          .form-top-left p {
+            color: #e5b55c; 
+          }
+        `}
+      </style>
       <PageHeader title="הוספת מוצר" description="הוספת מוצר חדש" />
       <div className="container">
         <div className="row justify-content-center">
@@ -131,12 +141,6 @@ const CardsCreate = () => {
                     type="text"
                     required
                   />
-                  {/* <Input
-                    {...getProps("subtitle")}
-                    label="כותרת משנית"
-                    type="text"
-                    required
-                  /> */}
                   <Input
                     {...getProps("description")}
                     label="תאור המוצר"

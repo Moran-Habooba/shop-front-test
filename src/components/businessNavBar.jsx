@@ -64,6 +64,7 @@ const BusinessNavBar = () => {
   const handleNavLinkClick = () => {
     setIsNavExpanded(false);
   };
+
   return (
     <nav
       className="navbar navbar-expand-xl  navbar-light"
@@ -145,6 +146,7 @@ const BusinessNavBar = () => {
                     <NavLink
                       to={`/categories/${category.name}`}
                       className="dropdown-item"
+                      onClick={handleNavLinkClick}
                     >
                       {category.name}
                     </NavLink>

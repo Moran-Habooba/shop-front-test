@@ -1,3 +1,9 @@
+.border.p-3.m-5 {
+  width: 80%;
+}
+.custom-border {
+  margin: 3rem !important;
+}
 @media (max-width: 1249px) {
   .customforsmart {
     width: 100% !important;
@@ -11,5 +17,21 @@
     color: white;
     background-color: rgba(59, 93, 80, 0.7);
     border-radius: 15px;
+  }
+}
+
+@media (max-width: 800px) {
+  .custom-border {
+    margin: 0 !important;
+    width: 37vh;
+    margin-bottom: 5px !important;
+  }
+}
+
+@media (max-width: 280px) {
+  .custom-border {
+    margin: 0 !important;
+    width: 33vh;
+    margin-bottom: 5px !important;
   }
 }

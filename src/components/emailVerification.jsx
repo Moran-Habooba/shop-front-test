@@ -3,8 +3,11 @@ import { resetPassword } from "../services/usersService";
 import "./styls/emailVerification.css";
 import Joi from "joi";
 import { useFormik } from "formik";
+import { useDarkMode } from "../context/darkMode.context";
 
 const EmailVerification = () => {
+  const { darkMode } = useDarkMode();
+  const imageSrc = darkMode ? "passwordDark.png" : "password.png";
   // const [email, setEmail] = useState("");
   // const [message, setMessage] = useState("");
 
@@ -55,7 +58,7 @@ const EmailVerification = () => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card">
+          <div className="card card-email">
             <div className="card-body">
               <h2 className="card-title mb-4">איפוס סיסמה</h2>
               <form onSubmit={formik.handleSubmit}>
@@ -99,7 +102,7 @@ const EmailVerification = () => {
         </div>
         <div className="col-md-4">
           <img
-            src="password.png"
+            src={imageSrc}
             alt="password reset"
             className="img-fixed password"
           />

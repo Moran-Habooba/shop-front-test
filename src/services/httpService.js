@@ -45,24 +45,88 @@ axios.defaults.baseGetInventoryiWithDetails =
 
 axios.defaults.baseUrlGetAllClosedOrders = config.apiUrlGetAllClosedOrders;
 
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     console.log(error.response);
+//     if (error.response) {
+//       console.log(error.response.data);
+//       if (error.response.status === 400) {
+//         Swal.fire({
+//           icon: "error",
+//           title: " בקשות רבות מדי לשרת",
+//           text: "אופס! עשית יותר מדי בקשות לשרת בזמן קצר מדי. אנא המתן ונסה שוב מחר.",
+
+//           showConfirmButton: false,
+//         });
+//       } else if (error.response.data === "User not found") {
+//         Swal.fire({
+//           icon: "warning",
+//           title: "מייל לא נמצא",
+//           text: "המייל שהזנת לא נמצא במערכת. אנא בדוק את הכתובת ונסה שנית.",
+//         });
+//       } else if (error.response.data === "Invalid email or password") {
+//         Swal.fire({
+//           icon: "warning",
+//           title: "מייל או סיסמא לא נכונים",
+//           text: "המייל או הסיסמא שגויים אנא  נסה שנית.",
+//         });
+//       } else {
+//         Swal.fire({
+//           icon: "error",
+//           title: "שגיאה בבקשה",
+//           text:
+//             error.response.data.message ||
+//             "שגיאה לא צפויה אירעה, אנא נסה שנית.",
+//         });
+//       }
+//     } else if (error.request) {
+//       Swal.fire({
+//         icon: "error",
+//         title: "שגיאת רשת",
+//         text: "הבקשה לא קיבלה תגובה, בדוק את חיבור האינטרנט שלך.",
+//       });
+//     } else {
+//       Swal.fire({
+//         icon: "error",
+//         title: "שגיאה",
+//         text: "משהו השתבש ביצירת הבקשה, אנא נסה שנית.",
+//       });
+//     }
+//     return new Promise(() => {});
+//   }
+// );
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log(error.response);
     if (error.response) {
-      if (error.response.status === 400) {
+      console.log(error.response.data);
+
+      if (error.response.data === "Invalid email or password") {
         Swal.fire({
-          icon: "error",
-          title: " בקשות רבות מדי לשרת",
-          text: "אופס! עשית יותר מדי בקשות לשרת בזמן קצר מדי. אנא המתן ונסה שוב מחר.",
-          // timer: 60000,
-          // timerProgressBar: true,
-          showConfirmButton: false,
+          icon: "warning",
+          title: "מייל או סיסמא לא נכונים",
+          text: "המייל או הסיסמא שגויים אנא נסה שנית.",
         });
       } else if (error.response.data === "User not found") {
         Swal.fire({
           icon: "warning",
           title: "מייל לא נמצא",
           text: "המייל שהזנת לא נמצא במערכת. אנא בדוק את הכתובת ונסה שנית.",
+        });
+      } else if (error.response.data === "Account is temporarily locked") {
+        Swal.fire({
+          icon: "warning",
+          title: "חשבון נחסם",
+          text: "הזנת 3 פעמים סיסמא שגויה חשבונך נחסם ל24 שעות. אנא המתן או צור קשר עם מנהל האתר.",
+        });
+      } else if (error.response.status === 400) {
+        Swal.fire({
+          icon: "error",
+          title: "בקשות רבות מדי לשרת",
+          text: "אופס! עשית יותר מדי בקשות לשרת בזמן קצר מדי. אנא המתן ונסה שוב מחר.",
+          showConfirmButton: false,
         });
       } else {
         Swal.fire({
@@ -86,7 +150,8 @@ axios.interceptors.response.use(
         text: "משהו השתבש ביצירת הבקשה, אנא נסה שנית.",
       });
     }
-    return new Promise(() => {});
+    // אין צורך בהחזרת Promise חדש וריק אלא יש להחזיר את השגיאה כדי שניתן יהיה לטפל בה מחוץ ל-interceptor
+    return Promise.reject(error);
   }
 );
 

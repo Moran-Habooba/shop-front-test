@@ -69,3 +69,12 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-top: 3.8em !important;
   }
 }
+
+@media (max-width: 280px) {
+  .card-registration-2 {
+    margin-right: 0 !important;
+  }
+  .custom-button {
+    margin-right: -1rem !important;
+  }
+}

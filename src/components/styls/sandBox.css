@@ -17,7 +17,12 @@
 th {
   background-color: #e5b55c !important;
 }
-
+.dark-mode #gear1 {
+  color: #e5b55c;
+}
+.dark-mode #gear2 {
+  color: #e5b55c;
+}
 @media (max-width: 991px) {
   .btn {
     padding: 0.375rem 0.75rem;
@@ -189,9 +194,9 @@ th {
   .table th {
     text-align: right;
     padding-right: 29% !important;
-    padding-left: 10px !important; /* נוסף להבטחת שוליים סבירים */
+    padding-left: 10px !important;
     border-bottom: 1px solid #3b5d50 !important;
-    box-sizing: border-box; /* כדי לשלוט טוב יותר על הרוחב */
+    box-sizing: border-box;
   }
 
   .table td:before {
@@ -206,13 +211,13 @@ th {
 
   .table td,
   .table th {
-    width: 100%; /* מגדיר את רוחב התאים והכותרות להיות רחבים כמו הטבלה */
-    max-width: none; /* ביטול הגבלת הרוחב המקסימלי אם הייתה קיימת */
-    font-size: 0.7rem; /* הקטנת גודל הטקסט */
+    width: 100%;
+    max-width: none;
+    font-size: 0.7rem;
   }
 
   .table {
-    overflow-x: auto; /* מאפשר גלילה אופקית לטבלה אם תזדקק לכך */
+    overflow-x: auto;
   }
   .btn {
     margin-right: -55px !important;

@@ -3,7 +3,9 @@
   background-color: #3b5d50;
   border-radius: 15px;
 }
-
+.customborder2 {
+  margin-bottom: 15px;
+}
 .custom-body {
   background-image: url("../../../public/formimg.png");
   background-size: contain;
@@ -36,5 +38,20 @@
     background-image: url("../../../public/formimg.png");
     background-size: contain;
     background-repeat: repeat;
+  }
+}
+@media (max-width: 800px) {
+  .customborder2 {
+    width: 33vh !important;
+    margin-right: 50px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 280px) {
+  .customborder2 {
+    width: 33vh !important;
+    margin-right: -50px;
+    margin-bottom: 10px;
   }
 }

@@ -2,31 +2,17 @@ import React, { useEffect, useState } from "react";
 import { getProductsByCategory } from "../../services/categoryService";
 import Card from "../card";
 import "../styls/CategoryPages.css";
-// import { useLikes } from "../../context/like.context";
 import cardsService from "../../services/cardsService";
 import { useAuth } from "../../context/auth.context";
 
-const HagimCategoryPage = () => {
+const CategoryPage = ({ category, title }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  // const { likedItems, toggleLike } = useLikes();
   const { user } = useAuth();
 
-  // useEffect(() => {
-  //   getProductsByCategory("חגים")
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //       setProducts(data);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setError("לא ניתן לטעון מוצרים עבור קטגורית שבת.");
-  //       setLoading(false);
-  //     });
-  // }, []);
   useEffect(() => {
-    getProductsByCategory("חגים")
+    getProductsByCategory(category)
       .then(({ data }) => {
         console.log(data);
         setProducts(
@@ -38,14 +24,14 @@ const HagimCategoryPage = () => {
         setLoading(false);
       })
       .catch((err) => {
-        setError("לא ניתן לטעון מוצרים עבור קטגורית שבת.");
+        setError(`לא ניתן לטעון מוצרים עבור קטגורית ${category}.`);
         setLoading(false);
       });
-  }, [user]);
+  }, [user, category]);
   const toggleLike = async (productId) => {
     try {
       await cardsService.likeCard(productId);
-      const { data } = await getProductsByCategory("חגים");
+      const { data } = await getProductsByCategory(category);
       setProducts(
         data.map((product) => ({
           ...product,
@@ -56,17 +42,16 @@ const HagimCategoryPage = () => {
       console.error(err);
     }
   };
-
   if (loading) return <div>טוען...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-      <h1>חגים</h1>
+    <div className="cardStyle">
+      <h1 className="CategoryTitle">{title}</h1>
       <div className="container">
         <div className="row">
           {products.map((product) => (
-            <div className="col-sm-12 col-md-6 col-lg-4" key={product._id}>
+            <div key={product._id} className="col-sm">
               <Card
                 card={product}
                 onLiked={() => toggleLike(product._id)}
@@ -80,4 +65,4 @@ const HagimCategoryPage = () => {
   );
 };
 
-export default HagimCategoryPage;
+export default CategoryPage;

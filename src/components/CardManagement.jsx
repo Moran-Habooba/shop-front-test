@@ -48,7 +48,7 @@ const CardManagement = () => {
 
   const handleUpdateBizNumber = async (id) => {
     if (newBizNumber.length < 7 || newBizNumber.length > 7) {
-      setError("Invalid biz number: It must be a 7-digit exactly ");
+      setError("מספר מזהה לא חוקי. חייב להיות 7 ספרות בדיוק");
       setIsButtonDisabled(true);
       return;
     }
@@ -79,7 +79,7 @@ const CardManagement = () => {
         setError("");
       } else {
         setIsButtonDisabled(true);
-        setError("Invalid biz number: It must be a 7-digit exactly");
+        setError("מספר מזהה לא חוקי. חייב להיות 7 ספרות בדיוק");
       }
     }
   }, [newBizNumber, hasStartedEditing]);

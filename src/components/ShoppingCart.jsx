@@ -28,7 +28,7 @@ import Swal from "sweetalert2";
 
 const ShoppingCart = () => {
   // eslint-disable-next-line no-unused-vars
-  const [cartTotal, setCartTotal] = useState(0);
+  // const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(15);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -39,54 +39,84 @@ const ShoppingCart = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [couponAttempted, setCouponAttempted] = useState(false);
 
+  // const subtotal = cartItems.reduce(
+  //   (total, item) => total + item.card_id.price * item.quantity,
+  //   0
+  // );
+  const subtotal = cartItems.reduce((total, item) => {
+    if (
+      user &&
+      item.card_id &&
+      item.card_id.price != null &&
+      item.quantity != null
+    ) {
+      return total + item.card_id.price * item.quantity;
+    } else if (item.price != null && item.quantity != null) {
+      return total + item.price * item.quantity;
+    }
+    return total;
+  }, 0);
+
+  let totalBeforeDiscount = subtotal + shippingCost;
+  let total = totalBeforeDiscount;
+  if (isCouponApplied) {
+    total = total * 0.9;
+  }
+  if (totalBeforeDiscount < 0) {
+    totalBeforeDiscount = 0;
+  }
+  if (total < 0) {
+    total = 0;
+  }
+
   const handleShippingChange = (event) => {
     const selectedShipping = parseFloat(event.target.value);
 
     setShippingCost(selectedShipping);
 
-    const subtotal = cartItems.reduce(
-      (total, item) => total + item.card_id.price * item.quantity,
-      0
-    );
-    const total = subtotal + selectedShipping;
-    setCartTotal(total);
+    // const subtotal = cartItems.reduce(
+    //   (total, item) => total + item.card_id.price * item.quantity,
+    //   0
+    // );
+    // const total = subtotal + selectedShipping;
+    // setCartTotal(total);
   };
 
-  const calculateTotal = () => {
-    const subtotal = cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
+  // const calculateTotal = () => {
+  //   const subtotal = cartItems.reduce(
+  //     (total, item) => total + item.price * item.quantity,
+  //     0
+  //   );
 
-    const total = subtotal + shippingCost;
-    setCartTotal(total);
-  };
+  //   const total = subtotal + shippingCost;
+  //   setCartTotal(total);
+  // };
   const handleCouponSubmit = () => {
     setCouponAttempted(true);
     if (user && couponCode.toLowerCase() === "israel") {
       setIsCouponApplied(true);
-      calculateTotalWithDiscount();
+      // calculateTotalWithDiscount();
     } else {
       setIsCouponApplied(false);
     }
   };
 
-  const calculateTotalWithDiscount = () => {
-    const subtotal = cartItems.reduce(
-      (total, item) => total + item.card_id.price * item.quantity,
-      0
-    );
-    let total = subtotal + shippingCost;
-    if (isCouponApplied) {
-      total *= 0.9;
-    }
-    if (total < 0) {
-      total = 0;
-    }
+  // const calculateTotalWithDiscount = () => {
+  //   const subtotal = cartItems.reduce(
+  //     (total, item) => total + item.card_id.price * item.quantity,
+  //     0
+  //   );
+  //   let total = subtotal + shippingCost;
+  //   if (isCouponApplied) {
+  //     total *= 0.9;
+  //   }
+  //   if (total < 0) {
+  //     total = 0;
+  //   }
 
-    setCartTotal(total.toFixed(2));
-  };
-  // פה שנתי ליוזר לא מחובר
+  //   setCartTotal(total.toFixed(2));
+  // };
+
   const handleRemoveItem = async (itemToRemove) => {
     try {
       if (!user) {
@@ -116,7 +146,6 @@ const ShoppingCart = () => {
     }
   };
 
-  // פה שיניתי ליוזר לא מחובר
   async function changeQuantity(item, change) {
     try {
       if (!user) {
@@ -252,32 +281,32 @@ const ShoppingCart = () => {
     fetchCartItems();
   }, [user, setCartItems]);
 
-  const totalCartPrice = useMemo(() => {
-    if (!Array.isArray(cartItems) || cartItems.length === 0) {
-      return 0;
-    }
-    return cartItems
-      .reduce(
-        (total, item) =>
-          total + (user ? item.card_id.price : item.price) * item.quantity,
-        0
-      )
-      .toFixed(2);
-  }, [cartItems, user]);
+  // const totalCartPrice = useMemo(() => {
+  //   if (!Array.isArray(cartItems) || cartItems.length === 0) {
+  //     return 0;
+  //   }
+  //   return cartItems
+  //     .reduce(
+  //       (total, item) =>
+  //         total + (user ? item.card_id.price : item.price) * item.quantity,
+  //       0
+  //     )
+  //     .toFixed(2);
+  // }, [cartItems, user]);
 
-  const totalPriceWithShipping = useMemo(() => {
-    let price = +totalCartPrice + shippingCost;
-    if (isCouponApplied) {
-      price /= 1.1;
-    }
+  // const totalPriceWithShipping = useMemo(() => {
+  //   let price = +totalCartPrice + shippingCost;
+  //   if (isCouponApplied) {
+  //     price /= 1.1;
+  //   }
 
-    return price.toFixed(2);
-  }, [totalCartPrice, shippingCost, isCouponApplied]);
+  //   return price.toFixed(2);
+  // }, [totalCartPrice, shippingCost, isCouponApplied]);
 
   const handleCompleteOrder = async () => {
     if (!user) {
       Swal.fire({
-        icon: "error",
+        icon: "warning",
         title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
         showConfirmButton: false,
         timer: 4000,
@@ -356,15 +385,12 @@ const ShoppingCart = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // קוד לשמירת הנתונים...
     console.log("עיר:", city);
     console.log("רחוב:", street);
     console.log("מספר בית:", houseNumber);
 
-    // הנחה שהשמירה בוצעה בהצלחה
     setSaveSuccess(true);
 
-    // אפשר להוסיף כאן קוד לאיפוס ההודעה אחרי כמה שניות
     setTimeout(() => setSaveSuccess(false), 3000);
   };
 
@@ -573,7 +599,8 @@ const ShoppingCart = () => {
                           {totalItemsInCart} מוצרים
                         </MDBTypography>
                         <MDBTypography tag="h5">
-                          {totalCartPrice}₪
+                          {/* {totalCartPrice}₪ */}
+                          {subtotal}
                         </MDBTypography>
                       </div>
 
@@ -627,13 +654,22 @@ const ShoppingCart = () => {
                             קופון הופעל בהצלחה!
                           </div>
                         )}
-                        {!isCouponApplied && couponAttempted && (
+                        {!isCouponApplied && couponAttempted && user && (
                           <div
                             className="alert alert-danger mt-3"
                             role="alert"
                             style={{ maxWidth: "300px", margin: "0 auto" }}
                           >
                             קופון לא קיים
+                          </div>
+                        )}
+                        {!user && couponAttempted && (
+                          <div
+                            className="alert alert-warning mt-3"
+                            role="alert"
+                            style={{ maxWidth: "300px", margin: "0 auto" }}
+                          >
+                            עליך להתחבר כדי להזין קופון
                           </div>
                         )}
                       </div>
@@ -644,12 +680,12 @@ const ShoppingCart = () => {
                         <MDBTypography
                           tag="h5"
                           className="text-uppercase custom-text-color"
-                          onClick={calculateTotal}
+                          // onClick={calculateTotal}
                         >
                           סה"כ לתשלום
                         </MDBTypography>
                         <MDBTypography className="custom-text-color" tag="h5">
-                          {totalPriceWithShipping} ₪
+                          {total} ₪
                         </MDBTypography>
                       </div>
 
