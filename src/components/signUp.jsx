@@ -17,7 +17,10 @@ const SignUp = ({ redirect }) => {
   const navigate = useNavigate();
   const { signUp, user } = useAuth();
   const handleCancel = useCancelNavigate("/");
-
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
+  };
   const handlePoPsignUp = () => {
     Swal.fire({
       html: "נרשמת בהצלחה!</strong>",
@@ -67,7 +70,7 @@ const SignUp = ({ redirect }) => {
         )
         .messages({
           "string.pattern.base":
-            "Password should be at least 8 characters inclusive !@#$%^&*-.",
+            "הסיסמה חייבת להיות באורך 9 תווים לפחות ולהכיל אות גדולה, אות קטנה, מספר ואחד מהתווים הבאים!@#$%^&*-.",
         }),
 
       city: Joi.string().min(2).max(256).required(),
@@ -98,29 +101,6 @@ const SignUp = ({ redirect }) => {
       if (values.image_file) {
         formData.append("image_file", values.image_file);
       }
-      // const serverBody = {
-      //   name: {
-      //     first: values.first_name,
-      //     last: values.last_name,
-      //   },
-      //   email: values.email,
-      //   phone: values.phone,
-      //   password: values.password,
-      //   address: {
-      //     city: values.city,
-      //     street: values.street,
-      //     country: values.country,
-      //     houseNumber: values.house_number,
-      //     zip: values.zip,
-      //   },
-      //   image: {
-      //     url: values.image_url,
-      //     alt: values.image_alt,
-      //     file: values.image,
-      //   },
-
-      //   isBusiness: values.isBusiness,
-      // };
 
       try {
         await signUp(formData);
@@ -185,11 +165,7 @@ const SignUp = ({ redirect }) => {
                     type="text"
                     required
                   />
-                  {/* <Input
-                    {...getProps("middle_name")}
-                    label="middle name"
-                    type="text"
-                  /> */}
+
                   <Input
                     {...getProps("last_name")}
                     label="שם משפחה"
@@ -208,13 +184,13 @@ const SignUp = ({ redirect }) => {
                     type="text"
                     required
                   />
-                  <Input
+                  {/* <Input
                     {...getProps("password")}
                     label="סיסמא"
                     type="password"
                     required
-                  />
-                  {/* <Input {...getProps("state")} label="state" type="text" /> */}
+                  /> */}
+
                   <Input
                     {...getProps("city")}
                     label="עיר"
@@ -240,17 +216,7 @@ const SignUp = ({ redirect }) => {
                     type="number"
                     required
                   />
-                  {/* <Input
-                    {...getProps("image_url")}
-                    label="image url"
-                    type="text"
-                  />
-               
-                  <Input
-                    {...getProps("image_alt")}
-                    label="image alt"
-                    type="text"
-                  /> */}
+
                   <Input
                     {...getProps("zip")}
                     label="מיקוד"
@@ -258,7 +224,7 @@ const SignUp = ({ redirect }) => {
                     required
                   />
                 </div>
-                {/* /////////////// */}
+
                 <div className="mb-3">
                   <label htmlFor="image_file" className="form-label">
                     תמונת פרופיל
@@ -275,18 +241,42 @@ const SignUp = ({ redirect }) => {
                     }
                   />
                 </div>
-                {/* ///////// */}
-                {/* <div className="mb-3 form-check">
-                  <input
-                    {...getProps("isBusiness")}
-                    type="checkbox"
-                    className="form-check-input"
-                    id="BusinessCheck"
-                  />
-                  <label className="form-check-label" htmlFor="BusinessCheck">
-                    Sign up as Business
-                  </label>
-                </div> */}
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label"></label>
+                  <div
+                    // className="input-group"
+                    style={{
+                      position: "relative",
+                      display: "grid",
+                      // justifyContent: "start",
+                    }}
+                  >
+                    <Input
+                      {...getProps("password")}
+                      label="סיסמא"
+                      type={passwordShown ? "text" : "password"}
+                      className="form-control"
+                      required
+                    />
+                    <button
+                      className="btn eye"
+                      style={{
+                        position: "absolute",
+                        left: "283px",
+                        top: "32px",
+                      }}
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <i
+                        className={
+                          passwordShown ? "bi bi-eye-slash" : "bi bi-eye"
+                        }
+                        style={{ fontSize: "16px", color: "#e5b55c" }}
+                      ></i>
+                    </button>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={handleCancel}

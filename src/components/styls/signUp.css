@@ -5,6 +5,7 @@
 }
 .customborder2 {
   margin-bottom: 15px;
+  margin-right: 25px;
 }
 .custom-body {
   background-image: url("../../../public/formimg.png");
@@ -21,6 +22,17 @@
 }
 .custom-container {
   margin-left: 70% !important;
+}
+.eye {
+  /* border: 1px solid #e5b55c !important; */
+
+  border-radius: 20% !important;
+  /* margin-right: 5px;
+  margin-top: 30px; */
+  cursor: pointer;
+  /* font-size: 16px;
+  height: 40px;
+  width: 40px; */
 }
 @media (max-width: 1280px) {
   .custom-body {
@@ -46,6 +58,9 @@
     margin-right: 50px;
     margin-bottom: 10px;
   }
+  .eye {
+    left: 0 !important;
+  }
 }
 
 @media (max-width: 280px) {
@@ -53,5 +68,8 @@
     width: 33vh !important;
     margin-right: -50px;
     margin-bottom: 10px;
+  }
+  .eye {
+    margin-right: 0 !important;
   }
 }

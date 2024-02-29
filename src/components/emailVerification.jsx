@@ -4,6 +4,7 @@ import "./styls/emailVerification.css";
 import Joi from "joi";
 import { useFormik } from "formik";
 import { useDarkMode } from "../context/darkMode.context";
+import AlreadyLogged from "../common/AlreadyLogged";
 
 const EmailVerification = () => {
   const { darkMode } = useDarkMode();
@@ -111,4 +112,4 @@ const EmailVerification = () => {
     </div>
   );
 };
-export default EmailVerification;
+export default AlreadyLogged(EmailVerification);
