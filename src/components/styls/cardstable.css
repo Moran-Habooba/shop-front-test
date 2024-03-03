@@ -79,4 +79,12 @@
   td {
     width: 100% !important;
   }
+
+  .selectedCategory {
+    display: flex;
+    justify-content: center;
+    gap: 1px;
+    flex-direction: column;
+    align-items: center;
+  }
 }

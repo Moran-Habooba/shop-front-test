@@ -101,7 +101,7 @@ axios.interceptors.response.use(
   (error) => {
     console.log(error.response);
     if (error.response) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
 
       if (error.response.data === "Invalid email or password") {
         Swal.fire({
@@ -120,6 +120,27 @@ axios.interceptors.response.use(
           icon: "warning",
           title: "חשבון נחסם",
           text: "הזנת 3 פעמים סיסמא שגויה חשבונך נחסם ל24 שעות. אנא המתן או צור קשר עם מנהל האתר.",
+        });
+      } else if (error.response.data === "User already registered") {
+        Swal.fire({
+          icon: "warning",
+          title: " חשבון כבר קיים במערכת",
+          html: `
+          המייל נמצא במערכת, שכחת סיסמא?<br>
+          <a href="/emailVerification">לחץ כאן לאיפוס סיסמא</a>
+        `,
+        });
+      } else if (error.response.data === "המשתמש אינו תואם למייל או לא נמצא") {
+        Swal.fire({
+          icon: "warning",
+          title: "המשתמש אינו תואם למייל או לא נמצא ",
+        });
+      } else if (
+        error.response.data === "The business number is already taken."
+      ) {
+        Swal.fire({
+          icon: "warning",
+          title: "לא בוצע שינוי ",
         });
       } else if (error.response.status === 400) {
         Swal.fire({

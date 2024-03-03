@@ -16,3 +16,9 @@
     display: none;
   }
 }
+@media (max-width: 280px) {
+  .table td {
+    display: block;
+    text-align: center;
+  }
+}

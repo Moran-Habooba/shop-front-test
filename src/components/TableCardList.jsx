@@ -232,7 +232,7 @@ const CardsTable = () => {
 
   return (
     <div className="custom-table">
-      <div>
+      <div className="selectedCategory">
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}

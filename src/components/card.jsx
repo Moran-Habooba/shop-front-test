@@ -30,7 +30,11 @@ const Card = ({
   const likeCount = likes.length;
   const navigate = useNavigate();
   const handleClick = () => {
-    if (location.pathname === "/" || location.pathname === "/my-cards") {
+    if (
+      location.pathname === "/" ||
+      location.pathname === "/my-cards" ||
+      location.pathname.startsWith("/categories")
+    ) {
       const popupMessage = `
     <div style="text-align: right;">
       <h4><strong>שם המוצר:</strong> ${title}</h4>
@@ -73,46 +77,6 @@ const Card = ({
     onLiked();
   };
 
-  // const handleAddToCart = () => {
-  //   const card_id = _id;
-  //   const quantity = count;
-
-  //   if (quantity > 0) {
-  //     addToCart(card_id, quantity)
-  //       .then((data) => {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "המוצר נוסף לסל בהצלחה!",
-  //           showConfirmButton: false,
-  //           timer: 1000,
-  //           customclassName: {
-  //             popup: "small-popup",
-  //           },
-  //         }).then(() => {
-  //           navigate("/ShoppingCart");
-  //         });
-
-  //         console.log("Product added to cart:", data);
-  //         const updatedCartItems = [...cartItems, { card_id, quantity }];
-  //         setCartItems(updatedCartItems);
-
-  //         const newTotalItemsCount = totalItemsInCart + quantity;
-  //         setTotalItemsInCart(newTotalItemsCount);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error adding product to cart:", error);
-  //       });
-  //   } else {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "שגיאה",
-  //       text: "יש לבחור כמות מוצרים להוספה",
-  //       customclassName: {
-  //         popup: "small-popup",
-  //       },
-  //     });
-  //   }
-  // };
   const handleAddToCart = () => {
     const newCartItem = {
       card_id: _id,

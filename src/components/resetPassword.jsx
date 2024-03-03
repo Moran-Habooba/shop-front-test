@@ -3,18 +3,19 @@ import { resetUserPassword } from "../services/usersService";
 import { useLocation, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import { useFormik } from "formik";
+import "./styls/resetPassword.css";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const ResetPassword = () => {
-  // const [email, setEmail] = useState("");
-  // const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
   const query = useQuery();
   const navigate = useNavigate();
+  const [messageType, setMessageType] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const tokenFromUrl = query.get("token");
@@ -23,24 +24,6 @@ const ResetPassword = () => {
     }
   }, [query]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const { error } = schema.validate({ email, newPassword });
-  //   if (error) {
-  //     setMessage(error.details[0].message);
-  //     return;
-  //   }
-  //   try {
-  //     await resetUserPassword(token, email, newPassword);
-  //     setMessage("הסיסמא עודכנה בהצלחה");
-  //     setTimeout(() => {
-  //       navigate("/sign-in");
-  //     }, 1500);
-  //   } catch (error) {
-  //     console.error("Error updating password:", error);
-  //     setMessage("שגיאה בעדכון הסיסמא");
-  //   }
-  // };
   const schema = Joi.object({
     email: Joi.string()
       .email({ tlds: { allow: false } })
@@ -84,23 +67,36 @@ const ResetPassword = () => {
       try {
         await resetUserPassword(token, values.email, values.newPassword);
         setMessage("הסיסמא עודכנה בהצלחה");
+        setMessageType("success");
         setTimeout(() => {
           navigate("/sign-in");
         }, 1500);
       } catch (error) {
         console.error("Error updating password:", error);
         setMessage("שגיאה בעדכון הסיסמא");
+        setMessageType("error");
       }
     },
   });
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card">
+          <div className="card cardrest">
             <div className="card-body">
               <h2 className="card-title mb-4">איפוס סיסמה</h2>
-              {message && <div className="alert alert-info">{message}</div>}
+              {message && (
+                <div
+                  className={`alert ${
+                    messageType === "error" ? "alert-danger" : "alert-info"
+                  }`}
+                >
+                  {message}
+                </div>
+              )}
               <form onSubmit={formik.handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">כתובת אימייל</label>
@@ -114,6 +110,7 @@ const ResetPassword = () => {
                     id="email"
                     {...formik.getFieldProps("email")}
                   />
+
                   {formik.touched.email && formik.errors.email ? (
                     <div className="invalid-feedback">
                       {formik.errors.email}
@@ -123,7 +120,8 @@ const ResetPassword = () => {
                 <div className="form-group">
                   <label htmlFor="newPassword">סיסמה חדשה</label>
                   <input
-                    type="password"
+                    // type="password"
+                    type={showPassword ? "text" : "password"}
                     className={`form-control ${
                       formik.touched.newPassword && formik.errors.newPassword
                         ? "is-invalid"
@@ -131,6 +129,12 @@ const ResetPassword = () => {
                     }`}
                     id="newPassword"
                     {...formik.getFieldProps("newPassword")}
+                  />
+                  <i
+                    onClick={togglePasswordVisibility}
+                    className={`password-icon ${
+                      showPassword ? "bi-eye-slash" : "bi-eye"
+                    }`}
                   />
                   {formik.touched.newPassword && formik.errors.newPassword ? (
                     <div className="invalid-feedback">

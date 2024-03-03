@@ -4,16 +4,18 @@ import {
   deleteUser,
   getAllUsers,
 } from "../services/usersService";
-
 import "../components/styls/sandBox.css";
 import CardManagement from "./CardManagement";
 import CategoriesManagement from "./categoriesManagement";
 import PageHeader from "../common/pageHeader";
 import InventoryManagement from "./InventoryManagement";
 import SummaryStats from "./SummaryStats ";
+import Swal from "sweetalert2";
+
 const SandBox = () => {
   const [users, setUsers] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState({});
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -27,60 +29,94 @@ const SandBox = () => {
     fetchUsers();
   }, []);
 
-  // const handleChangeStatus = (id, currentStatus) => {
-  //   const newStatus = currentStatus === "Regular" ? "Business" : "Regular";
-  //   ReplaceUserStatus(id, newStatus).then(() => {
-  //     setUsers(
-  //       users.map((user) => {
-  //         if (user._id === id) {
-  //           return {
-  //             ...user,
-  //             isBusiness: newStatus === "Business",
-  //             isAdmin: user.isAdmin,
-  //           };
-  //         }
-  //         return user;
-  //       })
-  //     );
-  //   });
+  // const handleChangeStatus = (id) => {
+  //   const newStatus = selectedStatus[id];
+  //   ReplaceUserStatus(id, newStatus)
+  //     .then((response) => {
+  //       if (response && response.status === 200) {
+  //         setUsers(
+  //           users.map((user) => {
+  //             if (user._id === id) {
+  //               return {
+  //                 ...user,
+  //                 isBusiness: newStatus === "Business",
+  //                 isAdmin: newStatus === "Admin",
+  //               };
+  //             }
+  //             return user;
+  //           })
+  //         );
+  //       } else {
+  //         console.error("Failed to update user status");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error updating user status:", error);
+  //     });
   // };
-  const handleChangeStatus = (id) => {
-    const newStatus = selectedStatus[id];
-    ReplaceUserStatus(id, newStatus)
-      .then((response) => {
-        if (response && response.status === 200) {
-          setUsers(
-            users.map((user) => {
-              if (user._id === id) {
-                return {
-                  ...user,
-                  isBusiness: newStatus === "Business",
-                  isAdmin: newStatus === "Admin",
-                };
-              }
-              return user;
-            })
-          );
-        } else {
-          console.error("Failed to update user status");
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating user status:", error);
-      });
-  };
-
-  const handleDeleteUser = (id) => {
-    deleteUser(id).then(() => {
-      setUsers(users.filter((user) => user._id !== id));
+  const handleChangeStatus = (id, newStatus) => {
+    Swal.fire({
+      title: "האם אתה בטוח?",
+      text: "אתה עומד לשנות את סטטוס המשתמש!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, שנה סטטוס!",
+      cancelButtonText: "ביטול",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newStatus = selectedStatus[id];
+        ReplaceUserStatus(id, newStatus)
+          .then((response) => {
+            if (response && response.status === 200) {
+              setUsers(
+                users.map((user) => {
+                  if (user._id === id) {
+                    return {
+                      ...user,
+                      isBusiness: newStatus === "Business",
+                      isAdmin: newStatus === "Admin",
+                    };
+                  }
+                  return user;
+                })
+              );
+              Swal.fire("שונה!", "סטטוס המשתמש שונה בהצלחה.", "success");
+            }
+          })
+          .catch((error) => {
+            console.error("Error updating user status:", error);
+            Swal.fire("שגיאה!", "הייתה בעיה בשינוי סטטוס המשתמש.", "error");
+          });
+      }
     });
   };
 
-  // const formatName = (nameObj) => {
-  //   return `${nameObj.first_name} ${
-  //     nameObj.middle ? nameObj.middle + " " : ""
-  //   }${nameObj.last}`;
+  // const handleDeleteUser = (id) => {
+  //   deleteUser(id).then(() => {
+  //     setUsers(users.filter((user) => user._id !== id));
+  //   });
   // };
+  const handleDeleteUser = (id) => {
+    Swal.fire({
+      title: "האם אתה בטוח?",
+      text: "לא תוכל לשחזר פעולה זו!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, מחק !",
+      cancelButtonText: "ביטול",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id).then(() => {
+          setUsers(users.filter((user) => user._id !== id));
+          Swal.fire("נמחק!", "המשתמש נמחק בהצלחה.", "success");
+        });
+      }
+    });
+  };
   const formatName = (first_name, last_name) => {
     return `${first_name} ${last_name}`;
   };

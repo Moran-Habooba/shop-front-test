@@ -6,7 +6,7 @@ import {
   updateCardBizNumber,
 } from "../services/cardsService";
 import "./styls/CardManagement.css";
-
+import Swal from "sweetalert2";
 const CardManagement = () => {
   const [cards, setCards] = useState([]);
   const [editBizNumber, setEditBizNumber] = useState(null);
@@ -34,9 +34,28 @@ const CardManagement = () => {
     fetchCards();
   }, []);
 
-  const handleDeleteCard = async (id) => {
-    await deleteCard(id);
-    setCards(cards.filter((card) => card._id !== id));
+  // const handleDeleteCard = async (id) => {
+  //   await deleteCard(id);
+  //   setCards(cards.filter((card) => card._id !== id));
+  // };
+  const handleDeleteCard = (id) => {
+    Swal.fire({
+      title: "האם אתה בטוח?",
+      text: "לא תוכל לשחזר פעולה זו!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, מחק!",
+      cancelButtonText: "ביטול",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCard(id).then(() => {
+          setCards(cards.filter((card) => card._id !== id));
+          Swal.fire("נמחק!", "הכרטיס נמחק בהצלחה.", "success");
+        });
+      }
+    });
   };
 
   const handleEditBizNumber = (id) => {
@@ -148,7 +167,7 @@ const CardManagement = () => {
                       שמירה
                     </button>
                     <button
-                      className="btn btn-secondary ms-3"
+                      className="btn btn-secondary me-2"
                       onClick={handleCancelEdit}
                     >
                       ביטול

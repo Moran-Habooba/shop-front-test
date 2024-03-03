@@ -264,7 +264,7 @@ const AdminNavBar = () => {
               ref={searchInput}
               className="form-control me-2 search"
               type="search"
-              placeholder="Search"
+              placeholder="חיפוש"
               aria-label="Search"
               name="search"
               onInput={(e) => {

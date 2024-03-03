@@ -18,7 +18,7 @@ import {
   updateCart,
   completeOrder,
 } from "../services/cartService";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart.context";
@@ -693,6 +693,7 @@ const ShoppingCart = () => {
                         className=" btn custom-button fs-4"
                         size="lg"
                         onClick={handleCompleteOrder}
+                        disabled={cartItems.length === 0}
                       >
                         שלח הזמנה
                       </button>
