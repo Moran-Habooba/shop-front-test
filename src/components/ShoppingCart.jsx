@@ -27,8 +27,6 @@ import inventoryService from "../services/inventoryService";
 import Swal from "sweetalert2";
 
 const ShoppingCart = () => {
-  // eslint-disable-next-line no-unused-vars
-  // const [cartTotal, setCartTotal] = useState(0);
   const [shippingCost, setShippingCost] = useState(15);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
@@ -39,10 +37,6 @@ const ShoppingCart = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [couponAttempted, setCouponAttempted] = useState(false);
 
-  // const subtotal = cartItems.reduce(
-  //   (total, item) => total + item.card_id.price * item.quantity,
-  //   0
-  // );
   const subtotal = cartItems.reduce((total, item) => {
     if (
       user &&
@@ -73,49 +67,16 @@ const ShoppingCart = () => {
     const selectedShipping = parseFloat(event.target.value);
 
     setShippingCost(selectedShipping);
-
-    // const subtotal = cartItems.reduce(
-    //   (total, item) => total + item.card_id.price * item.quantity,
-    //   0
-    // );
-    // const total = subtotal + selectedShipping;
-    // setCartTotal(total);
   };
 
-  // const calculateTotal = () => {
-  //   const subtotal = cartItems.reduce(
-  //     (total, item) => total + item.price * item.quantity,
-  //     0
-  //   );
-
-  //   const total = subtotal + shippingCost;
-  //   setCartTotal(total);
-  // };
   const handleCouponSubmit = () => {
     setCouponAttempted(true);
     if (user && couponCode.toLowerCase() === "israel") {
       setIsCouponApplied(true);
-      // calculateTotalWithDiscount();
     } else {
       setIsCouponApplied(false);
     }
   };
-
-  // const calculateTotalWithDiscount = () => {
-  //   const subtotal = cartItems.reduce(
-  //     (total, item) => total + item.card_id.price * item.quantity,
-  //     0
-  //   );
-  //   let total = subtotal + shippingCost;
-  //   if (isCouponApplied) {
-  //     total *= 0.9;
-  //   }
-  //   if (total < 0) {
-  //     total = 0;
-  //   }
-
-  //   setCartTotal(total.toFixed(2));
-  // };
 
   const handleRemoveItem = async (itemToRemove) => {
     try {
@@ -281,39 +242,17 @@ const ShoppingCart = () => {
     fetchCartItems();
   }, [user, setCartItems]);
 
-  // const totalCartPrice = useMemo(() => {
-  //   if (!Array.isArray(cartItems) || cartItems.length === 0) {
-  //     return 0;
-  //   }
-  //   return cartItems
-  //     .reduce(
-  //       (total, item) =>
-  //         total + (user ? item.card_id.price : item.price) * item.quantity,
-  //       0
-  //     )
-  //     .toFixed(2);
-  // }, [cartItems, user]);
-
-  // const totalPriceWithShipping = useMemo(() => {
-  //   let price = +totalCartPrice + shippingCost;
-  //   if (isCouponApplied) {
-  //     price /= 1.1;
-  //   }
-
-  //   return price.toFixed(2);
-  // }, [totalCartPrice, shippingCost, isCouponApplied]);
-
   const handleCompleteOrder = async () => {
     if (!user) {
       Swal.fire({
         icon: "warning",
         title: "יש להיות משתמש מחובר כדי לבצע הזמנה",
         showConfirmButton: false,
-        timer: 4000,
+        timer: 1700,
       });
       setTimeout(() => {
         navigate("/sign-in");
-      }, 5000);
+      }, 1800);
       return;
     }
 
@@ -365,11 +304,28 @@ const ShoppingCart = () => {
   }, [user]);
 
   useEffect(() => {
-    if (userData) console.log(userData);
+    if (userData) {
+      console.log(userData);
+      if (userData.city) localStorage.setItem("city", userData.city);
+      if (userData.street) localStorage.setItem("street", userData.street);
+      if (userData.houseNumber)
+        localStorage.setItem("houseNumber", userData.houseNumber);
+
+      setCity(userData.city || "");
+      setStreet(userData.street || "");
+      setHouseNumber(userData.houseNumber || "");
+    }
   }, [userData]);
-  const [city, setCity] = useState(userData?.city);
-  const [street, setStreet] = useState(userData?.street);
-  const [houseNumber, setHouseNumber] = useState(userData?.houseNumber);
+
+  const [city, setCity] = useState(
+    localStorage.getItem("city") || userData?.city || ""
+  );
+  const [street, setStreet] = useState(
+    localStorage.getItem("street") || userData?.street || ""
+  );
+  const [houseNumber, setHouseNumber] = useState(
+    localStorage.getItem("houseNumber") || userData?.houseNumber || ""
+  );
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -385,12 +341,7 @@ const ShoppingCart = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("עיר:", city);
-    console.log("רחוב:", street);
-    console.log("מספר בית:", houseNumber);
-
     setSaveSuccess(true);
-
     setTimeout(() => setSaveSuccess(false), 3000);
   };
 
@@ -444,14 +395,12 @@ const ShoppingCart = () => {
                             </MDBCol>
                             <MDBCol md="3" lg="3" xl="3">
                               <MDBTypography tag="h6" className="text-muted">
-                                {/* {item.card_id.title} */}
                                 {user ? item.card_id.title : item.title}
                               </MDBTypography>
                               <MDBTypography
                                 tag="h6"
                                 className="text-black mb-0"
                               >
-                                {/* {item.card_id.description} */}
                                 {user
                                   ? item.card_id.description
                                   : item.description}
@@ -463,15 +412,12 @@ const ShoppingCart = () => {
                               xl="3"
                               className="d-flex align-items-center"
                             >
-                              {/* <MDBBtn color="link" className="px-2"> */}
-                              {/* <MDBIcon fas icon="minus" /> */}
                               <span
                                 className="fs-2 minus-sign ms-1"
                                 onClick={() => changeQuantity(item, -1)}
                               >
                                 -
                               </span>
-                              {/* </MDBBtn> */}
 
                               <MDBInput
                                 type="number"
@@ -497,7 +443,6 @@ const ShoppingCart = () => {
                             </MDBCol>
                             <MDBCol md="3" lg="2" xl="2" className="text-end">
                               <MDBTypography tag="h6" className="mb-0">
-                                {/* {item.card_id.price} ₪ */}
                                 {user ? item.card_id.price : item.price} ₪
                               </MDBTypography>
                             </MDBCol>
@@ -680,7 +625,6 @@ const ShoppingCart = () => {
                         <MDBTypography
                           tag="h5"
                           className="text-uppercase custom-text-color"
-                          // onClick={calculateTotal}
                         >
                           סה"כ לתשלום
                         </MDBTypography>

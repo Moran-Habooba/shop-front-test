@@ -14,7 +14,6 @@ const CategoryPage = ({ category, title }) => {
   useEffect(() => {
     getProductsByCategory(category)
       .then(({ data }) => {
-        console.log(data);
         setProducts(
           data.map((product) => ({
             ...product,

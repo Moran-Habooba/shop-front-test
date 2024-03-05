@@ -26,7 +26,6 @@ const HomePage = () => {
   const [viewMode, setViewMode] = useState("grid");
   // eslint-disable-next-line no-unused-vars
   const [likedCards, setLikedCards] = useState([]);
-  /////////
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,31 +67,6 @@ const HomePage = () => {
     setCards(filteredCards.slice(0, visible));
   }, [originalCards, searchTerm, selectedCategory, sortOrder, visible]);
 
-  ////////
-
-  // useEffect(() => {
-  //   try {
-  //     getAll().then((fetchedCards) => {
-  //       setCards(fetchedCards.data);
-  //     });
-  //   } catch (error) {
-  //     if (!error.response || error.response.status !== 429) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }, [viewMode]);
-
-  // useEffect(() => {
-  //   getAll()
-  //     .then((fetchedCards) => {
-  //       setCards(fetchedCards.data);
-  //     })
-  //     .catch((error) => {
-  //       if (!error.response || error.response.status !== 429) {
-  //         console.error(error);
-  //       }
-  //     });
-  // }, [viewMode]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -212,28 +186,8 @@ const HomePage = () => {
       >
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img
-              src="baner.png"
-              alt="baner "
-              // style={{ width: "100%" }}
-              className="img-fluid"
-            />
+            <img src="baner.png" alt="baner " className="img-fluid" />
 
-            {/* <svg
-              className="bd-placeholder-img"
-              width="100%"
-              height="100%"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              preserveAspectRatio="xMidYMid slice"
-              focusable="false"
-            >
-              <rect
-                width="100%"
-                height="100%"
-                fill="var(--bs-secondary-color)"
-              ></rect>
-            </svg> */}
             <div className="container">
               <div className="carousel-caption text-end">
                 <p>
@@ -249,28 +203,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="carousel-item">
-            <img
-              src="baner2.png"
-              alt="banner "
-              // style={{ width: "100%" }}
-              className="img-fluid"
-            />
-
-            {/* <svg
-              className="bd-placeholder-img"
-              width="100%"
-              height="100%"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              preserveAspectRatio="xMidYMid slice"
-              focusable="false"
-            >
-              <rect
-                width="100%"
-                height="100%"
-                fill="var(--bs-secondary-color)"
-              ></rect>
-            </svg> */}
+            <img src="baner2.png" alt="banner " className="img-fluid" />
             <div className="container"></div>
           </div>
         </div>
@@ -297,7 +230,6 @@ const HomePage = () => {
           ></span>
         </button>
       </div>
-      {/* ----------- */}
       <div>
         <div className="image-text-container">
           <div className="image-text-item ">
@@ -340,7 +272,6 @@ const HomePage = () => {
       </div>
       {viewMode === "grid" && (
         <div className="filter-container">
-          {/* סינון לפי קטגוריה */}
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -354,8 +285,6 @@ const HomePage = () => {
               </option>
             ))}
           </select>
-
-          {/* מיון לפי מחיר */}
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
@@ -401,7 +330,6 @@ const HomePage = () => {
           טען עוד מוצרים
         </button>
       </div>
-      {/* </div> */}
     </>
   );
 };

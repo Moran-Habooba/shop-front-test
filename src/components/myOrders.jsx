@@ -3,14 +3,11 @@ import { getMyOrders } from "../services/cartService";
 import "./styls/MyOrders.css";
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await getMyOrders();
-        console.log(response.data.orders);
         setOrders(response.data.orders);
       } catch (error) {
         console.error("Error fetching orders:", error);

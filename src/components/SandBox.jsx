@@ -29,31 +29,6 @@ const SandBox = () => {
     fetchUsers();
   }, []);
 
-  // const handleChangeStatus = (id) => {
-  //   const newStatus = selectedStatus[id];
-  //   ReplaceUserStatus(id, newStatus)
-  //     .then((response) => {
-  //       if (response && response.status === 200) {
-  //         setUsers(
-  //           users.map((user) => {
-  //             if (user._id === id) {
-  //               return {
-  //                 ...user,
-  //                 isBusiness: newStatus === "Business",
-  //                 isAdmin: newStatus === "Admin",
-  //               };
-  //             }
-  //             return user;
-  //           })
-  //         );
-  //       } else {
-  //         console.error("Failed to update user status");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating user status:", error);
-  //     });
-  // };
   const handleChangeStatus = (id, newStatus) => {
     Swal.fire({
       title: "האם אתה בטוח?",
@@ -93,11 +68,6 @@ const SandBox = () => {
     });
   };
 
-  // const handleDeleteUser = (id) => {
-  //   deleteUser(id).then(() => {
-  //     setUsers(users.filter((user) => user._id !== id));
-  //   });
-  // };
   const handleDeleteUser = (id) => {
     Swal.fire({
       title: "האם אתה בטוח?",

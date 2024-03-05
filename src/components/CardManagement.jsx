@@ -34,10 +34,6 @@ const CardManagement = () => {
     fetchCards();
   }, []);
 
-  // const handleDeleteCard = async (id) => {
-  //   await deleteCard(id);
-  //   setCards(cards.filter((card) => card._id !== id));
-  // };
   const handleDeleteCard = (id) => {
     Swal.fire({
       title: "האם אתה בטוח?",
@@ -71,6 +67,7 @@ const CardManagement = () => {
       setIsButtonDisabled(true);
       return;
     }
+
     setIsButtonDisabled(false);
     try {
       const response = await updateCardBizNumber(id, newBizNumber);
@@ -102,16 +99,6 @@ const CardManagement = () => {
       }
     }
   }, [newBizNumber, hasStartedEditing]);
-
-  // const handleDeleteCategory = async (categoryName) => {
-  //   try {
-  //     await Category.deleteOne({ name: categoryName });
-  //     // Additional logic...
-  //   } catch (error) {
-  //     console.error("Error deleting category:", error);
-  //     // Handle error...
-  //   }
-  // };
 
   const handleCancelEdit = () => {
     setEditBizNumber(null);

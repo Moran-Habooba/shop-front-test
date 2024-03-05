@@ -2,13 +2,6 @@ import httpService from "./httpService";
 import config from "../config.json";
 import { refreshTokenHeader } from "./usersService";
 
-// export function addToCart(card_id, quantity) {
-//   refreshTokenHeader();
-
-//   const data = { card_id, quantity };
-//   return httpService.post(config.apiUrlAddToCart, data);
-// }
-
 export async function addToCart(card_id, quantity) {
   refreshTokenHeader();
   const data = { card_id, quantity };
@@ -26,12 +19,6 @@ export async function addToCart(card_id, quantity) {
   }
 }
 
-// export function getCartItems() {
-//   refreshTokenHeader();
-
-//   return httpService.get(config.apiUrlGetAllCartItems);
-// }
-
 export async function getCartItems() {
   try {
     refreshTokenHeader();
@@ -48,7 +35,6 @@ export async function getCartItems() {
 
 export function updateCart(itemsToUpdate) {
   refreshTokenHeader();
-  // console.log("Updating cart with items:", itemsToUpdate);
   const data = { itemsToUpdate };
   return httpService.put(config.apiUrlUpdateCart, data);
 }

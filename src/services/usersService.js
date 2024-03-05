@@ -31,9 +31,6 @@ export function deleteUser(id) {
   return httpService.delete(`${config.apiUrlDeleteUser}${id}`);
 }
 
-// export function ReplaceUserStatus(id, newStatus) {
-//   return httpService.patch(`${config.apiUrlUserBusiness}${id}`, newStatus);
-// }
 export function ReplaceUserStatus(id, newStatus) {
   const data = {
     isBusiness: newStatus === "Business",
@@ -48,16 +45,7 @@ export async function login(credentials) {
   refreshTokenHeader();
   return response;
 }
-// export async function login(credentials) {
-//   const response = await httpService.post(config.apiUrlUsersLogin, credentials);
-//   localStorage.setItem(TOKEN_KEY, response.data.token);
-//   refreshTokenHeader();
-//   handleUserLogin(response.data.user);
-//   return response;
-// }
-// export function resetPassword(email) {
-//   return httpService.post(config.apiUrlResetPassword, { email });
-// }
+
 export function resetPassword(email, newPassword) {
   return httpService.post(config.apiUrlResetPassword, {
     email,

@@ -10,9 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Card = ({
   card: {
     title,
-    subtitle,
     description,
-    bizNumber,
     _id,
     category,
     quantity,
@@ -22,13 +20,14 @@ const Card = ({
   },
   onLiked,
   liked,
-  // isCreator,
 }) => {
   const location = useLocation();
   const { user } = useAuth();
   const [count, setCount] = useState(0);
   const likeCount = likes.length;
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleClick = () => {
     if (
       location.pathname === "/" ||
@@ -61,15 +60,20 @@ const Card = ({
       });
     }
   };
+
   const increaseCount = () => {
     if (count < quantity) {
       setCount((prevCount) => prevCount + 1);
+      setErrorMessage("");
+    } else {
+      setErrorMessage("המלאי אזל");
     }
   };
 
   const decreaseCount = () => {
     if (count > 0) {
       setCount((prevCount) => prevCount - 1);
+      setErrorMessage("");
     }
   };
 
@@ -162,7 +166,6 @@ const Card = ({
       </div>
       <div className="card-body">
         <h4 className="card-title">{title}</h4>
-        <h5 className="card-subtitle">{subtitle}</h5>
         <p className="card-text">{description}</p>
       </div>
       <ul className="list-group list-group-flush">
@@ -221,6 +224,7 @@ const Card = ({
           </>
         )}
       </div>
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
       <div>
         {user && (

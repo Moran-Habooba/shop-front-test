@@ -1,16 +1,14 @@
-/* הסל והחלון הצדדי הם ברירות מחד */
 .cart-sidebar {
   position: fixed;
   top: 0;
-  right: -300px; /* החלון ברירה סגור בהתחלה */
+  right: -300px;
   width: 300px;
   height: 100%;
   background-color: white;
-  transition: right 0.3s ease; /* אנימציה לפתיחה וסגירה חלקית */
+  transition: right 0.3s ease;
   z-index: 10;
 }
 
-/* כאשר החלון נפתח */
 .cart-sidebar.open {
   right: 0;
 }
@@ -23,7 +21,6 @@
   color: #e5b55c !important;
 }
 
-/* סגנון רשימת המוצרים בסל */
 .cart-items {
   list-style-type: none;
   padding: 0;
@@ -34,7 +31,6 @@
   margin: 10px 0;
 }
 
-/* סגנון לכפתור התשלום */
 .checkout-button {
   background-color: #007bff;
   color: white;
@@ -48,7 +44,6 @@
   margin-right: auto;
 }
 
-/* אפקט המעבר בעזרת המשתמש */
 .checkout-button:hover {
   background-color: #0056b3;
 }

@@ -253,7 +253,6 @@ const BusinessNavBar = () => {
               <li></li>
             )}
           </ul>
-          {/* עגלת קניות------------ */}
           <Link to="/ShoppingCart" style={{ textDecoration: "none" }}>
             <i
               className="bi bi-cart  fs-3 me-5"

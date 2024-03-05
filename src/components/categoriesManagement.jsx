@@ -5,7 +5,7 @@ import {
   getProductsCountInCategory,
   removeCategory,
 } from "../services/categoryService";
-
+import Swal from "sweetalert2";
 import "../components/styls/categoriesManagement.css";
 
 const CategoriesManagement = () => {
@@ -65,15 +65,39 @@ const CategoriesManagement = () => {
     }
   };
 
-  const handleDeleteCategory = async (categoryId) => {
-    try {
-      await removeCategory(categoryId);
-      setCategories(
-        categories.filter((category) => category._id !== categoryId)
-      );
-    } catch (error) {
-      console.error("Error deleting category:", error);
-      setError("Failed to delete category");
+  const handleDeleteCategory = async (categoryId, productCount) => {
+    if (productCount > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "לא ניתן למחוק קטגוריה זו",
+        text: "לא ניתן למחוק קטגוריה כל עוד יש בה מוצרים. מחק את המוצרים או שנה להם קטגוריה.",
+        confirmButtonText: "אישור",
+      });
+    } else {
+      Swal.fire({
+        title: "האם אתה בטוח?",
+        text: "אתה לא תוכל לשחזר את הפעולה הזו!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "כן, מחק אותה!",
+        cancelButtonText: "ביטול",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          removeCategory(categoryId)
+            .then(() => {
+              setCategories(
+                categories.filter((category) => category._id !== categoryId)
+              );
+              Swal.fire("נמחק!", "הקטגוריה נמחקה.", "success");
+            })
+            .catch((error) => {
+              console.error("Error deleting category:", error);
+              Swal.fire("שגיאה!", "הפעולה נכשלה.", "error");
+            });
+        }
+      });
     }
   };
 
@@ -159,7 +183,9 @@ const CategoriesManagement = () => {
                 <button
                   type="button"
                   className="btn btn-danger"
-                  onClick={() => handleDeleteCategory(category._id)}
+                  onClick={() =>
+                    handleDeleteCategory(category._id, category.productCount)
+                  }
                 >
                   מחיקה
                 </button>

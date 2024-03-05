@@ -9,20 +9,6 @@ import AlreadyLogged from "../common/AlreadyLogged";
 const EmailVerification = () => {
   const { darkMode } = useDarkMode();
   const imageSrc = darkMode ? "passwordDark.png" : "password.png";
-  // const [email, setEmail] = useState("");
-  // const [message, setMessage] = useState("");
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     console.log("Email sent to server:", email);
-  //     const response = await resetPassword(email);
-  //     setMessage(response.data);
-  //   } catch (error) {
-  //     console.error("Error resetting password:", error);
-  //     setMessage("שגיאה בעת איפוס הסיסמה");
-  //   }
-  // };
   const schema = Joi.object({
     email: Joi.string()
       .email({ tlds: { allow: false } })

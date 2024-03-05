@@ -38,7 +38,6 @@ const CardsCreate = () => {
     validateOnMount: true,
     initialValues: {
       title: "",
-      // subtitle: "",
       description: "",
       price: "",
       quantity: "",
@@ -47,7 +46,6 @@ const CardsCreate = () => {
     },
     validate: validateFormikUsingJoi({
       title: Joi.string().min(2).max(256).required(),
-      // subtitle: Joi.string().min(2).max(256).optional(),
       description: Joi.string().min(2).max(1024).required(),
       category: Joi.string().required().trim().lowercase(),
       quantity: Joi.number().min(0).optional(),
@@ -73,7 +71,6 @@ const CardsCreate = () => {
       const formData = new FormData();
       formData.append("price", values.price);
       formData.append("title", values.title);
-      // formData.append("subtitle", values.subtitle);
       formData.append("description", values.description);
       formData.append("quantity", values.quantity);
       formData.append("category", values.category);
@@ -120,7 +117,7 @@ const CardsCreate = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="border p-3 m-5">
+            <div className="border p-3  costume-border">
               <div className="form-top">
                 <div className="form-top-left">
                   <h3>
@@ -176,13 +173,12 @@ const CardsCreate = () => {
                       }}
                     />
                   </div>
-
-                  <div className="mb-3">
+                  <div className="mb-3 costume-select">
                     <label htmlFor="category" className="form-label">
                       בחר קטגוריה
                     </label>
                     <select
-                      className="form-select"
+                      className="form-select "
                       id="category"
                       {...getProps("category")}
                       required

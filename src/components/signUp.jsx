@@ -77,7 +77,6 @@ const SignUp = ({ redirect }) => {
       street: Joi.string().min(2).max(256).required(),
       country: Joi.string().min(2).max(256).required(),
       house_number: Joi.number().min(2).max(256).required(),
-      // zip: Joi.number().min(2).max(256).required(),
       zip: Joi.number().min(1).max(99999999).integer().required(),
       image_file: Joi.any().label("Image File").allow(""),
       isBusiness: Joi.boolean().required(),
@@ -184,13 +183,6 @@ const SignUp = ({ redirect }) => {
                     type="text"
                     required
                   />
-                  {/* <Input
-                    {...getProps("password")}
-                    label="סיסמא"
-                    type="password"
-                    required
-                  /> */}
-
                   <Input
                     {...getProps("city")}
                     label="עיר"
@@ -244,11 +236,9 @@ const SignUp = ({ redirect }) => {
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label"></label>
                   <div
-                    // className="input-group"
                     style={{
                       position: "relative",
                       display: "grid",
-                      // justifyContent: "start",
                     }}
                   >
                     <Input
@@ -288,7 +278,6 @@ const SignUp = ({ redirect }) => {
                 <button
                   type="submit"
                   className="btn btn-primary  custom-btn custom-btn"
-                  // disabled={!form.isValid}
                 >
                   שליחה
                 </button>

@@ -2,6 +2,7 @@
   color: white;
   background-color: #3b5d50;
   border-radius: 15px;
+  margin-bottom: 55px;
 }
 .customborder2 {
   margin-bottom: 15px;
@@ -24,16 +25,11 @@
   margin-left: 70% !important;
 }
 .eye {
-  /* border: 1px solid #e5b55c !important; */
-
   border-radius: 20% !important;
-  /* margin-right: 5px;
-  margin-top: 30px; */
+
   cursor: pointer;
-  /* font-size: 16px;
-  height: 40px;
-  width: 40px; */
 }
+
 @media (max-width: 1280px) {
   .custom-body {
     width: 120% !important;
@@ -61,6 +57,11 @@
   .eye {
     left: 0 !important;
   }
+
+  .costume-border {
+    width: 75%;
+    margin-right: 58px;
+  }
 }
 
 @media (max-width: 280px) {
@@ -71,5 +72,12 @@
   }
   .eye {
     margin-right: 0 !important;
+  }
+  .costume-border {
+    width: 90% !important;
+    margin-right: 13px;
+  }
+  .costume-select {
+    margin-right: 0px;
   }
 }

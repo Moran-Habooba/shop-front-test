@@ -120,7 +120,6 @@ const ResetPassword = () => {
                 <div className="form-group">
                   <label htmlFor="newPassword">סיסמה חדשה</label>
                   <input
-                    // type="password"
                     type={showPassword ? "text" : "password"}
                     className={`form-control ${
                       formik.touched.newPassword && formik.errors.newPassword

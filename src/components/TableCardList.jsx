@@ -16,6 +16,7 @@ const CardsTable = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [categories, setCategories] = useState([]);
   const [orderQuantities, setOrderQuantities] = useState({});
+  const [orderQuantitiesErrors, setOrderQuantitiesErrors] = useState({});
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -53,6 +54,7 @@ const CardsTable = () => {
 
     fetchCards();
   }, [selectedCategory, sortOrder, orderQuantities]);
+
   const handleQuantityChange = (cardId, isIncrease) => {
     setOrderQuantities((prev) => {
       const currentQuantity = prev[cardId] || 0;
@@ -60,9 +62,26 @@ const CardsTable = () => {
       const maxQuantity = card ? card.quantity : 0;
 
       if (isIncrease && currentQuantity < maxQuantity) {
-        return { ...prev, [cardId]: currentQuantity + 1 };
+        const newQuantities = { ...prev, [cardId]: currentQuantity + 1 };
+        setOrderQuantitiesErrors((prevErrors) => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[cardId];
+          return newErrors;
+        });
+        return newQuantities;
       } else if (!isIncrease && currentQuantity > 0) {
-        return { ...prev, [cardId]: currentQuantity - 1 };
+        const newQuantities = { ...prev, [cardId]: currentQuantity - 1 };
+        setOrderQuantitiesErrors((prevErrors) => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[cardId];
+          return newErrors;
+        });
+        return newQuantities;
+      } else if (isIncrease && currentQuantity >= maxQuantity) {
+        setOrderQuantitiesErrors((prevErrors) => ({
+          ...prevErrors,
+          [cardId]: "המלאי אזל",
+        }));
       }
       return prev;
     });
@@ -70,7 +89,6 @@ const CardsTable = () => {
 
   const increaseCount = (cardId) => handleQuantityChange(cardId, true);
   const decreaseCount = (cardId) => handleQuantityChange(cardId, false);
-  //////
 
   useEffect(() => {
     cardsService.getAll().then((res) => {
@@ -85,79 +103,12 @@ const CardsTable = () => {
     });
   }, [user]);
 
-  // const increaseCount = (cardId) => {
-  //   setCards((currentCards) =>
-  //     currentCards.map((card) =>
-  //       card._id === cardId && card.quantity > card.orderQuantity
-  //         ? { ...card, orderQuantity: card.orderQuantity + 1 }
-  //         : card
-  //     )
-  //   );
-  // };
-
-  // const decreaseCount = (cardId) => {
-  //   setCards((currentCards) =>
-  //     currentCards.map((card) =>
-  //       card._id === cardId && card.orderQuantity > 0
-  //         ? { ...card, orderQuantity: card.orderQuantity - 1 }
-  //         : card
-  //     )
-  //   );
-  // };
-  // const handleAddToCart = async (cardId, orderQuantity) => {
-  //   if (orderQuantity > 0) {
-  //     try {
-  //       const res = await addToCart(cardId, orderQuantity);
-  //       if (res.status === 200) {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "המוצר נוסף לסל בהצלחה!",
-  //           showConfirmButton: false,
-  //           timer: 1000,
-  //           customclass: {
-  //             popup: "small-popup",
-  //           },
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error adding product to cart:", error);
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "שגיאה",
-  //         text: "לא ניתן להוסיף את המוצר לסל.",
-  //         customclass: {
-  //           popup: "small-popup",
-  //         },
-  //       });
-  //     }
-  //   } else {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "שגיאה",
-  //       text: "יש לבחור כמות מוצרים להוספה",
-  //       customclass: {
-  //         popup: "small-popup",
-  //       },
-  //     });
-  //   }
-  // };
   const handleAddToCart = async (cardId, orderQuantity) => {
     const cardToAdd = cards.find((card) => card._id === cardId);
 
     if (orderQuantity > 0 && cardToAdd) {
       if (user) {
         try {
-          // const res = await addToCart(cardId, orderQuantity);
-          // if (res.status === 200) {
-          //   Swal.fire({
-          //     icon: "success",
-          //     title: "המוצר נוסף לסל בהצלחה!",
-          //     showConfirmButton: false,
-          //     timer: 1500,
-          //   }).then(() => {
-          //     navigate("/ShoppingCart");
-          //   });
-          // }
           addToCart(cardId, orderQuantity).then(() => {
             Swal.fire({
               icon: "success",
@@ -328,6 +279,11 @@ const CardsTable = () => {
                     )}
                   </p>
                   <p className="category">קטגוריה: {card.category}</p>
+                  {orderQuantitiesErrors[card._id] && (
+                    <p style={{ color: "red" }}>
+                      {orderQuantitiesErrors[card._id]}
+                    </p>
+                  )}
                   {!user?.isAdmin && (
                     <>
                       <button

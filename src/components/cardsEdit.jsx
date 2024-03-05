@@ -41,23 +41,19 @@ const CardsEdit = () => {
     validateOnMount: true,
     initialValues: {
       title: "",
-      // subtitle: "",
       description: "",
       price: "",
       quantity: 5,
       category: "",
       image_file: null,
-      // likes: [""],
       bizNumber: "",
       user_id: "",
     },
     validate: validateFormikUsingJoi({
-      // likes: Joi.array().items(Joi.string()).optional(),
       bizNumber: Joi.number().optional(),
       user_id: Joi.string().optional(),
 
       title: Joi.string().min(2).max(256).required(),
-      // subtitle: Joi.string().min(2).max(256).optional(),
       description: Joi.string().min(2).max(1024).required(),
       category: Joi.string().required().trim().lowercase(),
       quantity: Joi.number().min(0).optional(),
@@ -85,11 +81,9 @@ const CardsEdit = () => {
 
       formData.append("price", values.price);
       formData.append("title", values.title);
-      // formData.append("subtitle", values.subtitle);
       formData.append("description", values.description);
       formData.append("quantity", values.quantity);
       formData.append("category", values.category);
-      // formData.append("likes", values.likes);
       formData.append("bizNumber", values.bizNumber);
       formData.append("user_id", values.user_id);
 
@@ -117,79 +111,20 @@ const CardsEdit = () => {
     },
   });
 
-  // useEffect(() => {
-  //   if (!card) {
-  //     return;
-  //   }
-  //   const {
-  //     title,
-  //     subtitle,
-  //     description,
-  //     price,
-  //     quantity,
-  //     category,
-  //     image_file,
-  //   } = card;
-
-  //   form.setValues({
-  //     title: title || "",
-  //     subtitle: subtitle || "",
-  //     description: description || "",
-  //     price: price || "",
-
-  //     quantity: quantity || "",
-  //     category: category || "",
-  //     image_file: image_file || "",
-  //   });
-  // }, [card, form.setValues]);
-
-  // useEffect(() => {
-  //   console.log("Card data after editing:", card);
-  //   if (!card) {
-  //     return;
-  //   }
-
-  //   const {
-  //     title,
-  //     subtitle,
-  //     description,
-  //     price,
-  //     quantity,
-  //     category,
-  //     image_file,
-  //     likes,
-  //     bizNumber,
-  //     user_id,
-  //   } = card;
-
-  //   form.setValues({
-  //     title: title || "",
-  //     subtitle: subtitle || "",
-  //     description: description || "",
-  //     price: price || "",
-  //     quantity: quantity || 0,
-  //     category: category || "",
-  //     image_file: image_file || "",
-  //     likes: likes || [],
-  //     bizNumber: bizNumber || "",
-  //     user_id: user_id || "",
-  //   });
-  // }, [card, form.setValues]);
   useEffect(() => {
     if (card) {
       form.setValues({
         title: card.title || "",
-        // subtitle: card.subtitle || "",
         description: card.description || "",
         price: card.price || "",
         quantity: card.quantity || 0,
         category: card.category || "",
         image_file: null,
-        // likes: card.likes || [""],
         bizNumber: card.bizNumber || "",
         user_id: card.user_id || "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [card, form.setValues]);
 
   const getProps = (name) => {
@@ -220,14 +155,6 @@ const CardsEdit = () => {
                   <div className="alert alert-danger">{serverError}</div>
                 )}
                 <div className="row">
-                  {/* <Input
-                    {...getProps("likes")}
-                    type="hidden"
-                    onChange={(e) =>
-                      form.setFieldValue("likes", e.target.value)
-                    }
-                  /> */}
-
                   <Input
                     {...getProps("bizNumber")}
                     type="hidden"
@@ -302,16 +229,6 @@ const CardsEdit = () => {
                       ))}
                     </select>
                   </div>
-
-                  {/* <Input
-                    {...getProps("subtitle")}
-                    label="תת קטגוריה"
-                    type="text"
-                    required
-                    onChange={(e) =>
-                      form.setFieldValue("subtitle", e.target.value)
-                    }
-                  /> */}
                 </div>
 
                 <div className="mb-3">
@@ -337,11 +254,11 @@ const CardsEdit = () => {
                   onClick={handleCancel}
                   className="btn btn-danger me-2"
                 >
-                  Cancel
+                  ביטול
                 </button>
 
-                <button type="submit" className="btn btn-primary ">
-                  Confirm
+                <button type="submit" className="btn btn-primary me-3">
+                  אישור
                 </button>
               </form>
             </div>

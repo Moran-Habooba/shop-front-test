@@ -6,7 +6,7 @@ import { useState, useMemo, useEffect } from "react";
 import cardsService from "../services/cardsService";
 import { useSearch } from "../context/searchContext";
 import categoryService from "../services/categoryService";
-
+import "./styls/MyCards.css";
 const MyCards = () => {
   const { cards, loadCards } = useMyCards();
   const { searchTerm } = useSearch();
@@ -45,12 +45,6 @@ const MyCards = () => {
     }
   };
 
-  // const filteredCards = useMemo(() => {
-  //   if (!searchTerm && !selectedCategory) return cards;
-  //   return cards.filter((card) =>
-  //     card.title.toLowerCase().startsWith(searchTerm.toLowerCase())
-  //   );
-  // }, [cards, searchTerm, selectedCategory]);
   const filteredCards = useMemo(() => {
     return cards.filter((card) => {
       const matchesSearchTerm = card.title
@@ -84,7 +78,7 @@ const MyCards = () => {
       <div className="row">
         <Link
           to="/create-card"
-          className="mb-5 btn fw-bold fs-3"
+          className="mb-5 btn fw-bold fs-3 costumeadd"
           style={{ backgroundColor: "#3b5d50", color: "#e5b55c" }}
         >
           לחץ כאן להוספת מוצר חדש לחנות
@@ -97,7 +91,7 @@ const MyCards = () => {
           <select
             value={selectedCategory}
             onChange={handleCategoryChange}
-            className="form-select"
+            className="form-select costume-form-select"
             style={{ width: "auto" }}
           >
             <option value="">הצג את כל הקטגוריות</option>

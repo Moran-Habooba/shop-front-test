@@ -1,0 +1,18 @@
+@media (max-width: 280px) {
+  .costumeadd {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  .costume-form-select {
+    width: 210px !important;
+  }
+}
+@media (max-width: 800px) {
+  .costumeadd {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  .costume-form-select {
+    width: 210px !important;
+  }
+}

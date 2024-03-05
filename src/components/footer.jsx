@@ -23,7 +23,7 @@ const Footer = () => {
         <img
           src="/logo.png"
           alt="Logo"
-          style={{ maxHeight: "100%", height: "180px" }}
+          style={{ maxHeight: "100%", height: "150px" }}
         />
       </Link>
       <ul className="nav justify-content-center mb-3">

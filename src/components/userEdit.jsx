@@ -30,10 +30,6 @@ const UserEdit = ({ redirect }) => {
     logout();
     navigate("/sign-in");
   };
-  // const handleCheckboxChange = () => {
-  //   setIsBusiness(!isBusiness);
-  //   setHasBusinessStatusChanged(true);
-  // };
 
   useEffect(() => {
     const loggedInUser = usersService.getUser();
@@ -76,7 +72,6 @@ const UserEdit = ({ redirect }) => {
       country: "",
       houseNumber: "",
       zip: "",
-      // password: "",
     },
     validate: validateFormikUsingJoi({
       first_name: Joi.string().min(2).max(1000).required(),
@@ -91,18 +86,10 @@ const UserEdit = ({ redirect }) => {
       street: Joi.string().min(2).max(256).required(),
       country: Joi.string().min(2).max(256).required(),
       houseNumber: Joi.number().min(2).max(256).required(),
-      // zip: Joi.number().min(2).max(256).required(),
+
       zip: Joi.number().min(1).max(99999999).integer().required(),
 
       image_file: Joi.any().optional(),
-      // password: Joi.string()
-      //   .min(9)
-      //   .max(1024)
-      //   .required()
-      //   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*'-]).+$/)
-      //   .message(
-      //     "password must be at least 9 characters long and contain an uppercase letter, a lowercase letter, a number and one of the following characters !@#$%^&*-'"
-      //   ),
     }),
 
     async onSubmit(values) {
@@ -118,7 +105,6 @@ const UserEdit = ({ redirect }) => {
       formData.append("country", values.country);
       formData.append("houseNumber", values.houseNumber);
       formData.append("zip", values.zip);
-      // formData.append("password", values.password);
 
       if (values.image_file) {
         formData.append("image_file", values.image_file);
@@ -163,7 +149,6 @@ const UserEdit = ({ redirect }) => {
       }
     },
   });
-
   useEffect(() => {
     if (!user) {
       return;
@@ -193,6 +178,7 @@ const UserEdit = ({ redirect }) => {
     if (image_file) {
       form.setFieldValue("image_file", image_file);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const getProps = (name) => {
@@ -252,13 +238,6 @@ const UserEdit = ({ redirect }) => {
                     type="text"
                     required
                   />
-                  {/* <Input
-                    {...getProps("password")}
-                    label="סיסמא חדשה"
-                    type="text"
-                    required
-                  /> */}
-                  {/* <Input {...getProps("state")} label="state" type="text" /> */}
                   <Input
                     {...getProps("city")}
                     label="עיר"
@@ -319,25 +298,6 @@ const UserEdit = ({ redirect }) => {
                   שמור
                 </button>
               </form>
-              {/* <input
-                type="checkbox"
-                className="form-check-input me-2 mt-3"
-                name="isBusiness"
-                id="BusinessCheck"
-                checked={isBusiness}
-                onChange={handleCheckboxChange}
-              /> */}
-              {/* <label htmlFor="BusinessCheck" className=" mt-3 me-2 ">
-                {isBusiness ? (
-                  <span className="text-white ">
-                    You are a Business user. Switch to regular user status?
-                  </span>
-                ) : (
-                  <span className="text-white">
-                    You are a regular user. Switch to Business user status?
-                  </span>
-                )}
-              </label> */}
             </div>
           </div>
         </div>

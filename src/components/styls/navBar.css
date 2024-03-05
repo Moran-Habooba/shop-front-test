@@ -92,26 +92,6 @@
   color: #e5b55c;
 }
 
-/* //////// */
-/* .navbar-light {
-  z-index: 1050;
-} */
-
-/* @keyframes wave-animation {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-  75% {
-    transform: rotate(-5deg);
-  }
-} */
 @keyframes wave-animation {
   0%,
   100% {
@@ -212,5 +192,8 @@
   #navbarSupportedContent {
     flex-wrap: wrap !important;
     justify-content: flex-end;
+  }
+  .d-flex {
+    margin-bottom: 30px;
   }
 }

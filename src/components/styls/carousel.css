@@ -9,8 +9,6 @@
 }
 
 .carousel {
-  /* height: 100%; */
-  /* width: 100vw; */
   margin-inline: auto;
   transform: translateY(-112px);
   z-index: 1;
@@ -22,11 +20,6 @@
 .btnbanner {
   border-color: #3b5d50 !important;
   background-color: #3b5d50 !important;
-  /* position: fixed; */
-  /* bottom: 185px;
-  position: absolute; */
-  /* left: 80%; */
-  /* transform: translateX(-50%); */
 }
 .btnbanner:hover {
   background-color: #f9bf29 !important;
@@ -42,11 +35,11 @@
 }
 .carousel-caption {
   position: absolute;
-  bottom: 20px; /* מרווח מהתחתית */
-  right: -780px !important; /* ממקם במרכז האופקי של המיכל */
-  transform: translateX(-50%); /* מתקן את המיקום כך שהוא באמת במרכז */
-  width: auto; /* נותן אורך מלא בתוך המיכל */
-  text-align: center; /* ממרכז את הטקסט בתוך הכפתור */
+  bottom: 20px;
+  right: -780px !important;
+  transform: translateX(-50%);
+  width: auto;
+  text-align: center;
 }
 @media (max-width: 800px) {
   .btnbanner {
@@ -61,15 +54,11 @@
   #myCarousel,
   .carousel-item {
     height: 150px !important;
-    /* margin-top: 150px; */
-    /* margin-bottom: 5px; */
     bottom: 4% !important;
-    /* width: fit-content; */
   }
 
   .image-text-container {
     padding-top: -100px !important;
-    /* margin-right: 30px; */
   }
 
   .carousel-control-prev,
@@ -79,11 +68,6 @@
   .carousel-inner {
     height: 100%;
   }
-  /* .btnbanner {
-    bottom: 130px !important;
-    padding: 8px 5px !important;
-    font-size: 8px !important;
-  } */
 }
 
 @media (max-width: 987px) {

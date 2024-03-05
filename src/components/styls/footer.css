@@ -21,17 +21,18 @@
 }
 .custom {
   position: absolute;
-
   right: 0;
-  transform: translateY(-35%);
+  transform: translateY(-5%);
   height: auto;
   display: flex;
   align-items: center;
 }
+
 @media (max-width: 987px) {
   .custom {
     height: 150px;
     left: -5%;
+    margin-top: -28px;
   }
   .nav {
     margin-top: 10%;
@@ -39,7 +40,6 @@
 }
 @media (max-width: 280px) {
   .custom {
-    margin: 0 !important;
     width: 33vh;
     margin-bottom: 5px !important;
     height: 100px;

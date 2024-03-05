@@ -3,9 +3,6 @@
   height: auto;
 }
 
-/* .card {
-  margin-right: 140px;
-} */
 @media (max-width: 990px) {
   .card-email {
     margin-right: 5px;
