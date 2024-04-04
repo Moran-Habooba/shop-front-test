@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import {
   getCartItems,
   removeFromCart,
-  // updateCart,
   completeOrder,
 } from "../services/cartService";
 import React, { useState, useEffect } from "react";
@@ -107,162 +106,6 @@ const ShoppingCart = () => {
     }
   };
 
-  // async function changeQuantity(item, change) {
-  //   try {
-  //     console.log("item.card_id:", item.card_id);
-  //     console.log(item);
-  //     if (!user) {
-  //       let newQuantity = item.quantity + change;
-  //       if (newQuantity <= 0) {
-  //         const updatedCartItems = cartItems.filter(
-  //           (cartItem) => cartItem.card_id !== item.card_id
-  //         );
-  //         setCartItems(updatedCartItems);
-  //         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  //       } else {
-  //         const updatedItem = { ...item, quantity: newQuantity };
-  //         const updatedItems = cartItems.map((cartItem) =>
-  //           cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //         );
-  //         setCartItems(updatedItems);
-  //         localStorage.setItem("cartItems", JSON.stringify(updatedItems));
-  //       }
-  //       return;
-  //     }
-
-  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
-  //       item.card_id._id
-  //     );
-
-  //     console.log("Inventory response:", inventoryResponse);
-  //     const inventoryData = inventoryResponse.data;
-  //     console.log("Inventory data:", inventoryData);
-
-  //     const availableInventory = inventoryData.quantity;
-
-  //     let newQuantity = item.quantity + change;
-
-  //     const newErrors = { ...errors };
-
-  //     if (newQuantity > availableInventory) {
-  //       newErrors[item.card_id._id] = "המלאי אזל";
-  //       setErrors(newErrors);
-  //       return;
-  //     } else {
-  //       delete newErrors[item.card_id._id];
-  //       setErrors(newErrors);
-  //     }
-
-  //     if (newQuantity <= 0) {
-  //       setCartItems(
-  //         cartItems.filter(
-  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
-  //         )
-  //       );
-  //       removeFromCart(item.card_id._id)
-  //         .then((response) => {
-  //           console.log(response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error removing the item:", error);
-  //         });
-  //     } else {
-  //       newQuantity = Math.max(newQuantity, 0);
-  //       const updatedItem = { ...item, quantity: newQuantity };
-  //       const updatedItems = cartItems.map((cartItem) =>
-  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //       );
-
-  //       setCartItems(updatedItems);
-
-  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-  //         .then((response) => {
-  //           console.log("Cart updated:", response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error updating the cart:", error);
-  //         });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching inventory for the item:", error);
-  //   }
-  // }
-
-  // async function changeQuantity(item, change) {
-  //   try {
-  //     if (!user) {
-  //       let newQuantity = item.quantity + change;
-  //       if (newQuantity <= 0) {
-  //         const updatedCartItems = cartItems.filter(
-  //           (cartItem) => cartItem.card_id !== item.card_id
-  //         );
-  //         setCartItems(updatedCartItems);
-  //         localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  //       } else {
-  //         const updatedItem = { ...item, quantity: newQuantity };
-  //         const updatedItems = cartItems.map((cartItem) =>
-  //           cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //         );
-  //         setCartItems(updatedItems);
-  //         localStorage.setItem("cartItems", JSON.stringify(updatedItems));
-  //       }
-  //       return;
-  //     }
-
-  //     const inventoryResponse = await inventoryService.getInventoryByCardId(
-  //       item.card_id._id
-  //     );
-  //     const inventoryData = inventoryResponse.data;
-
-  //     const availableInventory = inventoryData.quantity;
-
-  //     let newQuantity = item.quantity + change;
-
-  //     const newErrors = { ...errors };
-
-  //     if (newQuantity > availableInventory) {
-  //       newErrors[item.card_id._id] = "המלאי אזל";
-  //       setErrors(newErrors);
-  //       return;
-  //     } else {
-  //       delete newErrors[item.card_id._id];
-  //       setErrors(newErrors);
-  //     }
-
-  //     if (newQuantity <= 0) {
-  //       setCartItems(
-  //         cartItems.filter(
-  //           (cartItem) => cartItem.card_id._id !== item.card_id._id
-  //         )
-  //       );
-  //       removeFromCart(item.card_id._id)
-  //         .then((response) => {
-  //           console.log(response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error removing the item:", error);
-  //         });
-  //     } else {
-  //       newQuantity = Math.max(newQuantity, 0);
-  //       const updatedItem = { ...item, quantity: newQuantity };
-  //       const updatedItems = cartItems.map((cartItem) =>
-  //         cartItem.card_id._id === item.card_id._id ? updatedItem : cartItem
-  //       );
-
-  //       setCartItems(updatedItems);
-
-  //       updateCart([{ id: item.card_id._id, quantity: newQuantity }])
-  //         .then((response) => {
-  //           console.log("Cart updated:", response.data);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error updating the cart:", error);
-  //         });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching inventory for the item:", error);
-  //   }
-  // }
   async function changeQuantity(item, change) {
     console.log("Current item object:", item);
 
@@ -340,7 +183,6 @@ const ShoppingCart = () => {
           const cartItemsData = cartData.items;
 
           const updatedCartItems = cartItemsData.map((item) => {
-            // const dynamicImageUrl = `http://localhost:3000/${item.card_id.image_file.path}`;
             const dynamicImageUrl =
               item.card_id &&
               item.card_id.image_file &&
@@ -419,7 +261,6 @@ const ShoppingCart = () => {
         }
 
         setCartItems([]);
-        // navigate("/my-orders");
         Swal.fire({
           icon: "success",
           title: "ההזמנה בוצעה בהצלחה",

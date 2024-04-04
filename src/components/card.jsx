@@ -147,10 +147,6 @@ const Card = ({
     <div className="card  me-4 mb-4 p-2" style={{ width: "16rem" }}>
       <img
         src={
-          //   image_file?.path
-          //     ? `http://localhost:3000/${image_file.path}`
-          //     : "DefaultImg.svg.png"
-          // }
           image_file && image_file.path
             ? `http://localhost:3000/${image_file.path}`
             : "/DefaultImg.svg.png"
