@@ -60,7 +60,6 @@ const CardsEdit = () => {
 
       image_file: Joi.any().optional(),
       price: Joi.string()
-        .pattern(/^₪?\d{1,3}(,\d{3})*(\.\d{2})?$/)
         .required()
         .custom((value, helpers) => {
           let numberValue = Number(value.replace(/₪|,|\./g, ""));
