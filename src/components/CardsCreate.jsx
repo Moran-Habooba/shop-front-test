@@ -52,8 +52,13 @@ const CardsCreate = () => {
       image_file: Joi.any().optional(),
       price: Joi.string()
         .pattern(/^₪?\d{1,3}(,\d{3})*(\.\d{2})?$/)
-
         .required()
+        .messages({
+          "string.pattern.base":
+            "Invalid format. Please include commas for thousands. For example,  5,555.",
+          "string.empty": "Price is required",
+          "any.required": "Price is required",
+        })
         .custom((value, helpers) => {
           let numberValue = Number(value.replace(/₪|,|\./g, ""));
           if (numberValue < 0) {
