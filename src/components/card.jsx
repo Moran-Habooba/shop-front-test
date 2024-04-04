@@ -147,9 +147,13 @@ const Card = ({
     <div className="card  me-4 mb-4 p-2" style={{ width: "16rem" }}>
       <img
         src={
-          image_file?.path
+          //   image_file?.path
+          //     ? `http://localhost:3000/${image_file.path}`
+          //     : "DefaultImg.svg.png"
+          // }
+          image_file && image_file.path
             ? `http://localhost:3000/${image_file.path}`
-            : "DefaultImg.svg.png"
+            : "/DefaultImg.svg.png"
         }
         className="card-img-top"
         style={{ height: "15rem" }}
@@ -211,7 +215,7 @@ const Card = ({
                 -
               </button>
               <span>{count}</span>
-              <button onClick={increaseCount} className="me-2 quantity">
+              <button onClick={increaseCount} className="me-1 quantity">
                 +
               </button>
             </div>

@@ -23,7 +23,7 @@ export function adjustInventoryQuantity(cardId, quantity) {
   return httpService.patch(url, { adjustment: quantity });
 }
 export function getInventoryByCardId(cardId) {
-  refreshTokenHeader();
+  // refreshTokenHeader();
 
   return httpService.get(`${config.apiUrlGetInventoryiByCardId}${cardId}`);
 }

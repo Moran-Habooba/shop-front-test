@@ -3,6 +3,7 @@ import { getInventoryItems } from "../services/inventoryService";
 import { getAllUsers } from "../services/usersService";
 import { getClosedOrders } from "../services/cartService";
 import "./styls/SummaryStats.css";
+import Swal from "sweetalert2";
 
 const SummaryStats = () => {
   const [productCount, setProductCount] = useState(0);
@@ -19,7 +20,7 @@ const SummaryStats = () => {
         setUserCount(userData.data.length);
 
         const ordersData = await getClosedOrders();
-
+        console.log(ordersData);
         setOrderCount(ordersData.closedOrders.length);
       } catch (error) {
         console.error("Error fetching summary stats:", error);

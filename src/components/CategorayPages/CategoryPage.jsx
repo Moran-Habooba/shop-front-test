@@ -50,7 +50,7 @@ const CategoryPage = ({ category, title }) => {
       <div className="container">
         <div className="row">
           {products.map((product) => (
-            <div key={product._id} className="col-sm">
+            <div key={product._id} className="col-sm" style={{ flexGrow: 0 }}>
               <Card
                 card={product}
                 onLiked={() => toggleLike(product._id)}

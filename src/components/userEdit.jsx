@@ -85,7 +85,7 @@ const UserEdit = ({ redirect }) => {
       city: Joi.string().min(2).max(256).required(),
       street: Joi.string().min(2).max(256).required(),
       country: Joi.string().min(2).max(256).required(),
-      houseNumber: Joi.number().min(2).max(256).required(),
+      houseNumber: Joi.number().min(1).max(99999999).required(),
 
       zip: Joi.number().min(1).max(99999999).integer().required(),
 

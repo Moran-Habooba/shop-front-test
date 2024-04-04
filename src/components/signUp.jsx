@@ -58,7 +58,8 @@ const SignUp = ({ redirect }) => {
         .min(9)
         .max(11)
         .required()
-        .regex(/^0[2-9]\d{7,8}$/),
+        .regex(/^0[2-9]\d{7,8}$/)
+        .message("user phone mast be a valid phone number"),
       password: Joi.string()
         .min(8)
         .max(20)
@@ -76,7 +77,7 @@ const SignUp = ({ redirect }) => {
       city: Joi.string().min(2).max(256).required(),
       street: Joi.string().min(2).max(256).required(),
       country: Joi.string().min(2).max(256).required(),
-      house_number: Joi.number().min(2).max(256).required(),
+      house_number: Joi.number().min(1).max(99999999).required(),
       zip: Joi.number().min(1).max(99999999).integer().required(),
       image_file: Joi.any().label("Image File").allow(""),
       isBusiness: Joi.boolean().required(),

@@ -1,6 +1,7 @@
 import httpService from "./httpService";
 import config from "../config.json";
 import { refreshTokenHeader } from "./usersService";
+import Swal from "sweetalert2";
 
 export async function addToCart(card_id, quantity) {
   refreshTokenHeader();
@@ -73,3 +74,29 @@ export async function getClosedOrders() {
     throw error;
   }
 }
+
+// export async function getClosedOrders() {
+//   refreshTokenHeader();
+//   try {
+//     const response = await httpService.get(config.apiUrlGetAllClosedOrders);
+//     if (response.data && response.data.length > 0) {
+//       return response.data;
+//     } else {
+//       Swal.fire({
+//         title: "אין הזמנות ",
+//         text: "טרם בוצעו הזמנות באתר.",
+//         icon: "info",
+//         confirmButtonText: "סגור",
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error fetching closed orders:", error);
+//     Swal.fire({
+//       title: "שים לב",
+//       text: "טרם בוצעו הזמנות ",
+//       icon: "warning",
+//       confirmButtonText: "סגור",
+//     });
+//     throw error;
+//   }
+// }

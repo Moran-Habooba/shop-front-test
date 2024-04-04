@@ -34,6 +34,7 @@
 
 .card-body {
   overflow: auto;
+  flex: none !important;
 }
 
 .card-img-top {

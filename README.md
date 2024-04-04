@@ -45,7 +45,7 @@ The application incorporates a variety of features and functionalities tailored 
 
 ### Additional Features
 
-- **User Profile Editing**: Allows logged-in users to modify their personal details.
+- **User Profile Editing**: Allows logged-in users to modify their personal details.(To edit details, click on the profile picture)
 - **CRM System for Admin Users**: Enables admin-type users to view, edit, and delete user information.
 
 ### Popup Notifications
